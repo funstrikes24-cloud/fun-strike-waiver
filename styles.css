@@ -919,7 +919,8 @@ select {
   font-size: 0.89rem;
   color: #881337;
   font-weight: 600;
-  flex: 1 1 260px;
+  flex: 1 1 0%;
+  min-width: 220px;
 }
 
 .sheet-footer {
@@ -1196,12 +1197,25 @@ select {
     gap: 8px;
   }
 
+  .toolbar-brand {
+    min-width: 0;
+    flex: 1;
+    gap: 9px;
+  }
+
+  .toolbar-brand-text {
+    min-width: 0;
+  }
+
   .toolbar-sub {
     display: none;
   }
 
   .toolbar-title {
-    font-size: 0.86rem;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .toolbar-actions {
