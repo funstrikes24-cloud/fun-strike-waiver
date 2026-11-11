@@ -603,15 +603,15 @@
     if (sheetResult.synced) {
       sheetSyncStatus.hidden = false;
       sheetSyncStatus.className = "sync-status-note is-ok";
-      sheetSyncStatus.textContent = "Saved to Google Sheet successfully.";
+      sheetSyncStatus.textContent = "Your signed waiver has been received. Have a great time at Fun Strike! Game Zone!";
     } else if (sheetResult.reason === "not_configured") {
       sheetSyncStatus.hidden = false;
       sheetSyncStatus.className = "sync-status-note is-warn";
-      sheetSyncStatus.textContent = "Google Sheet URL not linked yet — see GOOGLE-SHEETS-SETUP.md to connect your Sheet. You can still print or save this waiver as PDF below.";
+      sheetSyncStatus.textContent = "Online sync is not connected yet. Please show this screen or print/save PDF at the counter.";
     } else {
       sheetSyncStatus.hidden = false;
       sheetSyncStatus.className = "sync-status-note is-warn";
-      sheetSyncStatus.textContent = `Could not reach Google Sheet (${sheetResult.reason}). Please print or save PDF as backup.`;
+      sheetSyncStatus.textContent = `Could not reach server (${sheetResult.reason}). Please show this screen or print/save PDF at the counter.`;
     }
 
     summaryContactDl.innerHTML = `
