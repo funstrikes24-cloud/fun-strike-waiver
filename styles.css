@@ -144,6 +144,8 @@ select {
   font-size: 0.86rem;
   font-weight: 600;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -322,11 +324,14 @@ select {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  padding: 11px 13px;
+  min-height: 54px;
+  padding: 12px 14px;
   border: 1.5px solid var(--border-light);
   border-radius: 8px;
   background: #f8fafc;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
@@ -340,9 +345,9 @@ select {
 }
 
 .zone-pill input[type="radio"] {
-  margin-top: 3px;
-  width: 18px;
-  height: 18px;
+  margin-top: 2px;
+  width: 20px;
+  height: 20px;
   accent-color: var(--brand-red-dark);
   flex: 0 0 auto;
   cursor: pointer;
@@ -1096,35 +1101,79 @@ select {
   gap: 10px;
 }
 
-/* Responsive */
-@media (max-width: 720px) {
-  .toolbar {
-    padding: 10px 14px;
+/* Responsive (Phone & Tablet Optimized) */
+@media (max-width: 860px) {
+  .page-wrapper {
+    padding: 14px 10px 36px;
   }
 
   .waiver-sheet {
-    padding: 0 18px 22px;
+    padding: 0 20px 22px;
   }
 
   .sheet-top-bar,
   .sheet-bottom-bar {
-    margin-left: -18px;
-    margin-right: -18px;
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+
+  .zone-pills,
+  .rider-fields-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .sig-canvas {
+    height: 150px;
+  }
+}
+
+@media (max-width: 680px) {
+  .toolbar {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+
+  .toolbar-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  #btnPrintBlank {
+    display: none;
+  }
+
+  .waiver-sheet {
+    padding: 0 14px 20px;
+    border-width: 1.5px;
+  }
+
+  .sheet-top-bar,
+  .sheet-bottom-bar {
+    margin-left: -14px;
+    margin-right: -14px;
   }
 
   .sheet-header {
     flex-direction: column;
     text-align: center;
     gap: 10px;
+    padding: 16px 0 14px;
+  }
+
+  .logo-box {
+    width: 96px;
+  }
+
+  .header-text h1 {
+    font-size: 1.55rem;
   }
 
   .field-grid-2,
   .datetime-grid,
-  .rider-fields-grid,
-  .summary-grid,
-  .zone-pills {
+  .summary-grid {
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 12px;
   }
 
   .field-row {
@@ -1133,8 +1182,38 @@ select {
     gap: 4px;
   }
 
+  .checkbox-label {
+    padding: 12px;
+  }
+
+  .checkbox-label input[type="checkbox"],
+  .inline-check input {
+    width: 20px;
+    height: 20px;
+  }
+
+  .customer-submit-bar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 14px;
+  }
+
+  #btnCustomerSubmit {
+    width: 100%;
+    min-height: 48px;
+    font-size: 1rem;
+  }
+
   .submission-card {
-    padding: 18px;
+    padding: 16px;
+  }
+
+  .submission-footer-actions {
+    flex-direction: column;
+  }
+
+  .submission-footer-actions .btn {
+    width: 100%;
   }
 
   .btn,
