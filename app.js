@@ -167,13 +167,21 @@
 
     function toCompactDataURL() {
       if (!hasInk) return "";
-      const outW = 520;
-      const outH = 105;
+      const outW = 360;
+      const outH = 80;
       const offscreen = document.createElement("canvas");
       offscreen.width = outW;
       offscreen.height = outH;
-      offscreen.getContext("2d").drawImage(canvas, 0, 0, outW, outH);
-      return offscreen.toDataURL("image/png");
+      const octx = offscreen.getContext("2d");
+      octx.fillStyle = "#ffffff";
+      octx.fillRect(0, 0, outW, outH);
+      octx.drawImage(canvas, 0, 0, outW, outH);
+
+      const webpUrl = offscreen.toDataURL("image/webp", 0.55);
+      if (webpUrl.startsWith("data:image/webp;")) {
+        return webpUrl;
+      }
+      return offscreen.toDataURL("image/jpeg", 0.55);
     }
 
     canvas.addEventListener("pointerdown", onPointerDown);
