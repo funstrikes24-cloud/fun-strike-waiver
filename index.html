@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fun Strike! Game Zone — Participant Waiver, Rules &amp; Terms</title>
+  <link rel="icon" type="image/png" href="assets/funstrike-logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Customer Top Bar (Screen-only) -->
+  <header class="toolbar no-print" aria-label="Form actions">
+    <div class="toolbar-brand">
+      <img src="assets/funstrike-logo.png" alt="Fun Strike! Game Zone" class="toolbar-logo-img" />
+      <div class="toolbar-brand-text">
+        <span class="toolbar-title">Fun Strikes Entertainment LLP</span>
+        <span class="toolbar-sub">Fun Strike! Game Zone &mdash; Official Waiver Form</span>
+      </div>
+    </div>
+    <div class="toolbar-actions">
+      <button type="button" id="btnPrintBlank" class="btn btn-ghost">
+        Print Blank Form
+      </button>
+      <button type="button" id="btnPrintCurrent" class="btn btn-secondary">
+        Print / Save PDF
+      </button>
+    </div>
+  </header>
+
+  <main class="page-wrapper">
+    <!-- CUSTOMER WAIVER FORM -->
+    <form id="waiverForm" class="waiver-sheet" novalidate>
+      <div class="sheet-top-bar" aria-hidden="true"></div>
+
+      <!-- Branded Header with Official Fun Strike! Logo -->
+      <section class="sheet-header">
+        <div class="logo-box">
+          <img src="assets/funstrike-logo.png" alt="Fun Strike! Game Zone Official Logo" class="brand-logo" />
+        </div>
+
+        <div class="header-text">
+          <h1>Fun Strikes Entertainment LLP</h1>
+          <p class="subtitle">
+            Fun Strike! Game Zone &mdash; Participant Waiver, Release &amp; Terms of Play
+          </p>
+          <p class="venue-meta">
+            Fun Like Never Before &bull; Go-Karting &bull; Soft Play &amp; Trampoline &bull; Bowling &bull; Arcade &bull; VR<br />
+            Surat, Gujarat &bull; +91 76005 57671 &bull; info@funstrike.in &bull; funstrike.in
+          </p>
+        </div>
+      </section>
+
+      <!-- Activity / Zone Selector (Only One) -->
+      <section class="zone-selector-section" aria-label="Select activity">
+        <div class="zone-header">
+          <h2>Select Activity / Zone<span class="req">*</span></h2>
+          <p class="zone-hint">Select one activity you or your group are participating in today.</p>
+        </div>
+        <div class="zone-pills" id="zonePills" role="radiogroup" aria-label="Activity or zone">
+          <label class="zone-pill">
+            <input type="radio" name="activity" value="Go-Karting" data-zone="gokart" checked />
+            <span class="zone-pill-body">
+              <span class="zone-pill-title">Go-Karting</span>
+              <span class="zone-pill-desc">Track &amp; Double-Seat Karts</span>
+            </span>
+          </label>
+          <label class="zone-pill">
+            <input type="radio" name="activity" value="Soft Play &amp; Trampoline" data-zone="softplay" />
+            <span class="zone-pill-body">
+              <span class="zone-pill-title">Soft Play &amp; Trampoline</span>
+              <span class="zone-pill-desc">Trampolines, Foam Pit &amp; Play Arena</span>
+            </span>
+          </label>
+          <label class="zone-pill">
+            <input type="radio" name="activity" value="Bowling" data-zone="bowling" />
+            <span class="zone-pill-body">
+              <span class="zone-pill-title">Bowling</span>
+              <span class="zone-pill-desc">Bowling Lanes &amp; Shoes</span>
+            </span>
+          </label>
+        </div>
+      </section>
+
+      <!-- Participant & Group Details -->
+      <section class="participant-fields" aria-label="Participant and group details">
+        <input type="text" id="hpWebsite" name="companyWebsite" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <div class="section-heading-row">
+          <h2>Participant / Parent or Guardian Details</h2>
+          <span class="rider-count-pill" id="riderCountBadge">Total Participants: 1</span>
+        </div>
+
+        <div class="field-grid-2">
+          <div class="field-row">
+            <label for="branch">LOCATION / BRANCH:</label>
+            <select id="branch" name="branch">
+              <option value="Gauravpath Road, Pal (Surat)">Gauravpath Road, Pal (Surat)</option>
+              <option value="Katargam (Surat)">Katargam (Surat)</option>
+              <option value="Other / Event">Other / Event</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label for="mobileNumber">MOBILE NUMBER:<span class="req">*</span></label>
+            <input type="tel" id="mobileNumber" name="mobileNumber" autocomplete="tel" required placeholder="e.g. +91 98765 43210" />
+          </div>
+        </div>
+
+        <div class="field-grid-2">
+          <div class="field-row">
+            <label for="fullName">FULL NAME:<span class="req">*</span></label>
+            <input type="text" id="fullName" name="fullName" autocomplete="name" required placeholder="Enter full name" />
+          </div>
+          <div class="field-row">
+            <label for="dob">DATE OF BIRTH:<span class="req">*</span></label>
+            <div class="dob-wrap">
+              <input type="date" id="dob" name="dob" required />
+              <span id="primaryAgeTag" class="age-tag" hidden></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <label for="address">ADDRESS:<span class="req">*</span></label>
+          <input type="text" id="address" name="address" autocomplete="street-address" required placeholder="House/Street, Area, City, PIN" />
+        </div>
+
+        <div class="field-grid-2">
+          <div class="field-row">
+            <label for="emailId">EMAIL ID:</label>
+            <input type="email" id="emailId" name="emailId" autocomplete="email" placeholder="example@domain.com" />
+          </div>
+          <div class="signer-riding-toggle no-print">
+            <label class="inline-check">
+              <input type="checkbox" id="primaryIsRiding" checked />
+              <span>Primary signer is also participating</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Additional Participants / Family & Group Names -->
+        <div class="multi-rider-box">
+          <div class="multi-rider-header">
+            <div>
+              <h3>Additional Participants / Family &amp; Group Names</h3>
+              <p class="multi-rider-hint">
+                Add all family members, children, or friends participating under this waiver on this single form.
+              </p>
+            </div>
+            <button type="button" id="btnAddRider" class="btn btn-accent-outline no-print">
+              + Add Another Name
+            </button>
+          </div>
+
+          <div id="additionalRidersContainer" class="riders-list"></div>
+        </div>
+      </section>
+
+      <!-- Activity Safety Rules & Terms and Conditions -->
+      <section class="rules-section" aria-labelledby="rulesHeading">
+        <div class="rules-title-block">
+          <h2 id="rulesHeading">SAFETY RULES &amp; TERMS AND CONDITIONS</h2>
+          <p class="rules-subtitle">Please read all applicable zone rules and commercial terms carefully before participating</p>
+        </div>
+
+        <!-- ZONE 1: GO-KARTING RULES -->
+        <div id="rules-gokart" class="zone-rules-block">
+          <h3 class="tc-subheading">Go-Karting Track Safety &amp; Driving Rules</h3>
+          <div class="warning-box" role="alert">
+            <strong>GO-KART SAFETY WARNING:</strong> Go-karts have rotating and moving parts. Hair longer than shoulder-length must be secured above the shoulder, and all personal items (loose clothing, scarves, dupattas, jewelry, phones, etc.) must be secured and contained inside the seating area; otherwise, serious injury or death may occur.
+          </div>
+          <ul class="rules-list">
+            <li class="height-rule">
+              All single-kart drivers must meet the minimum track height requirement of
+              <input type="number" id="minHeightIn" name="minHeightIn" class="inline-num" min="0" step="0.1" aria-label="Minimum height in inches" placeholder="___" />
+              in (
+              <input type="number" id="minHeightCm" name="minHeightCm" class="inline-num" min="0" step="0.1" aria-label="Minimum height in centimeters" placeholder="___" />
+              cm) tall.
+            </li>
+            <li>
+              For double-seat go-karts, passengers must be at least <strong>40 in (101.6 cm)</strong> tall and possess upper-body control, with the driver being at least <strong>18 years of age</strong> or the parent/legal guardian of the passenger.
+            </li>
+            <li>Any <strong>HAIR</strong> longer than shoulder-length <strong>MUST</strong> be tied and secured above the shoulder; approved helmets must be worn properly fastened if provided.</li>
+            <li>All <strong>LOOSE CLOTHING</strong> must be fastened and secured before entering the track area.</li>
+            <li>Closed <strong>SHOES</strong> and a <strong>SHIRT</strong> must be worn at all times while in the track area.</li>
+            <li><strong>EATING, DRINKING, AND SMOKING / VAPING</strong> are strictly prohibited in go-karts and anywhere inside the track or pit area.</li>
+            <li>Both hands must remain on the steering wheel and both feet inside the go-kart floorboard at all times unless instructed otherwise by a track attendant.</li>
+            <li>Anyone suspected of being under the influence of <strong>ALCOHOL OR DRUGS</strong> will be denied entry immediately.</li>
+            <li><strong>BUMPING, RAMMING, OR INTENTIONAL CONTACT</strong> between go-karts or against track barriers is strictly prohibited.</li>
+            <li>When entering the pit area, go-karts must be slowed down completely and riders must remain seated and await attendants' instructions.</li>
+            <li>Seat belts / safety harnesses must be properly worn and fastened at all times while seated in a go-kart.</li>
+            <li>Drivers and passengers must remain seated inside the go-kart at all times. If a kart stops or trouble arises, remain seated and raise one hand to alert an attendant &mdash; never step onto an active track.</li>
+            <li>Any misconduct, reckless driving, or failure to obey attendant signals will result in immediate removal from the track area. <strong>Disqualification applies on the 1st warning</strong> without exception.</li>
+          </ul>
+        </div>
+
+        <!-- ZONE 2: SOFT PLAY & TRAMPOLINE RULES -->
+        <div id="rules-softplay" class="zone-rules-block" hidden>
+          <h3 class="tc-subheading">Soft Play &amp; Trampoline Arena Safety Rules</h3>
+          <div class="warning-box" role="alert">
+            <strong>TRAMPOLINE &amp; SOFT PLAY WARNING:</strong> Jumping and climbing carry inherent risk of sprains, fractures, or impact injury. Never attempt flips or head-first dives unless specifically authorized, and always land on both feet or your seated bottom.
+          </div>
+          <ul class="rules-list">
+            <li><strong>GRIP SOCKS MANDATORY:</strong> Non-slip trampoline grip socks must be worn at all times inside the trampoline &amp; soft play area. Bare feet, street shoes, sandals, and socks without grip are prohibited.</li>
+            <li><strong>ONE PERSON PER TRAMPOLINE MAT:</strong> Only one jumper is allowed per trampoline bed/square at a time. Double-bouncing another person is strictly prohibited.</li>
+            <li><strong>NO FLIPS OR DANGEROUS STUNTS:</strong> Somersaults, backflips, inverted maneuvers, and head-first diving into foam pits or ball pools are prohibited.</li>
+            <li><strong>EMPTY POCKETS &amp; NO SHARP OBJECTS:</strong> Remove all jewelry, watches, belts, buckles, keys, coins, pens, and unsecured eyewear/phones before entering.</li>
+            <li><strong>AGE, HEIGHT &amp; SUPERVISION:</strong> Children must use age-appropriate zones (toddler soft play vs. main trampolines). Parents/guardians are solely responsible for actively supervising their children at all times.</li>
+            <li><strong>NO ROUGH PLAY OR CLIMBING ON PADS/NETS:</strong> Pushing, tackling, wrestling, running across pads, hanging on basketball rims, or climbing safety netting/walls is prohibited.</li>
+            <li><strong>NO SITTING OR LYING ON MATS:</strong> Do not sit, lie down, or rest on active trampoline beds; step onto padded walkways to rest.</li>
+            <li><strong>NO FOOD, DRINKS, OR GUM:</strong> Food, beverages, and chewing gum are strictly prohibited inside the soft play and trampoline arena.</li>
+            <li><strong>OBEY COURT MONITORS:</strong> Failure to follow attendant whistle signals or rules results in immediate removal without refund.</li>
+          </ul>
+        </div>
+
+        <!-- ZONE 3: BOWLING RULES -->
+        <div id="rules-bowling" class="zone-rules-block" hidden>
+          <h3 class="tc-subheading">Bowling Alley Safety &amp; Lane Rules</h3>
+          <div class="warning-box" role="alert">
+            <strong>BOWLING LANE WARNING:</strong> Bowling lanes beyond the foul line are heavily oiled and extremely slippery. Never cross the foul line, and keep hands and fingers clear of the ball return mechanism.
+          </div>
+          <ul class="rules-list">
+            <li><strong>BOWLING SHOES MANDATORY:</strong> Proper bowling shoes must be worn on the lane approaches. Street shoes, heels, bare feet, or wet soles are prohibited for safety and lane protection.</li>
+            <li><strong>DO NOT CROSS THE FOUL LINE:</strong> Stepping past the foul line onto the oiled lane surface is dangerous and strictly prohibited.</li>
+            <li><strong>SAFE BALL HANDLING &amp; PINSETTER CLEARANCE:</strong> Choose a ball weight appropriate for your age and strength. Never reach inside the ball return opening, and always wait until the pinsetter sweep bar has lifted completely before bowling.</li>
+            <li><strong>ONE BOWLER AT A TIME &amp; LANE COURTESY:</strong> Only one person may step onto the approach to bowl at a time; yield to bowlers on adjacent lanes and keep children behind the seating step when not bowling.</li>
+            <li><strong>NO LOFTING OR RECKLESS THROWING:</strong> Lofting balls high onto the lane, throwing multiple balls at once, throwing balls backwards, or swinging balls recklessly is strictly prohibited.</li>
+            <li><strong>NO FOOD OR DRINKS ON APPROACH:</strong> Keep all food and beverages in the seating/table area &mdash; never on the wooden/synthetic approach area (spills cause dangerous slips).</li>
+            <li><strong>EQUIPMENT CARE:</strong> Rental bowling shoes and house balls must be returned to the counter/racks after play.</li>
+          </ul>
+        </div>
+
+        <!-- UNIVERSAL TERMS & CONDITIONS -->
+        <h3 class="tc-subheading">Medical Fitness, Minors &amp; Assumption of Risk</h3>
+        <ul class="rules-list">
+          <li>
+            Go-karting, trampoline/soft play, and bowling involve physical exertion, balance, speed, or sudden movement. Participation is <strong>not recommended</strong> for individuals with heart, neck, back, or spine problems, recent surgery, bone/joint injuries, or for pregnant women. Participation is strictly at your own risk.
+          </li>
+          <li>
+            If your child or minor ward has any health issues, allergies, or medical conditions and you allow them to participate in any zone or play area, it is entirely your responsibility as parent/legal guardian.
+          </li>
+          <li>
+            <strong>Fun Strikes Entertainment LLP / Fun Strike! Game Zone</strong> reserves the right to refuse service or deny entry to any guest for safety, medical, or operational reasons.
+          </li>
+        </ul>
+
+        <h3 class="tc-subheading">Equipment Breakage &amp; Damage Liability</h3>
+        <div class="policy-callout policy-damage">
+          <strong>CUSTOMER LIABILITY FOR DAMAGE OR BREAKAGE:</strong> If any damage, breakage, or loss is caused by the customer or any participant under this form (including damage to go-karts, helmets, track barriers, trampoline mats/pads/nets, soft-play structures, bowling balls, shoes, lanes, pins, scoring monitors, or any venue property) due to reckless play, rule violation, negligence, or misuse, <strong>the customer/guest is solely responsible and agrees to pay the full repair or replacement amount</strong> as assessed by Fun Strikes Entertainment LLP before leaving the venue.
+        </div>
+
+        <h3 class="tc-subheading">Strict No-Refund &amp; No-Cancellation Policy</h3>
+        <div class="policy-callout policy-refund">
+          <strong>NO REFUNDS AFTER PAYMENT:</strong> All tickets, game cards, socks, shoe rentals, lane bookings, and session payments are <strong>100% NON-REFUNDABLE, NON-CANCELLABLE, AND NON-TRANSFERABLE</strong> once paid. <strong>No cash, card, UPI, or partial refund will be issued under any circumstances</strong> after payment &mdash; including if a customer changes their mind, feels scared, dislikes the experience, claims they &ldquo;did not have fun&rdquo;, is disqualified or removed for breaking safety rules, or if any ride/kart/lane experiences a mechanical fault, breakdown, or temporary operational pause. In the event of an unprovoked mechanical fault not caused by guest misuse, Fun Strike! Game Zone may, at its sole discretion, provide replacement equipment or reschedule remaining play time, but <strong>no monetary refund will be given</strong>.
+        </div>
+
+        <p class="closing-banner">THANK YOU FOR PLAYING AT FUN STRIKE! &mdash; COME BACK SOON!</p>
+      </section>
+
+      <!-- Agreement & Signature -->
+      <section class="agreement-section" aria-label="Agreement and customer signature">
+        <div class="agree-checkbox-row">
+          <label class="checkbox-label">
+            <input type="checkbox" id="agreeTerms" name="agreeTerms" required />
+            <span>
+              I have read and agree to be bound by all applicable Activity Safety Rules, Damage &amp; Breakage Liability terms, and the Strict No-Refund Policy of <strong>Fun Strike! Game Zone (Fun Strikes Entertainment LLP)</strong> on behalf of myself and every participant/minor listed on this form (confirming I am at least 18 years old or the parent/legal guardian of any minor listed).
+            </span>
+          </label>
+        </div>
+
+        <div class="signature-block">
+          <div class="signature-header">
+            <label for="guestSigCanvas">CUSTOMER / PARENT / GUARDIAN SIGNATURE:<span class="req">*</span></label>
+            <button type="button" class="btn-clear-sig no-print" data-clear="guestSigCanvas">Clear Signature</button>
+          </div>
+          <div class="sig-pad-wrap">
+            <canvas id="guestSigCanvas" class="sig-canvas" width="760" height="120" aria-label="Customer signature pad"></canvas>
+            <span class="sig-placeholder" id="guestSigPlaceholder">Sign here (finger, stylus, or mouse)</span>
+          </div>
+        </div>
+
+        <div class="datetime-grid">
+          <div class="field-row">
+            <label for="signDate">DATE:<span class="req">*</span></label>
+            <input type="date" id="signDate" name="signDate" required />
+          </div>
+          <div class="field-row">
+            <label for="signTime">TIME:<span class="req">*</span></label>
+            <div class="time-input-group">
+              <input type="time" id="signTime" name="signTime" required />
+              <button type="button" id="btnNow" class="btn-mini no-print" title="Set current date and time">Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="customer-submit-bar no-print">
+          <p class="submit-note">
+            By clicking submit, your signed waiver and participant list are recorded in our Google Sheet log.
+          </p>
+          <button type="submit" id="btnCustomerSubmit" class="btn btn-primary btn-lg">
+            Submit Waiver
+          </button>
+        </div>
+      </section>
+
+      <div id="formFeedback" class="form-feedback no-print" role="status" aria-live="polite" hidden></div>
+
+      <footer class="sheet-footer">
+        <span>Fun Strikes Entertainment LLP &bull; Fun Strike! Game Zone</span>
+        <span>Gauravpath Road (Pal) &bull; Katargam &bull; Surat</span>
+        <span class="credit-line">
+          Made with ❤️ by
+          <a href="https://www.linkedin.com/in/aryanpandya" target="_blank" rel="noopener noreferrer">Aryan</a>
+          &bull;
+          <a href="https://nexoraonesolution.com/" target="_blank" rel="noopener noreferrer">NexoraOneSolution</a>
+        </span>
+      </footer>
+      <div class="sheet-bottom-bar" aria-hidden="true"></div>
+    </form>
+
+    <!-- SUBMISSION CONFIRMATION -->
+    <section id="submissionScreen" class="submission-card no-print" hidden aria-live="polite">
+      <div class="submission-banner">
+        <div class="status-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+        </div>
+        <div>
+          <h2>Waiver Submitted &mdash; Thank You!</h2>
+          <p id="submissionSubtext">
+            Your waiver and terms acceptance have been recorded. Please proceed to the counter or zone attendant.
+          </p>
+        </div>
+      </div>
+
+      <div class="ref-code-box">
+        <span class="ref-label">WAIVER REFERENCE ID</span>
+        <strong id="displayRefCode" class="ref-code">FS-0000</strong>
+        <span id="displayTimestamp" class="ref-meta"></span>
+      </div>
+
+      <div id="sheetSyncStatus" class="sync-status-note" hidden></div>
+
+      <div class="summary-grid">
+        <div class="summary-panel">
+          <h3>Primary Contact &amp; Activities</h3>
+          <dl class="summary-dl" id="summaryContactDl"></dl>
+        </div>
+        <div class="summary-panel">
+          <h3>Participants Covered (<span id="summaryRiderCount">0</span>)</h3>
+          <ul class="summary-riders-list" id="summaryRidersList"></ul>
+          <div class="summary-sig-preview">
+            <span>Customer Signature:</span>
+            <img id="summaryGuestSigImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Customer signature preview" hidden />
+          </div>
+        </div>
+      </div>
+
+      <div class="submission-footer-actions">
+        <button type="button" id="btnPrintFromConfirm" class="btn btn-secondary">
+          Print / Save PDF
+        </button>
+        <button type="button" id="btnStartNextGuest" class="btn btn-primary">
+          Submit Another Waiver
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
