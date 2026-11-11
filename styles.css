@@ -1192,15 +1192,31 @@ select {
 @media (max-width: 680px) {
   .toolbar-inner {
     padding: 8px 12px;
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+
+  .toolbar-sub {
+    display: none;
+  }
+
+  .toolbar-title {
+    font-size: 0.86rem;
   }
 
   .toolbar-actions {
-    width: 100%;
-    justify-content: flex-end;
+    width: auto;
+    flex-shrink: 0;
   }
 
   #btnPrintBlank {
     display: none;
+  }
+
+  #btnPrintCurrent {
+    padding: 7px 11px;
+    font-size: 0.78rem;
+    min-height: 36px;
   }
 
   .waiver-sheet {
@@ -1247,18 +1263,25 @@ select {
 
   .checkbox-label {
     padding: 12px;
+    background: #ffffff;
   }
 
   .checkbox-label input[type="checkbox"],
   .inline-check input {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
   }
 
   .customer-submit-bar {
     flex-direction: column;
     align-items: stretch;
     padding: 14px;
+    gap: 12px;
+  }
+
+  .submit-note {
+    flex: none;
+    width: 100%;
   }
 
   #btnCustomerSubmit {
