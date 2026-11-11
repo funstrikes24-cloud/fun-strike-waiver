@@ -673,6 +673,19 @@
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  document.getElementById("btnCopyRef")?.addEventListener("click", async () => {
+    const btn = document.getElementById("btnCopyRef");
+    const code = displayRefCode.textContent.trim();
+    if (!code) return;
+    try {
+      await navigator.clipboard.writeText(code);
+      btn.textContent = "Copied!";
+      setTimeout(() => { btn.textContent = "Copy"; }, 1800);
+    } catch {
+      btn.textContent = code;
+    }
+  });
+
   document.getElementById("btnStartNextGuest").addEventListener("click", resetFormForNextGuest);
 
   document.getElementById("btnPrintCurrent").addEventListener("click", () => {
