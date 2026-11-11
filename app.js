@@ -276,7 +276,7 @@
     }
   });
 
-  // Multiple Riders Management
+  // Zone Selection & Multi-Participant Management
   function getSelectedZoneRadio() {
     return zoneRadios.find((rb) => rb.checked) || zoneRadios[0];
   }
@@ -503,7 +503,20 @@
   }
 
   function generateRefCode() {
-    return `FS-${Math.floor(1000 + Math.random() * 9000)}`;
+    const chars = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+    let code = "";
+    if (window.crypto?.getRandomValues) {
+      const buf = new Uint8Array(6);
+      window.crypto.getRandomValues(buf);
+      for (let i = 0; i < 6; i++) {
+        code += chars[buf[i] % chars.length];
+      }
+    } else {
+      for (let i = 0; i < 6; i++) {
+        code += chars[Math.floor(Math.random() * chars.length)];
+      }
+    }
+    return `FS-${code}`;
   }
 
   function collectPayload() {
