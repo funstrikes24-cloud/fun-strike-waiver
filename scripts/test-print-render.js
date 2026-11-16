@@ -429,16 +429,21 @@ function buildDocumentHtml(r) {
     /* Document Legal Footer */
     .doc-footer {
       border-top: 1px solid #cbd5e1;
-      padding-top: 4px;
+      padding-top: 5px;
       margin-top: 8px;
-      display: flex;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 4px;
+      align-items: center;
       font-family: Arial, sans-serif;
       font-size: 7.2pt;
       color: #64748b;
       text-transform: uppercase;
       page-break-inside: avoid;
     }
+    .doc-footer-left { text-align: left; font-weight: bold; color: #0f172a; }
+    .doc-footer-center { text-align: center; color: #64748b; white-space: nowrap; }
+    .doc-footer-right { text-align: right; }
 
     @media print {
       .print-bar { display: none !important; }
@@ -600,8 +605,9 @@ function buildDocumentHtml(r) {
       </table>
 
       <div class="doc-footer">
-        <span>Fun Strikes Entertainment LLP &bull; Surat, Gujarat &bull; Official Digital Record: ${escapeHtml(r.refCode)}</span>
-        <span>Legally Binding Electronic Record Under Information Technology Act, 2000 (Section 4 &amp; 10A) &bull; Page 1 of 1</span>
+        <span class="doc-footer-left">Fun Strikes Entertainment LLP</span>
+        <span class="doc-footer-center">Made with ❤ by Aryan &amp; NexoraOneSolution</span>
+        <span class="doc-footer-right">Official Record: ${escapeHtml(r.refCode)} &bull; IT Act 2000 &sect; 4 &amp; 10A</span>
       </div>
     </div>
   </div>

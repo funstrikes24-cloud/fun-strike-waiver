@@ -924,33 +924,53 @@ select {
   min-width: 220px;
 }
 
+
+/* ═══ SHEET FOOTER ═══════════════════════════════════════════ */
 .sheet-footer {
   margin-top: 20px;
   padding-top: 14px;
   border-top: 1.5px solid #e2e8f0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0;
   font-size: 0.78rem;
   font-weight: 600;
-  color: var(--ink-muted);
+  color: var(--ink-muted, #64748b);
 }
 
-.sheet-footer-main {
+/* Top row: Left company name | Right venue + branch */
+.sheet-footer-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 6px 12px;
+  flex-wrap: nowrap;
+  gap: 8px;
   width: 100%;
+  padding-bottom: 8px;
 }
 
+.sheet-footer-left {
+  flex: 0 0 auto;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+}
+
+.sheet-footer-right {
+  flex: 1 1 auto;
+  text-align: right;
+  color: #475569;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+/* Credit row: centred, dashed separator above */
 .sheet-footer-credit {
   width: 100%;
   text-align: center;
   padding-top: 8px;
   border-top: 1px dashed #e2e8f0;
-  font-size: 0.78rem;
+  font-size: 0.775rem;
   font-weight: 600;
   color: #64748b;
   display: flex;
@@ -960,7 +980,7 @@ select {
 }
 
 .sheet-footer-credit a {
-  color: var(--brand-red-dark, #be123c);
+  color: #be123c;
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 2.5px;
