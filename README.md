@@ -1,16 +1,18 @@
 <div align="center">
-  <img src="assets/funstrike-logo.png" alt="Fun Strike! Game Zone Official Logo" width="120" />
+  <img src="assets/images/funstrike-logo.png" alt="Fun Strike! Game Zone Official Logo" width="120" />
   <h1>Fun Strike! Game Zone — Digital Participant Waiver</h1>
   <p>
     <strong>Fun Strikes Entertainment LLP</strong> &bull; Surat, Gujarat<br />
-    Mobile &amp; Tablet-First Waiver Form for <strong>Go-Karting (18+)</strong> and <strong>Soft Play &amp; Trampoline</strong>
+    Mobile &amp; Tablet-First Digital Waiver System with Dedicated Branch Portals &amp; Photo Paper Counter Standees
   </p>
   <p>
     <a href="https://funstrikes24-cloud.github.io/fun-strike-waiver/"><strong>Open Live Portal</strong></a>
     &bull;
-    <a href="https://funstrikes24-cloud.github.io/fun-strike-waiver/gokart"><strong>Direct Go-Karting Form</strong></a>
+    <a href="https://funstrikes24-cloud.github.io/fun-strike-waiver/pal-gokart"><strong>Pal Go-Karting (18+)</strong></a>
     &bull;
-    <a href="https://funstrikes24-cloud.github.io/fun-strike-waiver/trampoline"><strong>Direct Trampoline Form</strong></a>
+    <a href="https://funstrikes24-cloud.github.io/fun-strike-waiver/pal-trampoline"><strong>Pal Trampoline</strong></a>
+    &bull;
+    <a href="https://funstrikes24-cloud.github.io/fun-strike-waiver/motavarachha-softplay"><strong>Mota Varachha Trampoline</strong></a>
     &bull;
     <a href="https://funstrike.in">Website</a>
   </p>
@@ -18,35 +20,83 @@
 
 ---
 
-## Dedicated URLs & Counter QR Codes
+## 📍 Branches & Dedicated URLs
 
-Print or display these QR codes at your reception and activity zone entrances so guests can fill and sign waivers directly on their phones:
-
-| Main Portal (Both Activities) | Go-Karting Pit Counter (18+) | Soft Play & Trampoline Desk |
-| :---: | :---: | :---: |
-| <img src="assets/qr/qr-main.png" alt="Main Waiver QR Code" width="160" /> | <img src="assets/qr/qr-gokart.png" alt="Go-Karting Waiver QR Code" width="160" /> | <img src="assets/qr/qr-trampoline.png" alt="Trampoline Waiver QR Code" width="160" /> |
-| [Open Main Site](https://funstrikes24-cloud.github.io/fun-strike-waiver/) | [Open Go-Karting](https://funstrikes24-cloud.github.io/fun-strike-waiver/gokart) | [Open Trampoline](https://funstrikes24-cloud.github.io/fun-strike-waiver/trampoline) |
-| Dedicated Portal | Dedicated 18+ URL | Dedicated Jump URL |
+| Branch | Activity | Target Audience | Direct Form URL | Photo Paper Standee PDF |
+| :--- | :--- | :--- | :--- | :--- |
+| **Pal (Gauravpath Road)** | **Go-Karting Track** | **18+ Only &bull; Min 5'5" (165 cm)** | [`.../pal-gokart`](https://funstrikes24-cloud.github.io/fun-strike-waiver/pal-gokart) | [`printables/Fun-Strike-QR-Pal-GoKarting.pdf`](printables/Fun-Strike-QR-Pal-GoKarting.pdf) |
+| **Pal (Gauravpath Road)** | **Soft Play &amp; Trampoline** | **All Ages (Jump Arena)** | [`.../pal-trampoline`](https://funstrikes24-cloud.github.io/fun-strike-waiver/pal-trampoline) | [`printables/Fun-Strike-QR-Pal-Trampoline.pdf`](printables/Fun-Strike-QR-Pal-Trampoline.pdf) |
+| **Mota Varachha** | **Soft Play &amp; Trampoline** | **All Ages (Jump Arena)** | [`.../motavarachha-softplay`](https://funstrikes24-cloud.github.io/fun-strike-waiver/motavarachha-softplay) | [`printables/Fun-Strike-QR-MotaVarachha-Trampoline.pdf`](printables/Fun-Strike-QR-MotaVarachha-Trampoline.pdf) |
+| **All Branches** | **Complete Standee Pack** | **All Zones** | [`.../`](https://funstrikes24-cloud.github.io/fun-strike-waiver/) | [`printables/Fun-Strike-All-Branches-QR-Codes.pdf`](printables/Fun-Strike-All-Branches-QR-Codes.pdf) |
 
 ---
 
-## Key Features
+## 📁 Repository Directory Structure
 
-- **Separate Dedicated URLs:**
-  - **Go-Karting Form:** `https://funstrikes24-cloud.github.io/fun-strike-waiver/gokart` (also accessible as `/gokart/` and `/gokart.html`).
-  - **Trampoline Form:** `https://funstrikes24-cloud.github.io/fun-strike-waiver/trampoline` (also accessible as `/trampoline/` and `/trampoline.html`).
-- **Strict 18+ Go-Karting Sole Responsibility Policy:**
-  - Go-Karting is designed and operated for participants aged 18 and above.
-  - If a minor (<18) signs the waiver or participates without adult supervision, the form incorporates an explicit legally binding acknowledgment that **100% of all responsibility, risks, injuries, vehicle damages, and liabilities rest entirely with the participant and their parent/guardian**, with Fun Strikes Entertainment LLP bearing zero liability.
-- **Customer Print Buttons Removed:**
-  - Streamlined customer flow on mobile devices. Print buttons are completely removed from the form header toolbar and from the submission confirmation screen.
-  - Customers simply submit their form in ~60 seconds and show their confirmation screen and Reference ID at the counter to collect wristbands.
-- **Multiple Participants on One Form:** Add up to 20 participants on one submission with live age calculation and minor tagging.
-- **Printable Full-Page Standee PDFs:**
-  - `Fun-Strike-QR-GoKarting.pdf` — Dedicated A4 acrylic standee poster for Go-Karting track.
-  - `Fun-Strike-QR-Trampoline.pdf` — Dedicated A4 acrylic standee poster for Trampoline arena desk.
-  - `Fun-Strike-QR-Dual-Karting-Trampoline.pdf` — Dual activity A4 poster for reception.
-  - `Fun-Strike-GoKart-Trampoline-QR-Codes.pdf` — Complete 3-page master printable PDF pack.
+```text
+fun-strike-waiver/
+├── assets/                          # Core static assets
+│   ├── css/
+│   │   └── styles.css              # Main stylesheet
+│   ├── js/
+│   │   └── app.js                  # Waiver frontend logic & e-signature pad
+│   ├── images/
+│   │   └── funstrike-logo.png      # Official brand logo
+│   └── qr/                         # High-DPI PNG QR codes (600+ DPI)
+│       ├── qr-pal-gokart.png
+│       ├── qr-pal-trampoline.png
+│       └── qr-motavarachha-softplay.png
+│
+├── docs/                            # Documentation & Architecture
+│   ├── ARCHITECTURE.md             # Detailed directory & routing documentation
+│   └── GOOGLE-SHEETS-SETUP.md      # Google Sheets & monthly/yearly archive guide
+│
+├── google-apps-script/              # Backend automation
+│   └── Code.gs                     # Google Apps Script Web App receiver
+│
+├── printables/                      # Photo Paper Standee PDFs (High-DPI A4)
+│   ├── Fun-Strike-All-Branches-QR-Codes.pdf       # 3-Page All-Branches Master Pack
+│   ├── Fun-Strike-QR-Pal-GoKarting.pdf           # 1-Page Pal Go-Karting Standee
+│   ├── Fun-Strike-QR-Pal-Trampoline.pdf          # 1-Page Pal Trampoline Standee
+│   ├── Fun-Strike-QR-MotaVarachha-Trampoline.pdf # 1-Page Mota Varachha Standee
+│   └── archive/                    # Archived previous version/draft standees
+│
+├── scripts/                         # Build & PDF generator scripts
+│   └── generate-qr-pdf.js          # Automation script for QR & PDF generation
+│
+├── pal-gokart/                      # Dedicated Pal Go-Karting Waiver (18+ & 5'5"+)
+│   └── index.html
+├── pal-trampoline/                  # Dedicated Pal Trampoline Waiver
+│   └── index.html
+├── motavarachha-softplay/           # Dedicated Mota Varachha Trampoline Waiver
+│   └── index.html
+│
+├── index.html                       # Master Central Portal for customer & staff selection
+├── README.md                        # Master repository documentation
+├── generate-qr-pdf.js               # CLI runner wrapper for scripts/generate-qr-pdf.js
+├── styles.css                       # Fallback stylesheet pointer
+└── app.js                           # Fallback JavaScript pointer
+```
+
+---
+
+## 🖨️ Printing on Photo Paper
+1. Open any PDF from the [`printables/`](printables/) folder.
+2. In your print dialog (`Ctrl + P`), select:
+   - **Paper Size**: A4
+   - **Paper Type / Media**: `Glossy Photo Paper` or `Matte Photo Paper`
+   - **Quality**: `High` / `Best` (600–1200 DPI)
+   - **Scale**: `100%` / `Actual Size` (or `Fit to Printable Area`)
+   - **Margins**: `None` / `Minimum`
+   - **Color**: `Vivid / High Saturation`
+
+---
+
+## 🛡️ Key Safety Rules & Logic
+- **Go-Karting 18+ Sole Liability Policy**: Adults only. If under 18 participates or signs, 100% sole liability rests with the participant/parent; Fun Strikes bears zero liability. Mandatory acknowledgement checkbox required.
+- **Go-Karting Height Requirement**: Minimum driver height is strictly **5'5" (5 ft 5 in / 165 cm)**.
+- **No In-Form Zone Switching**: Customer forms have no radio buttons or dropdowns; location and activity are locked and dedicated to avoid customer errors.
+- **Customer Print Buttons Removed**: Clean ~60-second mobile submission flow without confusing print buttons.
 
 ---
 
