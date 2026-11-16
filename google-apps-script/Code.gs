@@ -1045,7 +1045,7 @@ function runSelfCheck() {
   }
 
   const rows = [
-    ["2026-12", "Bowling", new Date("2026-12-01T10:00:00Z")],
+    ["2026-12", "Soft Play & Trampoline", new Date("2026-12-01T10:00:00Z")],
     ["2026-11", "Go-Karting", "2026-11-11T17:00:00.000Z"]
   ];
   rows.sort(function (a, b) {

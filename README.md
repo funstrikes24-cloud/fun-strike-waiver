@@ -6,13 +6,11 @@
     Mobile &amp; Tablet-First Digital Waiver System with Dedicated Branch Portals &amp; Photo Paper Counter Standees
   </p>
   <p>
-    <a href="https://funstrikes24-cloud.github.io/fun-strike-waiver/"><strong>Open Live Portal</strong></a>
+    <a href="https://funstrikes24-cloud.github.io/fun-strike-waiver/pal-gokart"><strong>🏎️ Pal Go-Karting (18+)</strong></a>
     &bull;
-    <a href="https://funstrikes24-cloud.github.io/fun-strike-waiver/pal-gokart"><strong>Pal Go-Karting (18+)</strong></a>
+    <a href="https://funstrikes24-cloud.github.io/fun-strike-waiver/pal-trampoline"><strong>🤸 Pal Trampoline</strong></a>
     &bull;
-    <a href="https://funstrikes24-cloud.github.io/fun-strike-waiver/pal-trampoline"><strong>Pal Trampoline</strong></a>
-    &bull;
-    <a href="https://funstrikes24-cloud.github.io/fun-strike-waiver/motavarachha-softplay"><strong>Mota Varachha Trampoline</strong></a>
+    <a href="https://funstrikes24-cloud.github.io/fun-strike-waiver/motavarachha-softplay"><strong>🎪 Mota Varachha Trampoline</strong></a>
     &bull;
     <a href="https://funstrike.in">Website</a>
   </p>
@@ -20,14 +18,15 @@
 
 ---
 
-## 📍 Branches & Dedicated URLs
+## 📍 Dedicated Customer Waiver Links
+
+There is no generic portal. Each activity and branch has its own standalone dedicated form with locked location and rules:
 
 | Branch | Activity | Target Audience | Direct Form URL | Photo Paper Standee PDF |
 | :--- | :--- | :--- | :--- | :--- |
 | **Pal (Gauravpath Road)** | **Go-Karting Track** | **18+ Only &bull; Min 5'5" (165 cm)** | [`.../pal-gokart`](https://funstrikes24-cloud.github.io/fun-strike-waiver/pal-gokart) | [`printables/Fun-Strike-QR-Pal-GoKarting.pdf`](printables/Fun-Strike-QR-Pal-GoKarting.pdf) |
 | **Pal (Gauravpath Road)** | **Soft Play &amp; Trampoline** | **All Ages (Jump Arena)** | [`.../pal-trampoline`](https://funstrikes24-cloud.github.io/fun-strike-waiver/pal-trampoline) | [`printables/Fun-Strike-QR-Pal-Trampoline.pdf`](printables/Fun-Strike-QR-Pal-Trampoline.pdf) |
 | **Mota Varachha** | **Soft Play &amp; Trampoline** | **All Ages (Jump Arena)** | [`.../motavarachha-softplay`](https://funstrikes24-cloud.github.io/fun-strike-waiver/motavarachha-softplay) | [`printables/Fun-Strike-QR-MotaVarachha-Trampoline.pdf`](printables/Fun-Strike-QR-MotaVarachha-Trampoline.pdf) |
-| **All Branches** | **Complete Standee Pack** | **All Zones** | [`.../`](https://funstrikes24-cloud.github.io/fun-strike-waiver/) | [`printables/Fun-Strike-All-Branches-QR-Codes.pdf`](printables/Fun-Strike-All-Branches-QR-Codes.pdf) |
 
 ---
 
@@ -59,7 +58,7 @@ fun-strike-waiver/
 │   ├── Fun-Strike-QR-Pal-GoKarting.pdf           # 1-Page Pal Go-Karting Standee
 │   ├── Fun-Strike-QR-Pal-Trampoline.pdf          # 1-Page Pal Trampoline Standee
 │   ├── Fun-Strike-QR-MotaVarachha-Trampoline.pdf # 1-Page Mota Varachha Standee
-│   └── archive/                    # Archived previous version/draft standees
+│   └── Fun-Strike-Signed-Waiver-Print-Demo.pdf   # 1-Page Signed Waiver Sample with All Terms
 │
 ├── scripts/                         # Build & PDF generator scripts
 │   └── generate-qr-pdf.js          # Automation script for QR & PDF generation
@@ -71,7 +70,7 @@ fun-strike-waiver/
 ├── motavarachha-softplay/           # Dedicated Mota Varachha Trampoline Waiver
 │   └── index.html
 │
-├── index.html                       # Master Central Portal for customer & staff selection
+├── index.html                       # Auto-redirects to /pal-gokart/
 ├── README.md                        # Master repository documentation
 ├── generate-qr-pdf.js               # CLI runner wrapper for scripts/generate-qr-pdf.js
 ├── styles.css                       # Fallback stylesheet pointer
