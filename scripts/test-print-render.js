@@ -600,7 +600,7 @@ function buildDocumentHtml(r) {
 
       <div class="doc-footer">
         <span>Fun Strikes Entertainment LLP &bull; Surat, Gujarat &bull; Official Digital Record: ${escapeHtml(r.refCode)}</span>
-        <span>Legally Binding Electronic Record Under Information Technology Act, 2000 (Section 4 &amp; 10A) &bull; Page 1 of 1</span>
+        <span>Made with ❤️ by <a href="https://www.linkedin.com/in/aryanpandya" target="_blank" style="color:inherit;text-decoration:underline;">Aryan</a> &amp; <a href="https://nexoraonesolution.com/" target="_blank" style="color:inherit;text-decoration:underline;">NexoraOneSolution</a></span>
       </div>
     </div>
   </div>
