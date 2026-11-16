@@ -1,54 +1,92 @@
 /**
  * Fun Strikes Entertainment LLP — Fun Strike! Game Zone
- * 2-Activity Google Sheets Database + Monthly Archives + Year-End Transfer + Print Form
- * Branches: Pal (Go-Karting 18+ & Soft Play/Trampoline) & Mota Varachha (Soft Play/Trampoline)
+ * Enterprise Multi-Branch Google Drive & Google Sheets Database Architecture
  *
- * Folder structure inside Drive -> "Fun Strike! Waivers Database":
- *   - Monthly Archives/   (monthly snapshots saved at month end: "Fun Strike! - YYYY-MM Monthly Waivers")
- *   - Yearly Archives/    (year-end combined file: "Fun Strike! - YYYY Full Year Combined Waivers" + monthly backups)
- *   - Fun Strike! - Go-Karting Waivers                  (kept as-is, monthly tabs YYYY-MM)
- *   - Fun Strike! - Soft Play & Trampoline Waivers      (kept as-is, monthly tabs YYYY-MM)
+ * Physical Branches:
+ *   1. Pal Branch (Gauravpath Road, Surat):
+ *      - Go-Karting Track (Strictly 18+ & Min Height 5'5" / 165 cm)
+ *      - Soft Play & Trampoline Arena (All Ages)
+ *   2. Mota Varachha Branch (Surat):
+ *      - Soft Play & Trampoline Arena (All Ages)
+ *
+ * Google Drive Architecture ("Fun Strike! Waivers Database/"):
+ *   ├── 01 - Live Waivers (Daily Operations)/
+ *   │   ├── Fun Strike! - Pal - Go-Karting Waivers (18+)
+ *   │   ├── Fun Strike! - Pal - Trampoline & Soft Play Waivers
+ *   │   └── Fun Strike! - Mota Varachha - Trampoline & Soft Play Waivers
+ *   │
+ *   ├── 02 - Customer Signatures/
+ *   │   ├── Pal - Go-Karting/
+ *   │   ├── Pal - Trampoline/
+ *   │   └── Mota Varachha - Trampoline/
+ *   │
+ *   ├── 03 - Monthly Archives/
+ *   │   └── Fun Strike! - YYYY-MM Monthly Waivers (All Branches)
+ *   │
+ *   └── 04 - Yearly Archives/
+ *       └── Fun Strike! - YYYY Full Year Combined Waivers (All Branches)
  */
 
 const ROOT_FOLDER_NAME = "Fun Strike! Waivers Database";
-const MONTHLY_FOLDER_NAME = "Monthly Archives";
-const ARCHIVE_FOLDER_NAME = "Yearly Archives";
-const SIGNATURES_FOLDER_NAME = "Signatures";
+const LIVE_FOLDER_NAME = "01 - Live Waivers (Daily Operations)";
+const SIGNATURES_FOLDER_NAME = "02 - Customer Signatures";
+const MONTHLY_FOLDER_NAME = "03 - Monthly Archives";
+const ARCHIVE_FOLDER_NAME = "04 - Yearly Archives";
 const MANAGER_SHARE_EMAIL = "pandyaaryanp348@gmail.com";
 
-const ZONE_CONFIG = {
-  gokart: {
-    propKey: "SHEET_ID_GOKART",
-    title: "Fun Strike! - Go-Karting Waivers",
-    label: "Go-Karting"
+const STREAMS = {
+  pal_gokart: {
+    propKey: "SHEET_ID_PAL_GOKART",
+    title: "Fun Strike! - Pal - Go-Karting Waivers (18+)",
+    label: "Pal - Go-Karting (18+)",
+    branchLabel: "Gauravpath Road, Pal (Surat)",
+    activityLabel: "Go-Karting (18+)",
+    themeColor: "#be123c",
+    sigFolder: "Pal - Go-Karting"
   },
-  softplay: {
-    propKey: "SHEET_ID_SOFTPLAY",
-    title: "Fun Strike! - Soft Play & Trampoline Waivers",
-    label: "Soft Play & Trampoline"
+  pal_softplay: {
+    propKey: "SHEET_ID_PAL_SOFTPLAY",
+    title: "Fun Strike! - Pal - Trampoline & Soft Play Waivers",
+    label: "Pal - Trampoline & Soft Play",
+    branchLabel: "Gauravpath Road, Pal (Surat)",
+    activityLabel: "Soft Play & Trampoline",
+    themeColor: "#0284c7",
+    sigFolder: "Pal - Trampoline"
+  },
+  mv_softplay: {
+    propKey: "SHEET_ID_MV_SOFTPLAY",
+    title: "Fun Strike! - Mota Varachha - Trampoline & Soft Play Waivers",
+    label: "Mota Varachha - Trampoline & Soft Play",
+    branchLabel: "Mota Varachha, Surat",
+    activityLabel: "Soft Play & Trampoline",
+    themeColor: "#059669",
+    sigFolder: "Mota Varachha - Trampoline"
   }
 };
+
+const ZONE_CONFIG = STREAMS;
 
 const HEADERS = [
   "Submitted At",
   "Ref Code",
   "Activity / Zone",
   "Branch",
-  "Participant Name",
+  "Primary Participant",
   "Participant DOB",
   "Age / Role",
-  "Signed By (Primary Contact)",
+  "Signed By (Parent / Guardian)",
   "Mobile Number",
   "Email ID",
   "Address",
   "Total in Group",
-  "All Names in Waiver",
-  "Min Height (in / cm)",
+  "All Participants in Waiver",
+  "Min Height",
+  "18+ Policy Acknowledged",
   "Agreed to T&C",
   "Sign Date",
   "Sign Time",
-  "Signature",
-  "Print Form"
+  "Signature Image",
+  "Print / View Waiver"
 ];
 
 /**
@@ -66,7 +104,7 @@ function onOpen() {
       .addItem("Share Drive Folder (pandyaaryanp348@gmail.com)", "shareFolderWithManager")
       .addToUi();
   } catch (e) {
-    // Runs safely without error when invoked outside a Sheet UI (e.g., Apps Script editor Run button)
+    // Runs safely without error when invoked outside a Sheet UI
   }
 }
 
@@ -75,36 +113,44 @@ function setupAllZoneSheets() {
 }
 
 /**
- * Creates Drive folders ("Monthly Archives", "Yearly Archives"), ensures all live
- * spreadsheets exist with the current month tab, and installs monthly + yearly triggers.
+ * Creates Drive folders, ensures all 3 live branch spreadsheets exist inside
+ * "01 - Live Waivers (Daily Operations)" with current month tab and styling,
+ * and installs monthly + yearly triggers.
  */
 function setupAllThreeZoneSheets() {
   const props = PropertiesService.getScriptProperties();
   const rootFolder = getRootDatabaseFolder_(props);
+  const liveFolder = getOrCreateFolder_(rootFolder, LIVE_FOLDER_NAME);
+  const sigParentFolder = getOrCreateFolder_(rootFolder, SIGNATURES_FOLDER_NAME);
   getOrCreateFolder_(rootFolder, MONTHLY_FOLDER_NAME);
   getOrCreateFolder_(rootFolder, ARCHIVE_FOLDER_NAME);
-  getOrCreateFolder_(rootFolder, SIGNATURES_FOLDER_NAME);
+
+  // Create signature subfolders for each stream
+  Object.keys(STREAMS).forEach(function (k) {
+    getOrCreateFolder_(sigParentFolder, STREAMS[k].sigFolder);
+  });
 
   const monthTab = getMonthTabName_(new Date());
   const summary = [];
 
-  Object.keys(ZONE_CONFIG).forEach(function (zoneKey) {
-    const cfg = ZONE_CONFIG[zoneKey];
+  Object.keys(STREAMS).forEach(function (streamKey) {
+    const cfg = STREAMS[streamKey];
     const ss = getSpreadsheetByPropOrTitle_(props, rootFolder, cfg.propKey, cfg.title);
-    ensureMonthlyTab_(ss, monthTab);
+    ensureMonthlyTab_(ss, monthTab, cfg);
     removeDefaultEmptySheet1_(ss, monthTab);
-    summary.push(cfg.label + " (" + ss.getId() + "): " + ss.getUrl());
+    summary.push(cfg.label + ": " + ss.getUrl());
   });
 
   installAutoTriggers_();
   Logger.log("Root Folder (" + rootFolder.getId() + "): " + rootFolder.getUrl());
+  Logger.log("Live Operations Folder (" + liveFolder.getId() + "): " + liveFolder.getUrl());
   Logger.log("Setup Complete:\n" + summary.join("\n"));
 
   try {
     SpreadsheetApp.getUi().alert(
-      "Setup Complete!\n\nFolder: " +
+      "Enterprise Setup Complete!\n\nFolder: " +
         rootFolder.getUrl() +
-        "\n\n3 Zone Spreadsheets ready (Month: " +
+        "\n\nLive Sheets Ready (Month: " +
         monthTab +
         "):\n\n" +
         summary.join("\n\n")
@@ -117,36 +163,28 @@ function setupAllThreeZoneSheets() {
 }
 
 /**
- * Clears stored sheet IDs and creates 3 brand-new spreadsheets inside the active
- * "Fun Strike! Waivers Database" folder.
+ * Clears stored sheet IDs and recreates the 3 spreadsheets inside 01 - Live Waivers.
  */
 function forceRecreate3Sheets() {
   const props = PropertiesService.getScriptProperties();
-  Object.keys(ZONE_CONFIG).forEach(function (zoneKey) {
-    props.deleteProperty(ZONE_CONFIG[zoneKey].propKey);
+  Object.keys(STREAMS).forEach(function (k) {
+    props.deleteProperty(STREAMS[k].propKey);
   });
   return setupAllThreeZoneSheets();
 }
 
 /**
- * Shares the entire "Fun Strike! Waivers Database" folder, subfolders, and all 3 zone sheets
- * as Editor with MANAGER_SHARE_EMAIL so they appear immediately in "Shared with me".
+ * Shares the entire "Fun Strike! Waivers Database" folder and all contents
+ * with MANAGER_SHARE_EMAIL as Editor.
  */
 function shareFolderWithManager() {
   const props = PropertiesService.getScriptProperties();
   const rootFolder = getRootDatabaseFolder_(props);
-  const monthlyFolder = getOrCreateFolder_(rootFolder, MONTHLY_FOLDER_NAME);
-  const archiveFolder = getOrCreateFolder_(rootFolder, ARCHIVE_FOLDER_NAME);
-  const sigFolder = getOrCreateFolder_(rootFolder, SIGNATURES_FOLDER_NAME);
-
   rootFolder.addEditor(MANAGER_SHARE_EMAIL);
-  monthlyFolder.addEditor(MANAGER_SHARE_EMAIL);
-  archiveFolder.addEditor(MANAGER_SHARE_EMAIL);
-  sigFolder.addEditor(MANAGER_SHARE_EMAIL);
 
-  const sharedUrls = ["Folder: " + rootFolder.getUrl()];
-  Object.keys(ZONE_CONFIG).forEach(function (zoneKey) {
-    const cfg = ZONE_CONFIG[zoneKey];
+  const sharedUrls = ["Root Folder: " + rootFolder.getUrl()];
+  Object.keys(STREAMS).forEach(function (k) {
+    const cfg = STREAMS[k];
     const ss = getSpreadsheetByPropOrTitle_(props, rootFolder, cfg.propKey, cfg.title);
     ss.addEditor(MANAGER_SHARE_EMAIL);
     sharedUrls.push(cfg.label + ": " + ss.getUrl());
@@ -156,22 +194,20 @@ function shareFolderWithManager() {
 
   try {
     SpreadsheetApp.getUi().alert(
-      "Drive Folder & All 3 Sheets Shared!\n\nEditor Access Granted To: " +
+      "Drive Database & All Sheets Shared!\n\nEditor Access Granted To: " +
         MANAGER_SHARE_EMAIL +
-        "\n(Check 'Shared with me' in Google Drive)\n\n" +
+        "\n\n" +
         sharedUrls.join("\n")
     );
-  } catch (e) {
-    // Logged above when run from Apps Script editor
-  }
+  } catch (e) {}
 
   return sharedUrls;
 }
 
 /**
  * Scheduled on the 1st of every month:
- * 1) Creates the new current month tab (YYYY-MM) in all 3 live spreadsheets.
- * 2) Saves a monthly archive file of the previous month inside "Monthly Archives".
+ * 1) Creates new month tab (YYYY-MM) in all 3 live spreadsheets.
+ * 2) Saves a combined monthly archive file in "03 - Monthly Archives".
  */
 function onMonthlyRotation() {
   const props = PropertiesService.getScriptProperties();
@@ -181,10 +217,10 @@ function onMonthlyRotation() {
   const now = new Date();
   const currentMonthTab = getMonthTabName_(now);
 
-  Object.keys(ZONE_CONFIG).forEach(function (zoneKey) {
-    const cfg = ZONE_CONFIG[zoneKey];
+  Object.keys(STREAMS).forEach(function (k) {
+    const cfg = STREAMS[k];
     const ss = getSpreadsheetByPropOrTitle_(props, rootFolder, cfg.propKey, cfg.title);
-    ensureMonthlyTab_(ss, currentMonthTab);
+    ensureMonthlyTab_(ss, currentMonthTab, cfg);
   });
 
   const prevMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
@@ -193,23 +229,23 @@ function onMonthlyRotation() {
 }
 
 /**
- * Exports a single month's tabs across all 3 live sheets into "Monthly Archives".
+ * Exports a single month across all 3 live sheets into "03 - Monthly Archives".
  */
 function archiveMonthToFolder_(props, rootFolder, monthlyFolder, monthTab) {
-  const monthFileTitle = "Fun Strike! - " + monthTab + " Monthly Waivers";
+  const monthFileTitle = "Fun Strike! - " + monthTab + " Monthly Waivers (All Branches)";
   let hasAnyRows = false;
-  const zoneRows = {};
+  const streamRows = {};
 
-  Object.keys(ZONE_CONFIG).forEach(function (zoneKey) {
-    const cfg = ZONE_CONFIG[zoneKey];
+  Object.keys(STREAMS).forEach(function (k) {
+    const cfg = STREAMS[k];
     const ss = getSpreadsheetByPropOrTitle_(props, rootFolder, cfg.propKey, cfg.title);
     const sh = ss.getSheetByName(monthTab);
     if (!sh || sh.getLastRow() <= 1) {
-      zoneRows[zoneKey] = [];
+      streamRows[k] = [];
       return;
     }
     hasAnyRows = true;
-    zoneRows[zoneKey] = readRowsWithFormulas_(sh, 2, sh.getLastRow() - 1, HEADERS.length);
+    streamRows[k] = readRowsWithFormulas_(sh, 2, sh.getLastRow() - 1, HEADERS.length);
   });
 
   if (!hasAnyRows) return null;
@@ -218,33 +254,27 @@ function archiveMonthToFolder_(props, rootFolder, monthlyFolder, monthTab) {
   const monthSs = SpreadsheetApp.create(monthFileTitle);
   DriveApp.getFileById(monthSs.getId()).moveTo(monthlyFolder);
 
-  const keys = Object.keys(ZONE_CONFIG);
-  keys.forEach(function (zoneKey, idx) {
-    const cfg = ZONE_CONFIG[zoneKey];
+  const keys = Object.keys(STREAMS);
+  keys.forEach(function (k, idx) {
+    const cfg = STREAMS[k];
     const tab = idx === 0 ? monthSs.getSheets()[0] : monthSs.insertSheet(cfg.label);
     tab.setName(cfg.label);
-    writeArchiveTab_(tab, HEADERS, zoneRows[zoneKey]);
+    writeArchiveTab_(tab, HEADERS, streamRows[k], cfg.themeColor);
   });
 
   return { fileName: monthFileTitle, url: monthSs.getUrl() };
 }
 
 /**
- * Scheduled every Jan 1st:
- * Transfers all 12 monthly tabs of the previous year into "Yearly Archives",
- * moves that year's Monthly Archives files into Yearly Archives,
- * and cleans old year tabs from the 3 live sheets while keeping the 3 live sheets as-is.
+ * Scheduled every Jan 1st: Transfers full year to "04 - Yearly Archives".
  */
 function archivePreviousYearOnJan1() {
   const now = new Date();
-  if (now.getMonth() !== 0) return; // Run year-end transfer only in January
+  if (now.getMonth() !== 0) return;
   const prevYear = String(now.getFullYear() - 1);
   transferYearToArchiveFile(prevYear, true);
 }
 
-/**
- * Prompts user in Sheets UI for which year (YYYY) to transfer into Yearly Archives.
- */
 function promptTransferYearArchive() {
   const ui = SpreadsheetApp.getUi();
   const currentYear = String(new Date().getFullYear());
@@ -252,9 +282,7 @@ function promptTransferYearArchive() {
     "Transfer Full Year Into Yearly Archives",
     "Enter the 4-digit year to transfer (e.g. " +
       currentYear +
-      ").\nAll " +
-      currentYear +
-      "-* monthly tabs will be combined into Yearly Archives and cleared from the 3 live sheets (the 3 live sheets stay intact):",
+      ").\nAll monthly tabs for that year will be combined into 04 - Yearly Archives and cleared from live sheets:",
     ui.ButtonSet.OK_CANCEL
   );
 
@@ -271,7 +299,7 @@ function promptTransferYearArchive() {
       result.fileName +
       "\nTotal Rows Transferred: " +
       result.totalRows +
-      "\nMonthly Tabs Cleared from Live Sheets: " +
+      "\nTabs Cleared from Live Sheets: " +
       result.tabsRemoved +
       "\nURL:\n" +
       result.url
@@ -279,10 +307,8 @@ function promptTransferYearArchive() {
 }
 
 /**
- * Combines all monthly tabs ("YYYY-01" .. "YYYY-12") from all 3 zone spreadsheets
- * into ONE 1-Year Archive Google Spreadsheet inside "Yearly Archives",
- * then (when removeOldTabsFromLiveSheets is true) removes old YYYY-* tabs from the 3 live sheets
- * while keeping the 3 live sheets and current month tab intact.
+ * Combines all monthly tabs ("YYYY-01" .. "YYYY-12") from all 3 live spreadsheets
+ * into ONE 1-Year Master Archive inside "04 - Yearly Archives".
  */
 function transferYearToArchiveFile(yearStr, removeOldTabsFromLiveSheets) {
   const props = PropertiesService.getScriptProperties();
@@ -290,25 +316,23 @@ function transferYearToArchiveFile(yearStr, removeOldTabsFromLiveSheets) {
   const monthlyFolder = getOrCreateFolder_(rootFolder, MONTHLY_FOLDER_NAME);
   const archiveFolder = getOrCreateFolder_(rootFolder, ARCHIVE_FOLDER_NAME);
 
-  const archiveTitle = "Fun Strike! - " + yearStr + " Full Year Combined Waivers";
+  const archiveTitle = "Fun Strike! - " + yearStr + " Full Year Combined Waivers (All Branches)";
   trashExistingByName_(archiveFolder, archiveTitle);
 
   const archiveSs = SpreadsheetApp.create(archiveTitle);
   DriveApp.getFileById(archiveSs.getId()).moveTo(archiveFolder);
 
-  const masterHeaders = ["Month", "Source Zone"].concat(HEADERS);
+  const masterHeaders = ["Month", "Source Stream"].concat(HEADERS);
   const allRows = [];
-  const zoneBuckets = { gokart: [], softplay: [] };
+  const streamBuckets = { pal_gokart: [], pal_softplay: [], mv_softplay: [] };
   const tabsToDelete = [];
 
   const currentMonthTab = getMonthTabName_(new Date());
 
-  Object.keys(ZONE_CONFIG).forEach(function (zoneKey) {
-    const cfg = ZONE_CONFIG[zoneKey];
+  Object.keys(STREAMS).forEach(function (k) {
+    const cfg = STREAMS[k];
     const ss = getSpreadsheetByPropOrTitle_(props, rootFolder, cfg.propKey, cfg.title);
-
-    // Ensure at least one active tab remains before removing archived year tabs
-    ensureMonthlyTab_(ss, currentMonthTab);
+    ensureMonthlyTab_(ss, currentMonthTab, cfg);
 
     ss.getSheets().forEach(function (sh) {
       const tabName = sh.getName();
@@ -320,7 +344,7 @@ function transferYearToArchiveFile(yearStr, removeOldTabsFromLiveSheets) {
         dataRows.forEach(function (r) {
           const combinedRow = [tabName, cfg.label].concat(r);
           allRows.push(combinedRow);
-          zoneBuckets[zoneKey].push(combinedRow);
+          if (streamBuckets[k]) streamBuckets[k].push(combinedRow);
         });
       }
 
@@ -330,22 +354,21 @@ function transferYearToArchiveFile(yearStr, removeOldTabsFromLiveSheets) {
     });
   });
 
-  // Sort combined rows chronologically by Submitted At (col index 2 after Month, Source Zone)
+  // Sort combined rows chronologically by Submitted At
   allRows.sort(function (a, b) {
     return (new Date(a[2]).getTime() || 0) - (new Date(b[2]).getTime() || 0);
   });
 
   const allTab = archiveSs.getSheets()[0];
-  allTab.setName("All Zones " + yearStr);
-  writeArchiveTab_(allTab, masterHeaders, allRows);
+  allTab.setName("All Branches Combined " + yearStr);
+  writeArchiveTab_(allTab, masterHeaders, allRows, "#0f172a");
 
-  Object.keys(ZONE_CONFIG).forEach(function (zoneKey) {
-    const cfg = ZONE_CONFIG[zoneKey];
+  Object.keys(STREAMS).forEach(function (k) {
+    const cfg = STREAMS[k];
     const zTab = archiveSs.insertSheet(cfg.label);
-    writeArchiveTab_(zTab, masterHeaders, zoneBuckets[zoneKey]);
+    writeArchiveTab_(zTab, masterHeaders, streamBuckets[k] || [], cfg.themeColor);
   });
 
-  // Flush to guarantee yearly archive file is saved before transferring/removing old monthly tabs
   SpreadsheetApp.flush();
 
   let tabsRemoved = 0;
@@ -357,8 +380,7 @@ function transferYearToArchiveFile(yearStr, removeOldTabsFromLiveSheets) {
       }
     });
 
-    // Move that year's Monthly Archives files into Yearly Archives/<year> Monthly Files
-    const yearMonthlySub = getOrCreateFolder_(archiveFolder, yearStr + " Monthly Files");
+    const yearMonthlySub = getOrCreateFolder_(archiveFolder, yearStr + " Monthly Backups");
     const files = monthlyFolder.getFiles();
     while (files.hasNext()) {
       const f = files.next();
@@ -376,23 +398,41 @@ function transferYearToArchiveFile(yearStr, removeOldTabsFromLiveSheets) {
   };
 }
 
-function writeArchiveTab_(sheet, headers, rows) {
+function writeArchiveTab_(sheet, headers, rows, headerBg) {
   sheet.appendRow(headers);
   sheet
     .getRange(1, 1, 1, headers.length)
     .setFontWeight("bold")
-    .setBackground("#0f172a")
-    .setFontColor("#ffffff");
+    .setBackground(headerBg || "#0f172a")
+    .setFontColor("#ffffff")
+    .setHorizontalAlignment("center")
+    .setVerticalAlignment("middle");
+  sheet.setRowHeight(1, 32);
   sheet.setFrozenRows(1);
+  sheet.setFrozenColumns(2);
 
   if (rows.length > 0) {
     sheet.getRange(2, 1, rows.length, headers.length).setValues(rows);
   }
+
+  for (let i = 1; i <= Math.min(headers.length, 12); i++) {
+    sheet.autoResizeColumn(i);
+  }
 }
 
 /**
- * Receives waiver submissions from index.html and routes to the correct Zone Spreadsheet
- * and current month tab (YYYY-MM).
+ * Resolves which operational stream a submission belongs to.
+ */
+function resolveStreamKey_(data) {
+  const branchStr = String(data.branch || "").toLowerCase();
+  const zoneStr = String(data.zone || data.activity || "").toLowerCase();
+  if (/kart/i.test(zoneStr)) return "pal_gokart";
+  if (/varachha/i.test(branchStr)) return "mv_softplay";
+  return "pal_softplay";
+}
+
+/**
+ * Receives customer waiver submissions and appends to the appropriate branch sheet.
  */
 function doPost(e) {
   const lock = LockService.getScriptLock();
@@ -419,15 +459,15 @@ function doPost(e) {
       return jsonError_(validationError);
     }
 
-    const zoneKey = ZONE_CONFIG[data.zone] ? data.zone : "gokart";
-    const cfg = ZONE_CONFIG[zoneKey];
+    const streamKey = resolveStreamKey_(data);
+    const streamCfg = STREAMS[streamKey] || STREAMS.pal_gokart;
 
     const props = PropertiesService.getScriptProperties();
     const rootFolder = getRootDatabaseFolder_(props);
-    const ss = getSpreadsheetByPropOrTitle_(props, rootFolder, cfg.propKey, cfg.title);
+    const ss = getSpreadsheetByPropOrTitle_(props, rootFolder, streamCfg.propKey, streamCfg.title);
 
     const monthTab = getMonthTabName_(now);
-    const sheet = ensureMonthlyTab_(ss, monthTab);
+    const sheet = ensureMonthlyTab_(ss, monthTab, streamCfg);
     removeDefaultEmptySheet1_(ss, monthTab);
 
     const cleanFullName = clampText_(data.fullName, 120);
@@ -435,8 +475,8 @@ function doPost(e) {
     const cleanMobile = clampText_(data.mobileNumber, 30);
     const cleanEmail = clampText_(data.emailId, 160);
     const cleanAddress = clampText_(data.address, 300);
-    const cleanBranch = clampText_(data.branch, 100);
-    const cleanActivity = clampText_(data.activity || cfg.label, 80);
+    const cleanBranch = clampText_(data.branch || streamCfg.branchLabel, 100);
+    const cleanActivity = clampText_(data.activity || streamCfg.activityLabel, 80);
     const cleanSignDate = clampText_(data.signDate, 20);
     const cleanSignTime = clampText_(data.signTime, 20);
 
@@ -472,23 +512,25 @@ function doPost(e) {
     const heightStr =
       minIn || minCm
         ? (minIn || "—") + " in / " + (minCm || "—") + " cm"
-        : "—";
+        : (/kart/i.test(streamCfg.activityLabel) ? "65 in / 165 cm" : "—");
 
     const sigVal = isValidSignatureDataUrl_(data.guestSignature) ? data.guestSignature : "";
     const totalCount = effectiveRiders.length;
     const submittedIso = clampText_(data.submittedAt || now.toISOString(), 40);
     const refCodeStr = clampText_(data.refCode, 16);
-    const sigCellValue = saveSignatureFileFormula_(rootFolder, refCodeStr, sigVal);
+    const sigCellValue = saveSignatureFileFormula_(rootFolder, refCodeStr, sigVal, streamCfg);
     const webAppUrl = getWebAppUrl_(props);
     const printToken = computePrintToken_(props, refCodeStr, submittedIso);
     const printUrl = webAppUrl
       ? webAppUrl +
         "?printRef=" + encodeURIComponent(refCodeStr) +
-        "&zone=" + encodeURIComponent(zoneKey) +
+        "&zone=" + encodeURIComponent(streamKey) +
         "&month=" + encodeURIComponent(monthTab) +
         "&k=" + encodeURIComponent(printToken)
       : "";
-    const printFormula = printUrl ? '=HYPERLINK("' + printUrl + '", "PRINT FORM")' : "";
+    const printFormula = printUrl ? '=HYPERLINK("' + printUrl + '", "🖨️ Print Waiver")' : "";
+
+    const is18Ack = (/kart/i.test(streamCfg.activityLabel) || data.agreeGokart18) ? "YES" : "N/A";
 
     const rowsToAppend = effectiveRiders.map(function (r) {
       const hasAge = r.age !== null && r.age !== undefined && !isNaN(r.age);
@@ -511,6 +553,7 @@ function doPost(e) {
         totalCount,
         safeCell_(allNamesList),
         safeCell_(heightStr),
+        is18Ack,
         data.agreed ? "YES" : "NO",
         safeCell_(cleanSignDate),
         safeCell_(cleanSignTime),
@@ -526,7 +569,7 @@ function doPost(e) {
       JSON.stringify({
         ok: true,
         refCode: refCodeStr,
-        zone: zoneKey,
+        stream: streamKey,
         monthTab: monthTab
       })
     ).setMimeType(ContentService.MimeType.JSON);
@@ -574,8 +617,10 @@ function doGet(e) {
   }
 
   const m = found.match;
-  const sigFormula = found.sheet.getRange(found.rowNum, found.colOffset + 18).getFormula();
-  const resolvedSigUrl = resolveSignatureDataUrl_(m[17], sigFormula);
+  const sigColIndex = m.length >= 20 ? 19 : 18;
+  const sigFormula = found.sheet.getRange(found.rowNum, found.colOffset + sigColIndex).getFormula();
+  const rawSigVal = m.length >= 20 ? m[18] : m[17];
+  const resolvedSigUrl = resolveSignatureDataUrl_(rawSigVal, sigFormula);
 
   const record = {
     submittedAt: m[0],
@@ -592,9 +637,10 @@ function doGet(e) {
     totalRiders: m[11],
     allRiders: m[12],
     heightStr: m[13],
-    agreed: m[14],
-    signDate: m[15],
-    signTime: m[16],
+    is18Ack: m.length >= 20 ? m[14] : (m[13] || "N/A"),
+    agreed: m.length >= 20 ? m[15] : m[14],
+    signDate: m.length >= 20 ? m[16] : m[15],
+    signTime: m.length >= 20 ? m[17] : m[16],
     signatureUrl: resolvedSigUrl
   };
 
@@ -643,8 +689,13 @@ function printSelectedWaiver() {
     return;
   }
 
-  const vals = sheet.getRange(rowIndex, 1, 1, HEADERS.length).getDisplayValues()[0];
-  const sigFormula = sheet.getRange(rowIndex, 18).getFormula();
+  const numCols = Math.max(sheet.getLastColumn(), HEADERS.length);
+  const vals = sheet.getRange(rowIndex, 1, 1, numCols).getDisplayValues()[0];
+  const sigColIndex = vals.length >= 20 ? 19 : 18;
+  const sigFormula = sheet.getRange(rowIndex, sigColIndex).getFormula();
+  const rawSigVal = vals.length >= 20 ? vals[18] : vals[17];
+  const resolvedSigUrl = resolveSignatureDataUrl_(rawSigVal, sigFormula);
+
   const record = {
     submittedAt: vals[0],
     refCode: vals[1],
@@ -660,10 +711,11 @@ function printSelectedWaiver() {
     totalRiders: vals[11],
     allRiders: vals[12],
     heightStr: vals[13],
-    agreed: vals[14],
-    signDate: vals[15],
-    signTime: vals[16],
-    signatureUrl: resolveSignatureDataUrl_(vals[17], sigFormula)
+    is18Ack: vals.length >= 20 ? vals[14] : (vals[13] || "N/A"),
+    agreed: vals.length >= 20 ? vals[15] : vals[14],
+    signDate: vals.length >= 20 ? vals[16] : vals[15],
+    signTime: vals.length >= 20 ? vals[17] : vals[16],
+    signatureUrl: resolvedSigUrl
   };
 
   if (!record.fullName && !record.refCode) {
@@ -724,80 +776,73 @@ function isFileInFolder_(file, folder) {
   return false;
 }
 
-function getSpreadsheetByPropOrTitle_(props, folder, propKey, title) {
+function getSpreadsheetByPropOrTitle_(props, rootFolder, propKey, title) {
+  const liveFolder = getOrCreateFolder_(rootFolder, LIVE_FOLDER_NAME);
   const storedId = props.getProperty(propKey);
   if (storedId) {
     try {
       const f = DriveApp.getFileById(storedId);
-      if (isFileInFolder_(f, folder)) {
+      if (!f.isTrashed()) {
+        if (!isFileInFolder_(f, liveFolder)) {
+          f.moveTo(liveFolder);
+        }
         return SpreadsheetApp.openById(storedId);
       }
     } catch (e) {
-      // Stored file deleted or inaccessible; look up by name or create
+      // Stored file deleted or inaccessible
     }
     props.deleteProperty(propKey);
   }
 
-  const files = folder.getFilesByName(title);
+  // Look in 01 - Live Waivers first
+  let files = liveFolder.getFilesByName(title);
   if (files.hasNext()) {
     const ss = SpreadsheetApp.openById(files.next().getId());
     props.setProperty(propKey, ss.getId());
     return ss;
   }
 
-  // Copy the active container-bound spreadsheet when available and not trashed
-  let created = null;
-  try {
-    const activeSs = SpreadsheetApp.getActiveSpreadsheet();
-    if (activeSs && !DriveApp.getFileById(activeSs.getId()).isTrashed()) {
-      const copyFile = DriveApp.getFileById(activeSs.getId()).makeCopy(title, folder);
-      created = SpreadsheetApp.openById(copyFile.getId());
-      const monthTab = getMonthTabName_(new Date());
-      ensureMonthlyTab_(created, monthTab);
-      created.getSheets().forEach(function (sh) {
-        if (sh.getName() !== monthTab && created.getSheets().length > 1) {
-          created.deleteSheet(sh);
-        }
-      });
-    }
-  } catch (e) {
-    created = null;
+  // Look in rootFolder (migration from old layout)
+  files = rootFolder.getFilesByName(title);
+  if (files.hasNext()) {
+    const f = files.next();
+    f.moveTo(liveFolder);
+    const ss = SpreadsheetApp.openById(f.getId());
+    props.setProperty(propKey, ss.getId());
+    return ss;
   }
 
-  if (!created) {
-    created = SpreadsheetApp.create(title);
-    DriveApp.getFileById(created.getId()).moveTo(folder);
-  }
-
+  // Create brand new sheet in liveFolder
+  const created = SpreadsheetApp.create(title);
+  DriveApp.getFileById(created.getId()).moveTo(liveFolder);
   props.setProperty(propKey, created.getId());
   return created;
 }
 
-function ensureMonthlyTab_(ss, monthTabName) {
+function ensureMonthlyTab_(ss, monthTabName, streamCfg) {
   let sheet = ss.getSheetByName(monthTabName);
   if (!sheet) {
-    sheet = ss.insertSheet(monthTabName);
+    sheet = ss.insertSheet(monthTabName, 0);
   }
   const lastRow = sheet.getLastRow();
   if (lastRow === 0 || (lastRow === 1 && sheet.getLastColumn() !== HEADERS.length)) {
     sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
+    const themeBg = (streamCfg && streamCfg.themeColor) || "#0f172a";
     sheet
       .getRange(1, 1, 1, HEADERS.length)
       .setFontWeight("bold")
-      .setBackground("#0f172a")
-      .setFontColor("#ffffff");
+      .setBackground(themeBg)
+      .setFontColor("#ffffff")
+      .setHorizontalAlignment("center")
+      .setVerticalAlignment("middle")
+      .setFontSize(10);
+    sheet.setRowHeight(1, 32);
     sheet.setFrozenRows(1);
-    sheet.autoResizeColumns(1, HEADERS.length - 2);
-    sheet.setColumnWidth(18, 160);
-  } else if (lastRow >= 1) {
-    const col18 = sheet.getRange(1, 18).getValue();
-    if (col18 === "Customer Signature (Data URL)") {
-      sheet.getRange(1, 18).setValue("Signature");
-    }
-    const col19 = sheet.getRange(1, HEADERS.length).getValue();
-    if (col19 === "Print Tip") {
-      sheet.getRange(1, HEADERS.length).setValue("Print Form");
-    }
+    sheet.setFrozenColumns(2);
+
+    try {
+      sheet.autoResizeColumns(1, HEADERS.length);
+    } catch (e) {}
   }
   return sheet;
 }
@@ -832,17 +877,19 @@ function installAutoTriggers_() {
   }
 }
 
-function saveSignatureFileFormula_(rootFolder, refCode, dataUrl) {
+function saveSignatureFileFormula_(rootFolder, refCode, dataUrl, streamCfg) {
   const match = String(dataUrl || "").match(/^data:(image\/(webp|jpeg|png));base64,([A-Za-z0-9+/=]+)$/);
   if (!match || String(dataUrl).length > 49000) return "";
   try {
-    const sigFolder = getOrCreateFolder_(rootFolder, SIGNATURES_FOLDER_NAME);
+    const sigParentFolder = getOrCreateFolder_(rootFolder, SIGNATURES_FOLDER_NAME);
+    const subfolderName = (streamCfg && streamCfg.sigFolder) || "General";
+    const sigFolder = getOrCreateFolder_(sigParentFolder, subfolderName);
     const mime = match[1];
     const ext = match[2] === "jpeg" ? "jpg" : match[2];
     const bytes = Utilities.base64Decode(match[3]);
     const blob = Utilities.newBlob(bytes, mime, (refCode || "waiver") + "." + ext);
     const file = sigFolder.createFile(blob);
-    return '=HYPERLINK("https://drive.google.com/file/d/' + file.getId() + '/view", "View Signature")';
+    return '=HYPERLINK("https://drive.google.com/file/d/' + file.getId() + '/view", "✍️ View Signature")';
   } catch (e) {
     return dataUrl;
   }
