@@ -31,8 +31,6 @@
   const minHeightCmEl = document.getElementById("minHeightCm");
   const agreeTermsEl = document.getElementById("agreeTerms");
   const agreeGokart18El = document.getElementById("agreeGokart18");
-  const signDateEl = document.getElementById("signDate");
-  const signTimeEl = document.getElementById("signTime");
 
   const displayRefCode = document.getElementById("displayRefCode");
   const displayTimestamp = document.getElementById("displayTimestamp");
@@ -187,11 +185,11 @@
       octx.fillRect(0, 0, outW, outH);
       octx.drawImage(canvas, 0, 0, outW, outH);
 
-      const webpUrl = offscreen.toDataURL("image/webp", 0.55);
-      if (webpUrl.startsWith("data:image/webp;")) {
-        return webpUrl;
+      const pngUrl = offscreen.toDataURL("image/png");
+      if (pngUrl && pngUrl.length <= 48000) {
+        return pngUrl;
       }
-      return offscreen.toDataURL("image/jpeg", 0.55);
+      return offscreen.toDataURL("image/jpeg", 0.75);
     }
 
     canvas.addEventListener("pointerdown", onPointerDown);
@@ -264,15 +262,23 @@
     return `${yyyy}-${mm}-${dd}`;
   }
 
-  function setNowDateTime() {
+  function getCurrentSubmissionDateTime() {
     const now = new Date();
-    const hh = String(now.getHours()).padStart(2, "0");
-    const min = String(now.getMinutes()).padStart(2, "0");
-    signDateEl.value = todayISO();
-    signTimeEl.value = `${hh}:${min}`;
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, "0");
+    const dd = String(now.getDate()).padStart(2, "0");
+    const dateStr = `${yyyy}-${mm}-${dd}`;
+
+    let hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const seconds = String(now.getSeconds()).padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+    const hours12 = String(hours % 12 || 12).padStart(2, "0");
+    const timeStr = `${hours12}:${minutes}:${seconds} ${ampm}`;
+
+    return { dateStr, timeStr, iso: now.toISOString() };
   }
 
-  document.getElementById("btnNow").addEventListener("click", setNowDateTime);
   dobEl.addEventListener("change", () => updateAgeTag(dobEl.value, primaryAgeTag));
 
   // Height auto-conversion (Go-Karting only)
@@ -468,7 +474,7 @@
     document.querySelectorAll(".is-invalid").forEach((el) => el.classList.remove("is-invalid"));
   }
 
-  [fullNameEl, dobEl, mobileEl, addressEl, emailEl, signDateEl, signTimeEl].forEach((el) => {
+  [fullNameEl, dobEl, mobileEl, addressEl, emailEl].forEach((el) => {
     el.addEventListener("input", () => el.classList.remove("is-invalid"));
   });
   agreeTermsEl.addEventListener("change", () => {
@@ -489,9 +495,7 @@
       { el: fullNameEl, label: "Full Name" },
       { el: dobEl, label: "Date of Birth" },
       { el: mobileEl, label: "Mobile Number" },
-      { el: addressEl, label: "Address" },
-      { el: signDateEl, label: "Date" },
-      { el: signTimeEl, label: "Time" }
+      { el: addressEl, label: "Address" }
     ];
 
     for (const item of requiredInputs) {
@@ -616,9 +620,10 @@
     const selectedRadio = getSelectedZoneRadio();
     const selectedActivity = selectedZone === "softplay" ? "Soft Play & Trampoline" : "Go-Karting";
 
+    const currentDT = getCurrentSubmissionDateTime();
     return {
       refCode: generateRefCode(),
-      submittedAt: new Date().toISOString(),
+      submittedAt: currentDT.iso,
       zone: selectedZone,
       activity: selectedActivity,
       activitiesText: selectedActivity,
@@ -635,8 +640,8 @@
       minHeightCm: selectedZone === "gokart" && minHeightCmEl ? minHeightCmEl.value.trim() : "",
       agreed: agreeTermsEl.checked,
       agreeGokart18: selectedZone === "gokart" && agreeGokart18El ? agreeGokart18El.checked : null,
-      signDate: signDateEl.value,
-      signTime: signTimeEl.value,
+      signDate: currentDT.dateStr,
+      signTime: currentDT.timeStr,
       guestSignature: guestSig.toDataURL(),
       hpWebsite: hpWebsiteEl ? hpWebsiteEl.value : ""
     };
@@ -752,7 +757,6 @@
     primaryAgeTag.hidden = true;
     guestSig.clear();
     clearFeedback();
-    setNowDateTime();
     updateRiderCount();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -801,6 +805,5 @@
 
   dobEl.max = todayISO();
   applyInitialZoneFromUrl();
-  setNowDateTime();
   updateRiderCount();
 })();

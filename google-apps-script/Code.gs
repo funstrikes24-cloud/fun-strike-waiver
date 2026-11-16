@@ -480,8 +480,8 @@ function doPost(e) {
     const cleanAddress = clampText_(data.address, 300);
     const cleanBranch = clampText_(data.branch || streamCfg.branchLabel, 100);
     const cleanActivity = clampText_(data.activity || streamCfg.activityLabel, 80);
-    const cleanSignDate = clampText_(data.signDate, 20);
-    const cleanSignTime = clampText_(data.signTime, 20);
+    const cleanSignDate = clampText_(data.signDate || Utilities.formatDate(now, "Asia/Kolkata", "yyyy-MM-dd"), 20);
+    const cleanSignTime = clampText_(data.signTime || Utilities.formatDate(now, "Asia/Kolkata", "hh:mm:ss a"), 20);
 
     const ridersArr = Array.isArray(data.riders) ? data.riders.slice(0, 20) : [];
     const effectiveRiders = ridersArr.length
@@ -900,28 +900,46 @@ function saveSignatureFileFormula_(rootFolder, refCode, dataUrl, streamCfg) {
     const bytes = Utilities.base64Decode(match[3]);
     const blob = Utilities.newBlob(bytes, mime, (refCode || "waiver") + "." + ext);
     const file = sigFolder.createFile(blob);
+    try {
+      file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+    } catch (shareErr) {}
     return '=HYPERLINK("https://drive.google.com/file/d/' + file.getId() + '/view", "✍️ View Signature")';
   } catch (e) {
     return dataUrl;
   }
 }
 
-function extractDriveFileId_(cellFormula) {
-  const match = String(cellFormula || "").match(/\/d\/([A-Za-z0-9_-]+)/);
-  return match ? match[1] : "";
+function extractDriveFileId_(val) {
+  if (!val) return "";
+  const s = String(val);
+  let match = s.match(/\/file\/d\/([A-Za-z0-9_-]+)/i);
+  if (match) return match[1];
+  match = s.match(/\/d\/([A-Za-z0-9_-]+)/i);
+  if (match) return match[1];
+  match = s.match(/id=([A-Za-z0-9_-]+)/i);
+  if (match) return match[1];
+  if (/^[A-Za-z0-9_-]{25,}$/.test(s.trim())) return s.trim();
+  return "";
 }
 
 function resolveSignatureDataUrl_(cellDisplayVal, cellFormula) {
   if (isValidSignatureDataUrl_(cellDisplayVal)) return cellDisplayVal;
-  const fileId = extractDriveFileId_(cellFormula);
+  if (isValidSignatureDataUrl_(cellFormula)) return cellFormula;
+
+  const fileId = extractDriveFileId_(cellFormula) || extractDriveFileId_(cellDisplayVal);
   if (!fileId) return "";
+
   try {
-    const blob = DriveApp.getFileById(fileId).getBlob();
-    const mime = blob.getContentType();
-    if (!/^image\/(webp|jpeg|png)$/.test(mime)) return "";
-    return "data:" + mime + ";base64," + Utilities.base64Encode(blob.getBytes());
+    const file = DriveApp.getFileById(fileId);
+    const blob = file.getBlob();
+    const bytes = blob.getBytes();
+    let mime = blob.getContentType();
+    if (!mime || mime === "application/octet-stream") {
+      mime = "image/png";
+    }
+    return "data:" + mime + ";base64," + Utilities.base64Encode(bytes);
   } catch (e) {
-    return "";
+    return "https://lh3.googleusercontent.com/d/" + fileId;
   }
 }
 
@@ -1100,10 +1118,13 @@ function buildPrintableHtml_(r) {
     })
     .join("");
 
-  const sigImgHtml =
-    isValidSignatureDataUrl_(r.signatureUrl)
-      ? '<img src="' + r.signatureUrl + '" alt="Customer Signature" style="max-height:70px;display:block;" />'
-      : '<div style="height:48px;border-bottom:1px solid #000;"></div>';
+  let sigImgHtml = '<div style="height:48px;border-bottom:1.5px solid #0f172a;display:flex;align-items:flex-end;padding-bottom:3px;font-size:10px;color:#64748b;font-style:italic;">Digitally Signed &amp; Recorded on Submission</div>';
+
+  if (r.signatureUrl && String(r.signatureUrl).length > 5) {
+    if (isValidSignatureDataUrl_(r.signatureUrl) || String(r.signatureUrl).indexOf('http') === 0) {
+      sigImgHtml = '<img src="' + r.signatureUrl + '" alt="Customer Signature" style="max-height:60px;max-width:240px;object-fit:contain;display:block;margin-top:2px;" />';
+    }
+  }
 
   return (
     '<!DOCTYPE html><html><head><meta charset="utf-8" />' +
@@ -1178,8 +1199,8 @@ function buildPrintableHtml_(r) {
     '</div>' +
     '<div class="sig-wrap">' +
     '<div><div class="lbl">CUSTOMER / GUARDIAN SIGNATURE:</div>' + sigImgHtml + '</div>' +
-    '<div><div class="lbl">DATE:</div><div style="font-size:12px;font-weight:700;">' + escapeHtml_(r.signDate) + '</div></div>' +
-    '<div><div class="lbl">TIME:</div><div style="font-size:12px;font-weight:700;">' + escapeHtml_(r.signTime) + '</div></div>' +
+    '<div><div class="lbl">SUBMISSION DATE:</div><div style="font-size:11.5px;font-weight:700;">' + escapeHtml_(r.signDate || (r.submittedAt ? String(r.submittedAt).slice(0, 10) : '—')) + '</div></div>' +
+    '<div><div class="lbl">SUBMISSION TIME:</div><div style="font-size:11.5px;font-weight:700;">' + escapeHtml_(r.signTime || (r.submittedAt ? String(r.submittedAt).slice(11, 19) : '—')) + '</div></div>' +
     '</div></div></body></html>'
   );
 }

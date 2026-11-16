@@ -3,8 +3,8 @@ const path = require('path');
 
 const GAS_URL = "https://script.google.com/macros/s/AKfycbztd1Rd24z1eOcgSy54XPOEDmV00DI7LC_-WlB-mpsKlf-GmEPnxe9OsAtA1xRoyMpuug/exec";
 
-// Minimal valid PNG data URI for testing signature
-const DUMMY_SIG_PNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAAAyCAYAAACF0L/jAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAA3SURBVHhe7cExAQAAAMKg9U9tDQ8gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgFcDD54AATH4w70AAAAASUVORK5CYII=";
+// Realistic black ink signature PNG data URI for testing
+const DUMMY_SIG_PNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWgAAABQBAMAAAD1ZgXIAAAALVBMVEUAAAAMDAwfHx86Ojo/Pz9AQEBISEhMTExVVVVdXV1lZWVxcXF5eXl+fn6AgIC1/517AAAABXRSTlP///8A/v5/qAAAAAlwSFlzAAALEwAACxMBAJqcGAAAA45JREFUaN7t2T+LGkEcwPFVLLeFw4WwO5hG3mEuk85m0Q2Y1e8gbCF4N8jNIXeT3K5iYxCE4D024A2s5S18A19hB3Z37o+7f5f9W931e5gZlhl+zLg0e/f27p89f3z9+vXr1/f/7h7gX/f/3R0eHzu4e+y5O+iOu5d3eLz7eXfs6+57N8R/3F35h3f/8r4ZgK9X77gG/3a/0h33L+/u/b2P13c49N043bvf77271/f1C3q5e6+v466fXl1ff71ePfeR1894d+e7e72/f/V69fq1h/e7H16vX394vXr95XX69f21/4aP/wK+1/305vX9119++vT186eP37397e5V13c/ff3w5vX1l9dfPn39fOf18/v7q65ffnr78c3rr19/fv3p9efXe++3f/1+7224fv7p9fPn91+e994e4/218fcf1+uPv3/3+vvH717v8L3h57cfXn/59Pbn9z+9/v7j3ft/u+vXb97ff/v59ev7j7+9f7/1+6vj72/e//b5/ceP7//648O3e69ff/7u4x+/ffzh/eeP715df/n9x6/3P3378fr17z99/fHt9ev7t3/euf/t/sO319fvP7x5+9vX/3j/t/f1q+vvP7z57fXb3/782+f3P3337f71x6tvrz89/PT7b59e377/7b5f/2f3x/dv377//t/7/efv3n3+8PDb68+v37774/cfvvr58/sfv/v5x7f7x/f//t3bt28/vr/r/sf75y8/vr2+vnv/4fX7t+/ee/z24/ef33388Z/vP/3w2+v1z999+/b69u23h3eff3z/8eb7/v9/f7h//9vD69uf37z97f7j348//fbdt/uPX//r09vrr798e/f68+8f3v7x6/u/P/z0/fXXb58+fHv38fOfb797ffvbt6+uv/z547f3n759vPv89fv714eHdw8fvn54//D6+v3Hz59/f3h9ff379+/ff319ff39+/efP3//+fP3nz9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7z9//vPn7wH+A1WJ94o3O8UFAAAAAElFTkSuQmCC";
 
 function generateRefCode() {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
