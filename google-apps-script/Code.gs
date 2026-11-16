@@ -1318,7 +1318,7 @@ function buildPrintableHtml_(r) {
       font-size: 12px;
     }
 
-    /* MASTER TABLE PRINT WRAPPER: PREVENTS TEXT COLLIDING WITH FOOTER */
+    /* MASTER TABLE PRINT WRAPPER: REPEATS HEADER AT TOP AND FOOTER AT BOTTOM OF EVERY PAGE */
     .waiver-page-table {
       width: 100%;
       max-width: 194mm;
@@ -1327,11 +1327,29 @@ function buildPrintableHtml_(r) {
       background: #ffffff;
     }
 
-    /* CLOSED RECTANGLE BORDER ON CONTENT AREA */
-    .waiver-content-td {
+    thead {
+      display: table-header-group;
+    }
+    tfoot {
+      display: table-footer-group;
+    }
+
+    /* REPEATING HEADER AT TOP OF EVERY PAGE WITH CLOSED TOP/SIDE BORDER */
+    .waiver-header-td {
       border: 1.5px solid #0f172a;
       border-bottom: none;
-      padding: 5mm 7mm 3mm 7mm;
+      padding: 4mm 7mm 1mm 7mm;
+      background: #ffffff;
+      vertical-align: top;
+    }
+
+    /* CLOSED RECTANGLE BORDER ON CONTENT AREA */
+    .waiver-content-td {
+      border-left: 1.5px solid #0f172a;
+      border-right: 1.5px solid #0f172a;
+      border-top: none;
+      border-bottom: none;
+      padding: 1mm 7mm 2mm 7mm;
       background: #ffffff;
       vertical-align: top;
     }
@@ -1686,6 +1704,22 @@ function buildPrintableHtml_(r) {
   </div>
 
   <table class="waiver-page-table">
+    <thead>
+      <tr>
+        <td class="waiver-header-td">
+          <table class="header-table">
+            <tr>
+              <td class="logo-cell"><img src="data:image/png;base64,${logoBase64}" class="logo-img" alt="Fun Strike Logo"></td>
+              <td class="title-cell">
+                <div class="company-title">FUN STRIKES ENTERTAINMENT LLP</div>
+                <div class="company-sub">Registered LLP under Indian Limited Liability Partnership Act, 2008 &bull; Surat, Gujarat, India</div>
+                <div class="doc-main-heading">PARTICIPANT LIABILITY WAIVER, INDEMNITY AGREEMENT & RULES OF OPERATION</div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </thead>
     <tfoot>
       <tr>
         <td class="waiver-footer-td">
@@ -1705,20 +1739,8 @@ function buildPrintableHtml_(r) {
       <tr>
         <td class="waiver-content-td">
 
-          <!-- 1. HEADER -->
+          <!-- 1. META BAR (2x2 BALANCED GRID) -->
           <div class="doc-unit">
-            <table class="header-table">
-              <tr>
-                <td class="logo-cell"><img src="data:image/png;base64,${logoBase64}" class="logo-img" alt="Fun Strike Logo"></td>
-                <td class="title-cell">
-                  <div class="company-title">FUN STRIKES ENTERTAINMENT LLP</div>
-                  <div class="company-sub">Registered LLP under Indian Limited Liability Partnership Act, 2008 &bull; Surat, Gujarat, India</div>
-                  <div class="doc-main-heading">PARTICIPANT LIABILITY WAIVER, INDEMNITY AGREEMENT & RULES OF OPERATION</div>
-                </td>
-              </tr>
-            </table>
-
-            <!-- 2x2 BALANCED META BAR (2 ITEMS PER ROW) -->
             <table class="meta-bar">
               <tr>
                 <td style="width: 52%;"><strong>ZONE / ACTIVITY:</strong> ${escapeHtml_(activityTitle)}</td>
