@@ -6,7 +6,7 @@
   <style>
     @page {
       size: A4 portrait;
-      margin: 12mm 14mm 12mm 14mm;
+      margin: 6mm 9mm 6mm 9mm;
     }
     * {
       box-sizing: border-box;
@@ -17,8 +17,8 @@
       font-family: "Times New Roman", Times, "Liberation Serif", Georgia, serif;
       color: #0f172a;
       background: #ffffff;
-      font-size: 9.6pt;
-      line-height: 1.42;
+      font-size: 7.8pt;
+      line-height: 1.25;
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
     }
@@ -28,27 +28,27 @@
       align-items: center;
       background: #0f172a;
       color: #ffffff;
-      padding: 8px 18px;
+      padding: 6px 14px;
       font-family: Arial, sans-serif;
-      font-size: 11px;
-      margin-bottom: 14px;
+      font-size: 10px;
+      margin-bottom: 8px;
     }
     .print-btn {
       background: #991b1b;
       color: #ffffff;
       border: none;
-      padding: 7px 18px;
+      padding: 5px 14px;
       border-radius: 4px;
       font-weight: bold;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 11px;
     }
     .document-page {
       width: 100%;
-      border: 2px solid #0f172a;
-      padding: 16px 20px 16px 20px;
+      border: 1.5px solid #0f172a;
+      padding: 7px 10px;
       background: #ffffff;
-      margin-bottom: 20px;
+      margin-bottom: 0;
     }
 
     /* Formal Document Header with Logo */
@@ -56,19 +56,19 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 2.5px double #0f172a;
-      padding-bottom: 10px;
-      margin-bottom: 10px;
-      gap: 16px;
+      border-bottom: 2px double #0f172a;
+      padding-bottom: 4px;
+      margin-bottom: 4px;
+      gap: 12px;
     }
     .doc-logo-box {
       flex-shrink: 0;
-      width: 76px;
+      width: 48px;
       text-align: center;
     }
     .doc-logo-box img {
-      width: 72px;
-      height: 72px;
+      width: 44px;
+      height: 44px;
       object-fit: contain;
       display: block;
     }
@@ -77,72 +77,72 @@
       text-align: center;
     }
     .doc-header-text .org-name {
-      font-size: 18pt;
+      font-size: 14pt;
       font-weight: bold;
-      letter-spacing: 1.8px;
+      letter-spacing: 1.2px;
       text-transform: uppercase;
       color: #0f172a;
       line-height: 1.1;
     }
     .doc-header-text .org-sub {
       font-family: Arial, sans-serif;
-      font-size: 8pt;
+      font-size: 7pt;
       color: #475569;
-      letter-spacing: 0.5px;
-      margin-top: 3px;
+      letter-spacing: 0.3px;
+      margin-top: 1px;
     }
     .doc-header-text .doc-title {
-      font-size: 11pt;
+      font-size: 8.8pt;
       font-weight: bold;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
-      margin-top: 6px;
+      margin-top: 3px;
       color: #991b1b;
       background: #fef2f2;
       border: 1px solid #fecaca;
-      padding: 3px 6px;
+      padding: 1.5px 6px;
       display: inline-block;
     }
     .doc-meta-bar {
       display: flex;
       justify-content: space-between;
       font-family: Arial, sans-serif;
-      font-size: 8.2pt;
+      font-size: 7.2pt;
       font-weight: bold;
       color: #1e293b;
-      margin-top: 6px;
+      margin-top: 3px;
       border-top: 1px solid #e2e8f0;
-      padding-top: 4px;
+      padding-top: 2px;
     }
 
     /* Section Headers */
     .section-head {
       font-family: Arial, sans-serif;
-      font-size: 8.8pt;
+      font-size: 7.5pt;
       font-weight: bold;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
       color: #ffffff;
       background: #0f172a;
-      padding: 4px 10px;
-      margin: 12px 0 6px 0;
+      padding: 2.5px 8px;
+      margin: 5px 0 3px 0;
       display: flex;
       justify-content: space-between;
       page-break-after: avoid;
     }
 
-    /* Signer Identification Table */
+    /* Primary Signer Table */
     table.signer-table {
       width: 100%;
       border-collapse: collapse;
       font-family: Arial, sans-serif;
-      font-size: 8.5pt;
-      margin-bottom: 8px;
+      font-size: 7.2pt;
+      margin-bottom: 3px;
       page-break-inside: avoid;
     }
     table.signer-table td {
       border: 1px solid #94a3b8;
-      padding: 4px 8px;
+      padding: 2px 6px;
       vertical-align: middle;
     }
     table.signer-table td.lbl {
@@ -151,7 +151,7 @@
       color: #334155;
       width: 18%;
       text-transform: uppercase;
-      font-size: 7.5pt;
+      font-size: 6.8pt;
     }
     table.signer-table td.val {
       color: #0f172a;
@@ -163,20 +163,21 @@
       width: 100%;
       border-collapse: collapse;
       font-family: Arial, sans-serif;
-      font-size: 8.5pt;
-      margin-bottom: 10px;
+      font-size: 7.2pt;
+      margin-bottom: 4px;
       page-break-inside: avoid;
     }
     table.participants-table th, table.participants-table td {
       border: 1px solid #94a3b8;
-      padding: 4px 8px;
+      padding: 2.5px 6px;
       text-align: left;
+      vertical-align: middle;
     }
     table.participants-table th {
       background: #e2e8f0;
       color: #0f172a;
       font-weight: bold;
-      font-size: 7.8pt;
+      font-size: 6.9pt;
       text-transform: uppercase;
       white-space: nowrap;
     }
@@ -187,9 +188,9 @@
     /* Badges */
     .badge {
       display: inline-block;
-      font-size: 7pt;
+      font-size: 6.5pt;
       font-weight: bold;
-      padding: 1.5px 5px;
+      padding: 1px 4px;
       border-radius: 3px;
       text-transform: uppercase;
       letter-spacing: 0.3px;
@@ -214,14 +215,14 @@
     /* Legal Clauses Section */
     .clauses-body {
       text-align: justify;
-      font-size: 9.2pt;
-      line-height: 1.42;
+      font-size: 7.2pt;
+      line-height: 1.25;
       color: #1e293b;
     }
     .clause-item {
-      margin-bottom: 6px;
-      text-indent: -18px;
-      padding-left: 18px;
+      margin-bottom: 2px;
+      text-indent: -14px;
+      padding-left: 14px;
       page-break-inside: avoid;
     }
     .clause-num {
@@ -233,25 +234,25 @@
       font-weight: bold;
       text-transform: uppercase;
       color: #0f172a;
-      font-size: 9.2pt;
+      font-size: 7.2pt;
     }
     .clause-highlight {
       background: #fef2f2;
-      border-left: 3.5px solid #dc2626;
-      padding: 4px 8px;
-      margin: 6px 0;
+      border-left: 3px solid #dc2626;
+      padding: 2px 6px;
+      margin: 2px 0;
       text-indent: 0;
       page-break-inside: avoid;
     }
 
     /* Solemn Declaration */
     .decl-box {
-      border: 1.5px solid #0f172a;
+      border: 1.2px solid #0f172a;
       background: #f8fafc;
-      padding: 7px 10px;
-      margin: 10px 0 8px 0;
-      font-size: 8.8pt;
-      line-height: 1.38;
+      padding: 3px 6px;
+      margin: 3px 0;
+      font-size: 6.8pt;
+      line-height: 1.22;
       text-align: justify;
       page-break-inside: avoid;
     }
@@ -259,14 +260,14 @@
       font-family: Arial, sans-serif;
       text-transform: uppercase;
       color: #0f172a;
-      font-size: 8.2pt;
-      letter-spacing: 0.4px;
+      font-size: 6.6pt;
+      letter-spacing: 0.3px;
     }
 
-    /* Formal Execution & Signatures Block */
+    /* Execution & Signature Section */
     .exec-wrap {
       page-break-inside: avoid;
-      margin-top: 8px;
+      margin-top: 3px;
     }
     table.exec-table {
       width: 100%;
@@ -274,81 +275,100 @@
       font-family: Arial, sans-serif;
     }
     table.exec-table td {
-      border: 1.5px solid #0f172a;
-      padding: 6px 10px;
+      border: 1.2px solid #0f172a;
+      padding: 3px 6px;
       vertical-align: top;
     }
     table.exec-table .sig-title {
-      font-size: 7.8pt;
+      font-size: 6.8pt;
       font-weight: bold;
       color: #475569;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 3px;
+      letter-spacing: 0.4px;
+      margin-bottom: 2px;
     }
     table.exec-table .sig-img-wrap {
-      height: 52px;
+      height: 36px;
       display: flex;
       align-items: center;
     }
     table.exec-table .sig-img-wrap img {
-      max-height: 50px;
-      max-width: 230px;
+      max-height: 34px;
+      max-width: 200px;
       object-fit: contain;
     }
     table.exec-table .sig-signer-name {
       font-weight: bold;
-      font-size: 9.5pt;
+      font-size: 8pt;
       color: #0f172a;
       border-top: 1px dashed #cbd5e1;
-      padding-top: 3px;
-      margin-top: 3px;
+      padding-top: 2px;
+      margin-top: 2px;
     }
     .exec-meta-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 4px 12px;
-      font-size: 8.5pt;
+      gap: 2px 8px;
+      font-size: 7.2pt;
     }
     .exec-meta-row {
       display: flex;
       flex-direction: column;
     }
     .exec-meta-lbl {
-      font-size: 7.2pt;
+      font-size: 6.2pt;
       font-weight: bold;
       color: #64748b;
       text-transform: uppercase;
     }
     .exec-meta-val {
-      font-size: 8.8pt;
+      font-size: 7.4pt;
       font-weight: bold;
       color: #0f172a;
     }
 
-    /* Document Legal Footer */
+    /* Document Legal Footer: 3-column, perfectly aligned, 1 single line */
     .doc-footer {
       border-top: 1px solid #cbd5e1;
-      padding-top: 5px;
-      margin-top: 8px;
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      gap: 4px;
+      padding-top: 4px;
+      margin-top: 4px;
+      display: flex;
+      justify-content: space-between;
       align-items: center;
       font-family: Arial, sans-serif;
-      font-size: 7.2pt;
+      font-size: 6.6pt;
       color: #64748b;
       text-transform: uppercase;
       page-break-inside: avoid;
+      white-space: nowrap;
     }
-    .doc-footer-left { text-align: left; font-weight: bold; color: #0f172a; }
-    .doc-footer-center { text-align: center; color: #64748b; white-space: nowrap; }
-    .doc-footer-right { text-align: right; }
+    .doc-footer-left {
+      font-weight: bold;
+      color: #0f172a;
+      text-align: left;
+    }
+    .doc-footer-center {
+      text-align: center;
+      color: #475569;
+      font-weight: 600;
+    }
+    .doc-footer-right {
+      text-align: right;
+      color: #475569;
+    }
 
     @media print {
-      .print-bar { display: none !important; }
-      body { margin: 0; padding: 0; }
-      .document-page { border: 1.5px solid #000; margin-bottom: 0; }
+      .print-bar {
+        display: none !important;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      .document-page {
+        border: 1.5px solid #000;
+        margin-bottom: 0;
+      }
     }
   </style>
 </head>
@@ -415,17 +435,17 @@
     <table class="participants-table">
       <thead>
         <tr>
-          <th style="width: 28px; text-align: center; white-space: nowrap;">#</th>
+          <th style="width: 24px; text-align: center; white-space: nowrap;">#</th>
           <th>Full Legal Name of Participant</th>
-          <th style="width: 95px; text-align: center; white-space: nowrap;">Date of Birth</th>
-          <th style="width: 175px; white-space: nowrap;">Age &amp; Category</th>
-          <th style="width: 195px; white-space: nowrap;">Relationship to Signer</th>
+          <th style="width: 90px; text-align: center; white-space: nowrap;">Date of Birth</th>
+          <th style="width: 165px; white-space: nowrap;">Age &amp; Category</th>
+          <th style="width: 185px; white-space: nowrap;">Relationship to Signer</th>
         </tr>
       </thead>
       <tbody>
         
       <tr>
-        <td style="text-align: center; font-weight: bold; color: #475569;">1</td>
+        <td style="text-align: center; font-weight: bold; color: #475569; white-space: nowrap;">1</td>
         <td><strong>Aarav Sharma</strong></td>
         <td style="text-align: center; white-space: nowrap;">1996-04-12</td>
         <td style="white-space: nowrap;"><span class="badge badge-adult">ADULT</span> 30 yrs</td>
@@ -433,7 +453,7 @@
       </tr>
     
       <tr>
-        <td style="text-align: center; font-weight: bold; color: #475569;">2</td>
+        <td style="text-align: center; font-weight: bold; color: #475569; white-space: nowrap;">2</td>
         <td><strong>Rohan Sharma</strong></td>
         <td style="text-align: center; white-space: nowrap;">2012-08-15</td>
         <td style="white-space: nowrap;"><span class="badge badge-minor">MINOR</span> 14 yrs</td>
@@ -441,7 +461,7 @@
       </tr>
     
       <tr>
-        <td style="text-align: center; font-weight: bold; color: #475569;">3</td>
+        <td style="text-align: center; font-weight: bold; color: #475569; white-space: nowrap;">3</td>
         <td><strong>Priya Sharma</strong></td>
         <td style="text-align: center; white-space: nowrap;">2015-02-20</td>
         <td style="white-space: nowrap;"><span class="badge badge-minor">MINOR</span> 11 yrs</td>
@@ -449,7 +469,7 @@
       </tr>
     
       <tr>
-        <td style="text-align: center; font-weight: bold; color: #475569;">4</td>
+        <td style="text-align: center; font-weight: bold; color: #475569; white-space: nowrap;">4</td>
         <td><strong>Vivek Sharma</strong></td>
         <td style="text-align: center; white-space: nowrap;">1991-06-10</td>
         <td style="white-space: nowrap;"><span class="badge badge-adult">ADULT</span> 35 yrs</td>
@@ -475,40 +495,35 @@
       Single-kart drivers must meet the strict minimum height requirement of 5'5" (165 cm). Full-face protective helmets must be securely buckled prior to entering the pit lane and accelerating. Closed-toe footwear is mandatory at all times (no crocs, sandals, or loose footwear). Loose clothing must be tucked in; long hair must be tied securely above shoulder level. <strong>ZERO-TOLERANCE BUMPING POLICY:</strong> Intentional ramming, bumping, or hazardous driving results in immediate disqualification and ejection from the circuit on first warning without refund.
     </div>
   
-
       <div class="clause-item">
         <span class="clause-num">3.</span> <span class="clause-title">Voluntary Assumption of Inherent Operational Risks:</span>
         The participant and their guardian knowingly, voluntarily, and freely assume all inherent risks associated with high-speed motorized karting, trampoline jumping, collisions, vehicle rollover, mechanical failures, falls, fractures, sprains, disability, spinal injury, or fatal injury. The participant hereby forever releases, discharges, defends, and indemnifies Fun Strikes Entertainment LLP, its affiliates, track marshals, safety stewards, employees, and agents from any and all legal suits, damages, or liabilities.
       </div>
-
       <div class="clause-item">
         <span class="clause-num">4.</span> <span class="clause-title">Customer Property Damage &amp; Equipment Breakage Liability:</span>
         Any physical damage, breakage, loss, or impairment caused to go-karts, engines, chassis, safety barriers, trampolines, foam pit, safety gear, or venue property resulting from reckless conduct, disobeying track marshals, or rule violations must be paid in full by the customer as assessed by management before departing the facility premises.
       </div>
-
       <div class="clause-item clause-highlight">
         <span class="clause-num">5.</span> <span class="clause-title">Strict 100% Non-Refundable &amp; Non-Transferable Payment Policy:</span>
         All ticket fees, admissions, and session charges are <strong>STRICTLY 100% NON-REFUNDABLE AND NON-TRANSFERABLE</strong> once paid. No refunds, credits, or chargebacks shall be granted if a participant voluntarily withdraws, claims they "did not have fun", is disqualified for safety violations, or in the event of equipment downtime.
       </div>
-
       <div class="clause-item">
         <span class="clause-num">6.</span> <span class="clause-title">Medical Fitness Warranty &amp; Health Restrictions:</span>
         The participant warrants that all covered participants are in sound physical and psychological health. Participation is strictly prohibited for individuals who are pregnant, suffer from hypertension, cardiovascular disorders, neck/back/spinal impairments, recent surgical operations, or who are impaired by alcohol, narcotics, or medications.
       </div>
-
       <div class="clause-item">
         <span class="clause-num">7.</span> <span class="clause-title">CCTV Surveillance, Security &amp; Media Release:</span>
         The facility operates under continuous 24/7 CCTV surveillance. The participant grants Fun Strikes Entertainment LLP irrevocable permission to record, store, and utilize photographs and video recordings for venue security, promotional broadcasts, and safety investigations without monetary claim.
       </div>
-
       <div class="clause-item">
-        <span class="clause-num">8.</span> <span class="clause-title">Governing Law, Dispute Jurisdiction &amp; Severability:</span>
-        This legal instrument is executed under and governed by the laws of the Republic of India. Any and all disputes arising from participation shall fall under the exclusive judicial jurisdiction of the competent courts in Surat, Gujarat. If any provision is deemed unenforceable, the validity of all remaining covenants shall remain unaffected.
+        <span class="clause-num">8.</span> <span class="clause-title">Governing Jurisdiction &amp; Severability:</span>
+        This agreement is governed by the laws of India. Any legal dispute or proceeding arising out of or related to this waiver shall be instituted exclusively in the competent courts having jurisdiction over Surat, Gujarat, India.
       </div>
     </div>
 
     <div class="decl-box">
-      <strong>Solemn Affirmation &amp; Legal Declaration:</strong> I, the undersigned participant / authorized parent / legal guardian, do hereby declare under penalty of law that I have attained 18 years of age, all information furnished in Schedules I &amp; II is accurate, and I have carefully read, understood, and voluntarily executed each and every covenant, liability waiver, and safety rule set forth in this document on behalf of myself and all covered participants.
+      <strong>Solemn Affirmation &amp; Legal Declaration:</strong>
+      I, the undersigned participant / authorized parent / legal guardian, do hereby declare under penalty of law that I have attained 18 years of age, all information furnished in Schedules I &amp; II is accurate, and I have carefully read, understood, and voluntarily executed each and every covenant, liability waiver, and safety rule set forth in this document on behalf of myself and all covered participants.
     </div>
 
     <div class="exec-wrap">
@@ -517,7 +532,7 @@
           <td style="width: 50%;">
             <div class="sig-title">Signature of Participant / Legal Guardian</div>
             <div class="sig-img-wrap">
-              <img src="data:image/png;base64,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" alt="Customer Signature" />
+              <img src="data:image/png;base64,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" alt="Customer Signature" style="max-height:34px;max-width:200px;object-fit:contain;display:block;" />
             </div>
             <div class="sig-signer-name">Aarav Sharma (Primary Signer &amp; Guardian)</div>
           </td>
@@ -547,8 +562,8 @@
 
       <div class="doc-footer">
         <span class="doc-footer-left">Fun Strikes Entertainment LLP</span>
-        <span class="doc-footer-center">Made with ❤ by Aryan &amp; NexoraOneSolution</span>
-        <span class="doc-footer-right">Official Record: FS-QM4B9Z &bull; IT Act 2000 &sect; 4 &amp; 10A</span>
+        <span class="doc-footer-center">Made with ❤️ by Aryan and NexoraOneSolution</span>
+        <span class="doc-footer-right">Fun Strike! Game Zone &bull; Gauravpath Road, Pal &bull; Surat</span>
       </div>
     </div>
   </div>
