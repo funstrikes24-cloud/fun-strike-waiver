@@ -11,9 +11,9 @@ if (!fs.existsSync(PRINTABLES_DIR)) {
 const LOGO_PATH = path.join(BASE_DIR, 'assets', 'funstrike-logo.png');
 const QR_DIR = path.join(BASE_DIR, 'assets', 'qr');
 
-const PAL_GOKART_URL = 'https://funstrikes24-cloud.github.io/fun-strike-waiver/pal-gokart';
-const PAL_TRAMPOLINE_URL = 'https://funstrikes24-cloud.github.io/fun-strike-waiver/pal-trampoline';
-const MV_TRAMPOLINE_URL = 'https://funstrikes24-cloud.github.io/fun-strike-waiver/motavarachha-softplay';
+const PAL_GOKART_URL = 'https://gokart.nexoraonesolution.com';
+const PAL_TRAMPOLINE_URL = 'https://pal.nexoraonesolution.com';
+const MV_TRAMPOLINE_URL = 'https://varachha.nexoraonesolution.com';
 
 async function generate() {
   const logoBase64 = fs.readFileSync(LOGO_PATH).toString('base64');

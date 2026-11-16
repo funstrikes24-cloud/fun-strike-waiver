@@ -275,24 +275,26 @@
   document.getElementById("btnNow").addEventListener("click", setNowDateTime);
   dobEl.addEventListener("change", () => updateAgeTag(dobEl.value, primaryAgeTag));
 
-  // Height auto-conversion
-  minHeightInEl.addEventListener("input", () => {
-    const val = parseFloat(minHeightInEl.value);
-    if (!Number.isNaN(val) && val >= 0) {
-      minHeightCmEl.value = (val * 2.54).toFixed(1);
-    } else if (minHeightInEl.value === "") {
-      minHeightCmEl.value = "";
-    }
-  });
+  // Height auto-conversion (Go-Karting only)
+  if (minHeightInEl && minHeightCmEl) {
+    minHeightInEl.addEventListener("input", () => {
+      const val = parseFloat(minHeightInEl.value);
+      if (!Number.isNaN(val) && val >= 0) {
+        minHeightCmEl.value = (val * 2.54).toFixed(1);
+      } else if (minHeightInEl.value === "") {
+        minHeightCmEl.value = "";
+      }
+    });
 
-  minHeightCmEl.addEventListener("input", () => {
-    const val = parseFloat(minHeightCmEl.value);
-    if (!Number.isNaN(val) && val >= 0) {
-      minHeightInEl.value = (val / 2.54).toFixed(1);
-    } else if (minHeightCmEl.value === "") {
-      minHeightInEl.value = "";
-    }
-  });
+    minHeightCmEl.addEventListener("input", () => {
+      const val = parseFloat(minHeightCmEl.value);
+      if (!Number.isNaN(val) && val >= 0) {
+        minHeightInEl.value = (val / 2.54).toFixed(1);
+      } else if (minHeightCmEl.value === "") {
+        minHeightInEl.value = "";
+      }
+    });
+  }
 
   // Zone Selection & Multi-Participant Management
   function getEffectiveZone() {
