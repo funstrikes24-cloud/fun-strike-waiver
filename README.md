@@ -24,11 +24,11 @@ There is no generic portal. Each activity and branch has its own standalone dedi
 
 | Branch | Activity | Target Audience | Live Custom Domain | Fallback URL | Standee PDF |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Pal (Gauravpath Road)** | **Go-Karting Track** | **18+ Only &bull; Min 5'5" (165 cm)** | [`https://gokart.nexoraonesolution.com`](https://gokart.nexoraonesolution.com) | [`.../pal-gokart`](https://funstrikes24-cloud.github.io/fun-strike-waiver/pal-gokart) | [`printables/Fun-Strike-QR-Pal-GoKarting.pdf`](printables/Fun-Strike-QR-Pal-GoKarting.pdf) |
-| **Pal (Gauravpath Road)** | **Soft Play &amp; Trampoline** | **All Ages (Jump Arena)** | [`https://pal.nexoraonesolution.com`](https://pal.nexoraonesolution.com) | [`.../pal-trampoline`](https://funstrikes24-cloud.github.io/fun-strike-waiver/pal-trampoline) | [`printables/Fun-Strike-QR-Pal-Trampoline.pdf`](printables/Fun-Strike-QR-Pal-Trampoline.pdf) |
-| **Mota Varachha** | **Soft Play &amp; Trampoline** | **All Ages (Jump Arena)** | [`https://varachha.nexoraonesolution.com`](https://varachha.nexoraonesolution.com) | [`.../motavarachha-softplay`](https://funstrikes24-cloud.github.io/fun-strike-waiver/motavarachha-softplay) | [`printables/Fun-Strike-QR-MotaVarachha-Trampoline.pdf`](printables/Fun-Strike-QR-MotaVarachha-Trampoline.pdf) |
+| **Pal (Gauravpath Road)** | **Go-Karting Track** | **18+ Only &bull; Min 5'5" (165 cm)** | [`https://gokart.funstrike.nexoraonesolution.com`](https://gokart.funstrike.nexoraonesolution.com) | [`.../pal-gokart`](https://funstrikes24-cloud.github.io/fun-strike-waiver/pal-gokart) | [`printables/Fun-Strike-QR-Pal-GoKarting.pdf`](printables/Fun-Strike-QR-Pal-GoKarting.pdf) |
+| **Pal (Gauravpath Road)** | **Soft Play &amp; Trampoline** | **All Ages (Jump Arena)** | [`https://pal.funstrike.nexoraonesolution.com`](https://pal.funstrike.nexoraonesolution.com) | [`.../pal-trampoline`](https://funstrikes24-cloud.github.io/fun-strike-waiver/pal-trampoline) | [`printables/Fun-Strike-QR-Pal-Trampoline.pdf`](printables/Fun-Strike-QR-Pal-Trampoline.pdf) |
+| **Mota Varachha** | **Soft Play &amp; Trampoline** | **All Ages (Jump Arena)** | [`https://varachha.funstrike.nexoraonesolution.com`](https://varachha.funstrike.nexoraonesolution.com) | [`.../motavarachha-softplay`](https://funstrikes24-cloud.github.io/fun-strike-waiver/motavarachha-softplay) | [`printables/Fun-Strike-QR-MotaVarachha-Trampoline.pdf`](printables/Fun-Strike-QR-MotaVarachha-Trampoline.pdf) |
 
-> 📖 **DNS & Domain Setup**: See [`docs/DNS-DOMAIN-SETUP.md`](docs/DNS-DOMAIN-SETUP.md) for step-by-step DNS CNAME and Cloudflare/cPanel redirection rules.
+> 📖 **DNS & Domain Setup**: See [`docs/DNS-DOMAIN-SETUP.md`](docs/DNS-DOMAIN-SETUP.md) for step-by-step DNS CNAME and Cloudflare/cPanel redirection rules for `*.funstrike.nexoraonesolution.com`.
 
 ---
 
