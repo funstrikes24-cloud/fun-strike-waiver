@@ -1022,6 +1022,7 @@ function escapeHtml_(str) {
 }
 
 function buildPrintableHtml_(r) {
+  const isGokart = /kart/i.test(r.activity || '') || /kart/i.test(r.zone || '');
   const riderLines = String(r.allRiders || r.fullName || "")
     .split(/\r?\n/)
     .filter(Boolean);
@@ -1048,50 +1049,79 @@ function buildPrintableHtml_(r) {
 
   return (
     '<!DOCTYPE html><html><head><meta charset="utf-8" />' +
-    "<style>" +
-    "body{font-family:Arial,sans-serif;color:#0f172a;margin:0;padding:16px;font-size:11.5px;line-height:1.38;}" +
-    ".print-bar{display:flex;justify-content:space-between;align-items:center;background:#0f172a;color:#fff;padding:10px 14px;border-radius:6px;margin-bottom:14px;}" +
-    ".print-btn{background:#be123c;color:#fff;border:none;padding:8px 16px;border-radius:5px;font-weight:700;cursor:pointer;font-size:13px;}" +
-    ".sheet{border:1.5px solid #0f172a;padding:16px 20px;}" +
-    ".hdr{text-align:center;border-bottom:2px solid #0f172a;padding-bottom:8px;margin-bottom:10px;}" +
-    ".hdr h1{margin:0;font-size:18px;}" +
-    ".hdr p{margin:3px 0 0;font-weight:700;color:#334155;font-size:12px;}" +
-    ".grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;margin-bottom:10px;}" +
-    ".row{border-bottom:1px solid #cbd5e1;padding:3px 0;}" +
-    ".lbl{font-weight:700;font-size:10.5px;color:#475569;}" +
-    ".box{border:1px solid #94a3b8;padding:8px 10px;margin:8px 0;border-radius:4px;background:#f8fafc;}" +
-    ".warn{border:1.5px solid #dc2626;background:#fef2f2;padding:7px 10px;margin:8px 0;font-size:11px;}" +
-    "ul{margin:4px 0 8px;padding-left:18px;} li{margin-bottom:3px;}" +
-    "table.rtable{width:100%;border-collapse:collapse;margin-top:6px;font-size:11px;}" +
-    "table.rtable th,table.rtable td{border:1px solid #cbd5e1;padding:4px 6px;text-align:left;}" +
-    "table.rtable th{background:#e2e8f0;font-weight:700;}" +
-    ".sig-wrap{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin-top:12px;border-top:1.5px solid #0f172a;padding-top:10px;}" +
-    "@media print{.print-bar{display:none!important;} body{padding:0;}}" +
-    "</style></head><body>" +
-    '<div class="print-bar"><span><strong>Ref:</strong> ' + escapeHtml_(r.refCode) + " &mdash; " + escapeHtml_(r.fullName) + '</span><button class="print-btn" onclick="window.print()">Print / Save PDF</button></div>' +
+    '<style>' +
+    '@page{size:A4 portrait;margin:6mm 8mm;}' +
+    'body{font-family:Arial,sans-serif;color:#0f172a;margin:0;padding:10px;font-size:10px;line-height:1.24;}' +
+    '.print-bar{display:flex;justify-content:space-between;align-items:center;background:#0f172a;color:#fff;padding:8px 12px;border-radius:6px;margin-bottom:10px;}' +
+    '.print-btn{background:#be123c;color:#fff;border:none;padding:7px 14px;border-radius:5px;font-weight:700;cursor:pointer;font-size:12px;}' +
+    '.sheet{border:1.5px solid #0f172a;padding:10px 14px;background:#fff;}' +
+    '.hdr{text-align:center;border-bottom:2px solid #0f172a;padding-bottom:5px;margin-bottom:6px;}' +
+    '.hdr h1{margin:0;font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:0.3px;}' +
+    '.hdr p{margin:2px 0 0;font-weight:700;color:#334155;font-size:11px;}' +
+    '.grid{display:grid;grid-template-columns:1fr 1fr;gap:3px 12px;margin-bottom:6px;}' +
+    '.row{border-bottom:1px solid #cbd5e1;padding:2px 0;font-size:10px;}' +
+    '.lbl{font-weight:700;font-size:9.5px;color:#475569;text-transform:uppercase;}' +
+    '.box{border:1px solid #94a3b8;padding:5px 8px;margin:5px 0;border-radius:4px;background:#f8fafc;}' +
+    'table.rtable{width:100%;border-collapse:collapse;margin-top:3px;font-size:9.8px;}' +
+    'table.rtable th,table.rtable td{border:1px solid #cbd5e1;padding:2.5px 5px;text-align:left;}' +
+    'table.rtable th{background:#e2e8f0;font-weight:700;}' +
+    '.tc-container{margin:6px 0;border:1.5px solid #0f172a;border-radius:4px;padding:6px 8px;background:#ffffff;}' +
+    '.tc-title{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:0.4px;color:#0f172a;border-bottom:1.2px solid #0f172a;padding-bottom:2.5px;margin-bottom:4px;display:flex;justify-content:space-between;}' +
+    '.tc-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;font-size:7.8pt;line-height:1.22;color:#1e293b;}' +
+    '.tc-col{display:flex;flex-direction:column;gap:4px;}' +
+    '.tc-block{background:#f8fafc;border:1px solid #cbd5e1;border-radius:3px;padding:3.5px 5.5px;}' +
+    '.tc-block.highlight{border-color:#dc2626;background:#fef2f2;}' +
+    '.tc-block strong{display:block;font-size:8.1pt;color:#0f172a;margin-bottom:1px;text-transform:uppercase;letter-spacing:0.2px;}' +
+    '.tc-block.highlight strong{color:#991b1b;}' +
+    '.sig-decl{font-size:7.8pt;color:#1e293b;line-height:1.24;margin:5px 0 3px;padding:3.5px 6px;background:#f1f5f9;border-left:3px solid #0f172a;font-weight:600;}' +
+    '.sig-wrap{display:grid;grid-template-columns:2.2fr 1fr 1fr;gap:10px;margin-top:6px;border-top:1.5px solid #0f172a;padding-top:6px;align-items:end;}' +
+    '@media print{.print-bar{display:none!important;} body{padding:0;} .sheet{border:1.2px solid #000;padding:8px 12px;}}' +
+    '</style></head><body>' +
+    '<div class="print-bar"><span><strong>Ref:</strong> ' + escapeHtml_(r.refCode) + ' &mdash; ' + escapeHtml_(r.fullName) + '</span><button class="print-btn" onclick="window.print()">Print / Save PDF</button></div>' +
     '<div class="sheet">' +
-    '<div class="hdr"><h1>Fun Strikes Entertainment LLP</h1><p>Fun Strike! Game Zone &mdash; Participant Waiver &amp; Terms (' + escapeHtml_(r.refCode) + ")</p></div>" +
-    '<div class="row" style="margin-bottom:8px;"><span class="lbl">ACTIVITY / ZONE:</span> <strong>' + escapeHtml_(r.activity || "Go-Karting") + "</strong></div>" +
+    '<div class="hdr"><h1>Fun Strikes Entertainment LLP</h1><p>Fun Strike! Game Zone &mdash; Participant Waiver, Safety Agreement &amp; Terms (' + escapeHtml_(r.refCode) + ')</p></div>' +
+    '<div class="row" style="margin-bottom:6px;"><span class="lbl">ACTIVITY / ZONE:</span> <strong>' + escapeHtml_(r.activity || 'Go-Karting') + '</strong> &bull; <span class="lbl">BRANCH:</span> <strong>' + escapeHtml_(r.branch) + '</strong></div>' +
     '<div class="grid">' +
-    '<div class="row"><span class="lbl">PARTICIPANT NAME:</span> ' + escapeHtml_(r.fullName) + "</div>" +
-    '<div class="row"><span class="lbl">SIGNED BY:</span> ' + escapeHtml_(r.signedBy || r.fullName) + "</div>" +
-    '<div class="row"><span class="lbl">DOB:</span> ' + escapeHtml_(r.dob) + "</div>" +
-    '<div class="row"><span class="lbl">MOBILE:</span> ' + escapeHtml_(r.mobileNumber) + "</div>" +
-    '<div class="row"><span class="lbl">BRANCH:</span> ' + escapeHtml_(r.branch) + "</div>" +
-    '<div class="row"><span class="lbl">EMAIL:</span> ' + escapeHtml_(r.emailId || "—") + "</div>" +
-    '<div class="row"><span class="lbl">MIN HEIGHT:</span> ' + escapeHtml_(r.heightStr) + "</div>" +
-    '<div class="row"><span class="lbl">AGE / ROLE:</span> ' + escapeHtml_(r.ageRole || "—") + "</div>" +
-    "</div>" +
-    '<div class="row"><span class="lbl">ADDRESS:</span> ' + escapeHtml_(r.address) + "</div>" +
-    '<div class="box"><strong>PARTICIPANTS COVERED (' + escapeHtml_(r.totalRiders) + '):</strong><table class="rtable"><thead><tr><th>#</th><th>Full Name</th><th>DOB</th><th>Age</th><th>Relation</th></tr></thead><tbody>' + ridersTableRows + "</tbody></table></div>" +
-    '<div class="warn"><strong>SAFETY SUMMARY:</strong> Follow all activity rules (Go-Karting: Strictly 18+ adult policy — under-18 sole responsibility accepted by signer; min height 5\'5" (165 cm), helmets mandatory, secure hair/clothing, closed-toe shoes, zero bumping, 1st-warning disqualification; Soft Play &amp; Trampoline: grip socks mandatory, 1 jumper per mat, no flips, active parent supervision, feet-first foam pit entry).</div>' +
-    '<div class="box"><strong>DAMAGE &amp; BREAKAGE LIABILITY:</strong> Any damage or breakage caused by the customer/participant to go-karts, helmets, track barriers, trampolines, soft-play structures, or venue property must be paid in full by the customer.<br/><br/>' +
-    "<strong>STRICT NO-REFUND POLICY:</strong> All payments are 100% non-refundable and non-transferable once paid, including if a customer changes their mind, claims they did not have fun, is removed for breaking rules, or in the event of equipment/kart downtime (replacement equipment or rescheduled time may be offered at management discretion; no monetary refund).</div>" +
-    "<p><strong>Agreed to Terms &amp; Conditions:</strong> " + escapeHtml_(r.agreed) + "</p>" +
+    '<div class="row"><span class="lbl">PARTICIPANT NAME:</span> ' + escapeHtml_(r.fullName) + '</div>' +
+    '<div class="row"><span class="lbl">SIGNED BY:</span> ' + escapeHtml_(r.signedBy || r.fullName) + '</div>' +
+    '<div class="row"><span class="lbl">DOB:</span> ' + escapeHtml_(r.dob) + '</div>' +
+    '<div class="row"><span class="lbl">MOBILE:</span> ' + escapeHtml_(r.mobileNumber) + '</div>' +
+    '<div class="row"><span class="lbl">MIN HEIGHT:</span> ' + escapeHtml_(r.heightStr) + '</div>' +
+    '<div class="row"><span class="lbl">EMAIL:</span> ' + escapeHtml_(r.emailId || '—') + '</div>' +
+    '<div class="row"><span class="lbl">AGE / ROLE:</span> ' + escapeHtml_(r.ageRole || '—') + '</div>' +
+    '<div class="row"><span class="lbl">ADDRESS:</span> ' + escapeHtml_(r.address) + '</div>' +
+    '</div>' +
+    '<div class="box"><strong>PARTICIPANTS COVERED (' + escapeHtml_(r.totalRiders) + '):</strong><table class="rtable"><thead><tr><th>#</th><th>Full Name</th><th>DOB</th><th>Age</th><th>Relation</th></tr></thead><tbody>' + ridersTableRows + '</tbody></table></div>' +
+    
+    '<!-- COMPLETE LEGAL TERMS & CONDITIONS SECTION -->' +
+    '<div class="tc-container">' +
+    '<div class="tc-title"><span>TERMS &amp; CONDITIONS, SAFETY RULES &amp; LIABILITY RELEASE</span><span>LEGAL BINDING AGREEMENT</span></div>' +
+    '<div class="tc-grid">' +
+    '<div class="tc-col">' +
+    (isGokart
+      ? '<div class="tc-block highlight"><strong>⚠️ STRICT 18+ POLICY &amp; MINOR SOLE RESPONSIBILITY CLAUSE:</strong> Go-Karting is designed and operated for adults (18+). If an individual under 18 years of age signs this waiver or operates a kart, the participant and their parent/legal guardian explicitly acknowledge and declare that <strong>100% OF ALL RESPONSIBILITY, ACCIDENTAL RISKS, PERSONAL INJURIES, VEHICLE DAMAGES, AND LEGAL LIABILITIES REST ENTIRELY WITH THEM</strong>. Fun Strikes Entertainment LLP bears ZERO liability.</div>' +
+        '<div class="tc-block highlight"><strong>🏁 GO-KARTING RULES &amp; HEIGHT REQUIREMENT:</strong> Single-kart drivers must be at least 5\'5" (165 cm) tall. Double karts: passenger min 40" (102 cm) with adult 18+ driver. Full-face helmets must be secured before throttle. Closed-toe shoes mandatory (no crocs, slippers, or bare feet). Tie long hair above shoulder level; tuck in loose clothes. <strong>ZERO BUMPING:</strong> Intentional ramming results in immediate disqualification on 1st warning without refund.</div>'
+      : '<div class="tc-block highlight"><strong>🧦 TRAMPOLINE &amp; SOFT PLAY SAFETY PROTOCOL:</strong> Approved anti-slip grip socks must be worn at all times by all jumpers. One jumper per trampoline mat at all times; no double-bouncing, horseplay, or wrestling. Inverted flips, somersaults, and uncontrolled stunts prohibited. Empty all pockets (no phones, keys, or sharp items). Children under 10 must be actively supervised by a parent/guardian. Foam pit safety: feet-first or bottom landing only; diving headfirst is strictly prohibited.</div>') +
+    '<div class="tc-block"><strong>⚖️ ASSUMPTION OF INHERENT RISK &amp; RELEASE OF LIABILITY:</strong> I knowingly, freely, and voluntarily assume all inherent risks of participation (including collisions, sudden impact, physical exertion, falls, fractures, sprains, illness, permanent disability, or property loss). On behalf of myself and all listed participants, I hereby forever release, discharge, defend, and hold harmless Fun Strikes Entertainment LLP, its partners, owners, operators, directors, track marshals, safety crew, and agents from any and all claims, demands, liabilities, actions, or lawsuits.</div>' +
+    '<div class="tc-block"><strong>🩺 MEDICAL FITNESS &amp; PHYSICAL CONDITION:</strong> I certify that all listed participants are in good physical health and have no medical impairments that would make participation unsafe. Participation is strictly prohibited for individuals who are pregnant, have heart conditions, neck, back, or spinal ailments, recent surgeries, or who are under the influence of alcohol, drugs, or prescription narcotics.</div>' +
+    '</div>' +
+    '<div class="tc-col">' +
+    '<div class="tc-block highlight"><strong>🔧 CUSTOMER DAMAGE &amp; BREAKAGE LIABILITY:</strong> Any damage, breakage, or loss caused by the customer or any participant under this form to go-karts, helmets, track barriers, trampolines, foam pit, soft-play structures, or venue property due to reckless behavior, rule violations, negligence, or misuse must be paid in full by the customer as assessed by management before leaving the venue.</div>' +
+    '<div class="tc-block highlight"><strong>🚫 STRICT 100% NO-REFUND POLICY:</strong> All ticket sales, sessions, and payments are 100% NON-REFUNDABLE, NON-CANCELLABLE, AND NON-TRANSFERABLE once paid, including if a customer changes their mind, feels scared, dislikes the experience, claims they "did not have fun", is removed for breaking safety rules, or in the event of equipment downtime (rescheduled time or replacement equipment may be offered at management discretion; no monetary refund).</div>' +
+    '<div class="tc-block"><strong>📸 MEDIA RELEASE &amp; CCTV SURVEILLANCE:</strong> Fun Strikes Entertainment LLP reserves the right to capture and use CCTV security footage, photographs, and video recordings of participants for safety, security, and promotional media without financial compensation.</div>' +
+    '<div class="tc-block"><strong>🏛️ GOVERNING LAW &amp; LEGAL JURISDICTION:</strong> This agreement is governed by the laws of India. All legal claims, disputes, or proceedings arising out of this agreement shall be subject exclusively to the jurisdiction of the competent courts in Surat, Gujarat.</div>' +
+    '</div>' +
+    '</div>' +
+    '</div>' +
+    
+    '<div class="sig-decl"><strong>LEGAL ACKNOWLEDGEMENT &amp; DECLARATION:</strong> By signing below, I certify under penalty of law that I am at least 18 years of age (or the authorized parent/legal guardian of all minor participants listed), all information provided on this form is accurate, and I have read, understood, and agreed to every safety rule, liability waiver, damage policy, and term stated above on behalf of myself and all covered participants.</div>' +
+    '<div class="row" style="border:none;padding:2px 0;"><span class="lbl">TERMS &amp; CONDITIONS AGREED:</span> <strong>' + escapeHtml_(r.agreed) + '</strong>' +
+    (isGokart ? ' &bull; <span class="lbl">18+ SOLE LIABILITY ACKNOWLEDGED:</span> <strong>YES</strong>' : '') +
+    '</div>' +
     '<div class="sig-wrap">' +
-    '<div><div class="lbl">CUSTOMER / GUARDIAN SIGNATURE:</div>' + sigImgHtml + "</div>" +
-    '<div><div class="lbl">DATE:</div><div>' + escapeHtml_(r.signDate) + "</div></div>" +
-    '<div><div class="lbl">TIME:</div><div>' + escapeHtml_(r.signTime) + "</div></div>" +
-    "</div></div></body></html>"
+    '<div><div class="lbl">CUSTOMER / GUARDIAN SIGNATURE:</div>' + sigImgHtml + '</div>' +
+    '<div><div class="lbl">DATE:</div><div style="font-size:12px;font-weight:700;">' + escapeHtml_(r.signDate) + '</div></div>' +
+    '<div><div class="lbl">TIME:</div><div style="font-size:12px;font-weight:700;">' + escapeHtml_(r.signTime) + '</div></div>' +
+    '</div></div></body></html>'
   );
 }
