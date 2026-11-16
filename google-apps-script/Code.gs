@@ -758,7 +758,10 @@ function getRootDatabaseFolder_(props) {
 
 function getOrCreateFolder_(parentFolder, folderName) {
   const it = parentFolder.getFoldersByName(folderName);
-  if (it.hasNext()) return it.next();
+  while (it.hasNext()) {
+    const f = it.next();
+    if (!f.isTrashed()) return f;
+  }
   return parentFolder.createFolder(folderName);
 }
 
@@ -799,20 +802,25 @@ function getSpreadsheetByPropOrTitle_(props, rootFolder, propKey, title) {
 
   // Look in 01 - Live Waivers first
   let files = liveFolder.getFilesByName(title);
-  if (files.hasNext()) {
-    const ss = SpreadsheetApp.openById(files.next().getId());
-    props.setProperty(propKey, ss.getId());
-    return ss;
+  while (files.hasNext()) {
+    const f = files.next();
+    if (!f.isTrashed()) {
+      const ss = SpreadsheetApp.openById(f.getId());
+      props.setProperty(propKey, ss.getId());
+      return ss;
+    }
   }
 
   // Look in rootFolder (migration from old layout)
   files = rootFolder.getFilesByName(title);
-  if (files.hasNext()) {
+  while (files.hasNext()) {
     const f = files.next();
-    f.moveTo(liveFolder);
-    const ss = SpreadsheetApp.openById(f.getId());
-    props.setProperty(propKey, ss.getId());
-    return ss;
+    if (!f.isTrashed()) {
+      f.moveTo(liveFolder);
+      const ss = SpreadsheetApp.openById(f.getId());
+      props.setProperty(propKey, ss.getId());
+      return ss;
+    }
   }
 
   // Create brand new sheet in liveFolder
