@@ -5,6 +5,7 @@
   <br /><br />
 
   [![Operational Status](https://img.shields.io/badge/Status-100%25%20Production%20Ready-brightgreen?style=for-the-badge)](https://funstrikes24-cloud.github.io/fun-strike-waiver/)
+  [![Commercial License](https://img.shields.io/badge/License-Proprietary%20%26%20Commercial-red?style=for-the-badge)](LICENSE)
   [![Legal Compliance](https://img.shields.io/badge/Legal%20Framework-IT%20Act%202000%20%C2%A7%204%20%26%2010A-blue?style=for-the-badge)](docs/STAFF-TRAINING-AND-USER-MANUAL.md)
   [![Privacy Compliance](https://img.shields.io/badge/Data%20Privacy-DPDP%20Act%202023%20Compliant-purple?style=for-the-badge)](docs/STAFF-TRAINING-AND-USER-MANUAL.md)
   [![Responsive](https://img.shields.io/badge/UI-Mobile%20%26%20Tablet%20First-orange?style=for-the-badge)](styles.css)
@@ -117,47 +118,57 @@ flowchart TD
 
 ```text
 fun-strike-waiver/
-├── assets/                                # Core static design assets
-│   ├── css/
-│   │   └── styles.css                    # Unified responsive stylesheet
-│   ├── js/
-│   │   └── app.js                        # Form validation, dynamic rows & signature pad
+├── LICENSE                                # Commercial Proprietary License Agreement (Not Open Source)
+├── README.md                              # Master enterprise repository documentation
+├── index.html                             # Root router (redirects to /pal-gokart/)
+├── styles.css                             # Production unified responsive stylesheet
+├── app.js                                 # Production client-side validation & signature logic
+├── 404.html                               # Fallback 404 error handler
+├── CNAME                                  # Custom domain binding
+├── generate-qr-pdf.js                     # Root CLI shortcut to QR standee generator
+│
+├── assets/                                # Core static assets
 │   ├── images/
-│   │   └── funstrike-logo.png            # Official brand logo
-│   └── qr/                               # 600+ DPI high-contrast vector QR codes
+│   │   └── funstrike-logo.png             # Official brand logo
+│   └── qr/                                # 600+ DPI high-contrast vector QR codes
 │       ├── qr-pal-gokart.png
 │       ├── qr-pal-trampoline.png
 │       └── qr-motavarachha-softplay.png
 │
-├── docs/                                  # Complete Operational Manuals & Guides
-│   ├── STAFF-TRAINING-AND-USER-MANUAL.md # Official Staff Training & Operating SOP
-│   ├── GOOGLE-SHEETS-SETUP.md            # Google Sheets master sheet & script guide
-│   ├── DNS-DOMAIN-SETUP.md               # Custom subdomains & Cloudflare/cPanel DNS
-│   └── ARCHITECTURE.md                   # Directory routing & technical specifications
+├── docs/                                  # Complete Operational Manuals & SOPs
+│   ├── STAFF-TRAINING-AND-USER-MANUAL.md  # Official Staff Training, Cashier & Marshal SOP
+│   ├── GOOGLE-SHEETS-SETUP.md             # Google Sheets & Apps Script cloud setup guide
+│   ├── DNS-DOMAIN-SETUP.md                # Subdomains & DNS configuration
+│   └── ARCHITECTURE.md                    # Technical system architecture specifications
 │
 ├── google-apps-script/
-│   └── Code.gs                           # Google Apps Script V8 backend receiver & print engine
+│   └── Code.gs                            # Cloud backend receiver & dynamic HTML print generator
 │
-├── printables/                            # Ready-to-print high-definition PDFs
-│   ├── Fun-Strike-All-Branches-QR-Codes.pdf       # 3-Page Master Standee Pack
+├── scripts/                               # Automation, verification & maintenance tools
+│   ├── generate-qr-pdf.js                 # High-DPI counter standee PDF generator
+│   ├── sync-flow-code-gs.js               # Synchronizes print HTML templates to Apps Script
+│   ├── test-natural-flow.js               # Core natural-flow print renderer engine
+│   └── test-1-10-20.js                    # Automated multi-participant verification suite (1, 10, 20)
+│
+├── printables/                            # Verified print outputs & vector templates
+│   ├── Fun-Strike-All-Branches-QR-Codes.pdf       # 3-Page Master Acrylic Standee Pack
 │   ├── Fun-Strike-QR-Pal-GoKarting.pdf           # Pal Go-Karting Counter Standee
 │   ├── Fun-Strike-QR-Pal-Trampoline.pdf          # Pal Trampoline Counter Standee
 │   ├── Fun-Strike-QR-MotaVarachha-Trampoline.pdf # Mota Varachha Standee
-│   ├── flow-gokart-3riders.pdf                   # Continuous flow test print (3 drivers)
-│   ├── flow-gokart-20riders.pdf                  # Continuous flow test print (20 drivers)
-│   └── test-waiver.html                          # Local printable HTML template preview
+│   ├── verify-gokart-1.pdf                       # Verified 1-driver legal printout
+│   ├── verify-gokart-10.pdf                      # Verified 10-driver legal printout
+│   ├── verify-gokart-20.pdf                      # Verified 20-driver legal printout
+│   ├── verify-trampoline-1.pdf                   # Verified 1-jumper legal printout
+│   ├── verify-trampoline-10.pdf                  # Verified 10-jumper legal printout
+│   ├── verify-trampoline-20.pdf                  # Verified 20-jumper legal printout
+│   └── test-waiver.html                          # Pure HTML test template with live mock data
 │
 ├── pal-gokart/                            # Dedicated Pal Go-Karting Portal (18+ & 5'5"+)
 │   └── index.html
 ├── pal-trampoline/                        # Dedicated Pal Soft Play & Trampoline Portal
 │   └── index.html
-├── motavarachha-softplay/                 # Dedicated Mota Varachha Trampoline Portal
-│   └── index.html
-│
-├── index.html                             # Root router (redirects to /pal-gokart/)
-├── styles.css                             # Root stylesheet link
-├── app.js                                 # Root application script link
-└── README.md                              # Master repository documentation
+└── motavarachha-softplay/                 # Dedicated Mota Varachha Trampoline Portal
+    └── index.html
 ```
 
 ---
@@ -195,6 +206,39 @@ To ensure maximum scanning speed and durability at the reception desk:
    * **Margins**: `None` / `Minimum`
 3. Insert the printed photo sheet into a **T-shaped or L-shaped Clear Acrylic Countertop Standee ($8.5\times 11\text{ in}$ / A4)**.
 4. Position at eye level next to each cash register and queue stanchion.
+
+---
+
+## 🧪 Automated Print Verification Suite (1, 10, & 20 Participants)
+
+To guarantee that any future CSS or legal clause modifications never cause page overflows, overlaps, or broken borders, an automated headless test runner is included:
+
+```bash
+# Run multi-participant regression tests (1, 10, and 20 riders across both Go-Karting & Trampoline)
+node scripts/test-1-10-20.js
+```
+
+* **Regression Tests Checked**:
+  * **1 Participant**: Validates compact 2-page layout with spacious footer and zero orphan blocks.
+  * **10 Participants**: Validates clean split across pages with repeating headers and footers.
+  * **20 Participants**: Validates maximum group check-in fitting into a 2-page layout without clipping or footer collisions.
+  * **Zero Gray Space**: Validates 100% white background across all pages.
+  * **Single-Line Name Enforcement**: Ensures long names (`white-space: nowrap;`) never break into multiline rows.
+
+---
+
+## 🔒 Intellectual Property & Commercial License (Not Open Source)
+
+> [!IMPORTANT]
+> **PROPRIETARY & COMMERCIALLY LICENSABLE SOFTWARE**  
+> This software platform, including its source code, print generation engine, Apps Script routines, and operational training modules, is **NOT OPEN SOURCE**. It is the exclusive, strictly confidential proprietary property of **Fun Strikes Entertainment LLP** and its lead architect, **NexoraOneSolution (Aryan Pandya)**.
+
+* **Closed Source**: Possession of, access to, or viewing of this repository does **not** grant any public redistribution, cloning, commercial re-use, white-labeling, or reverse-engineering rights.
+* **Permitted Use**: Limited strictly to authorized venues and management of Fun Strikes Entertainment LLP in Surat, Gujarat.
+* **Commercial Inquiries & White-Label Licensing**: This system is available for enterprise commercial licensing and bespoke customization for other entertainment centers, amusement parks, trampoline parks, and motorsports arenas.
+  * **Lead Architect & Tech Partner**: Aryan Pandya ([NexoraOneSolution](https://nexoraonesolution.com/))
+  * **Inquiries**: `legal@nexoraonesolution.com` &bull; `pandyaaryanp348@gmail.com`
+  * **Official Agreement**: Please review the full legal agreement in [`LICENSE`](LICENSE).
 
 ---
 

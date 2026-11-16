@@ -1,0 +1,84 @@
+PROPRIETARY & COMMERCIAL SOFTWARE LICENSE AGREEMENT
+=====================================================
+
+Copyright (c) 2026 Fun Strikes Entertainment LLP & NexoraOneSolution (Aryan Pandya).
+All Rights Reserved.
+
+NOTICE: THIS IS NOT OPEN-SOURCE SOFTWARE.
+
+This software, its source code, architecture, stylesheets, scripts, graphical assets,
+database schemas, operational manuals, print engine algorithms, and associated
+documentation (collectively referred to as the "Software") are the strictly confidential,
+proprietary, and exclusive intellectual property of Fun Strikes Entertainment LLP and
+its lead software architect, NexoraOneSolution / Aryan Pandya.
+
+1. PROPRIETARY CLASSIFICATION & NON-OPEN SOURCE NOTICE
+------------------------------------------------------
+This Software is NOT licensed under the MIT License, Apache License, GNU General Public
+License (GPL), BSD License, or any other open-source, permissive, or copyleft license.
+Possession of, access to, or viewing of this source code (whether via private or public
+version control repositories, inspection tools, or distribution archives) DOES NOT convey
+any right, title, license, or interest in or to the Software.
+
+2. GRANT OF LIMITED USE
+-----------------------
+A limited, revocable, non-exclusive, non-transferable internal operating license is granted
+solely to authorized personnel of Fun Strikes Entertainment LLP for the explicit purpose of
+conducting official participant check-ins, safety indemnification, queue management, and
+billing record verification across its authorized game zone venues located in Surat, Gujarat,
+India.
+
+3. STRICT PROHIBITIONS & COMMERCIAL RESTRICTIONS
+------------------------------------------------
+Unless explicitly authorized under a formal, written, executed Commercial Licensing Agreement
+signed by both Fun Strikes Entertainment LLP and NexoraOneSolution:
+
+   a. REPRODUCTION & DISTRIBUTION: You may not copy, clone, distribute, publish, host, mirror,
+      lease, rent, broadcast, or transmit this repository, source code, or any derivative work.
+   b. COMMERCIAL EXPLOITATION: You may not use, adapt, or deploy this Software or its print
+      generation architecture for any other commercial venue, family entertainment center,
+      trampoline park, go-karting circuit, or amusement enterprise.
+   c. MODIFICATION & DERIVATIVE WORKS: You may not alter, modify, translate, adapt, or create
+      derivative works based on this Software.
+   d. REVERSE ENGINEERING: You may not decompile, reverse-engineer, disassemble, or attempt to
+      derive the source logic, Apps Script backend routines, or dynamic PDF print engines.
+   e. BRAND & CREDIT TAMPERING: You may not remove, alter, obscure, or suppress any copyright,
+      trademark notices, attribution credits ("Made with ❤️ by Aryan and NexoraOneSolution"),
+      or legal compliance statements embedded within the web forms, printable waivers, or source code.
+
+4. COMMERCIAL LICENSING & INQUIRIES
+-----------------------------------
+This software platform is available for commercial enterprise licensing, customization,
+and white-label deployment for amusement parks, motorsports circuits, and sports arenas.
+For commercial licensing inquiries, enterprise deployment rights, or partnership agreements,
+please contact:
+
+   • Lead Architect & Technology Partner:
+     Aryan Pandya / NexoraOneSolution
+     Website: https://nexoraonesolution.com/
+     LinkedIn: https://www.linkedin.com/in/aryanpandya
+     Email: legal@nexoraonesolution.com / pandyaaryanp348@gmail.com
+
+   • Client & Venue Rights Holder:
+     Fun Strikes Entertainment LLP
+     Surat, Gujarat, India
+     Contact: +91 76005 57671
+
+5. DATA PRIVACY & STATUTORY COMPLIANCE
+--------------------------------------
+All operations conducted under this Software adhere strictly to:
+   • The Indian Information Technology Act, 2000 (Sections 4 & 10A)
+   • The Digital Personal Data Protection Act, 2023 (DPDP Act)
+
+6. DISCLAIMER OF WARRANTY & LIMITATION OF LIABILITY
+---------------------------------------------------
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
+NON-INFRINGEMENT. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR AUTHORS BE LIABLE FOR ANY CLAIM,
+DAMAGES, OR OTHER LIABILITY ARISING FROM THE USE OR MISUSE OF THIS SOFTWARE.
+
+7. GOVERNING LAW & EXCLUSIVE JURISDICTION
+-----------------------------------------
+This Agreement and any disputes arising out of or related to this Software shall be governed
+exclusively by the laws of the Republic of India. The competent courts in Surat, Gujarat, India,
+shall have exclusive territorial and subject-matter jurisdiction.
