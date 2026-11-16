@@ -798,4 +798,6 @@ function buildContinuousDynamicHtml(r) {
 </html>`;
 }
 
-module.exports = { buildContinuousDynamicHtml };
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { buildContinuousDynamicHtml };
+}

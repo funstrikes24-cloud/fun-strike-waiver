@@ -6,8 +6,11 @@ let code = fs.readFileSync(codePath, 'utf8');
 const flowScript = fs.readFileSync('E:/Aryan/fun-strikes-waiver/scripts/test-natural-flow.js', 'utf8');
 
 const fnStartInRenderer = flowScript.indexOf('function buildContinuousDynamicHtml(r) {');
-const fnEndInRenderer = flowScript.indexOf('// Test Suite:');
-let fnBody = flowScript.slice(fnStartInRenderer, fnEndInRenderer).trim();
+const exportPos = flowScript.indexOf('module.exports');
+let fnBody = (exportPos !== -1 ? flowScript.slice(fnStartInRenderer, exportPos) : flowScript.slice(fnStartInRenderer)).trim();
+
+// Strip any trailing module checks
+fnBody = fnBody.replace(/if\s*\(\s*typeof\s*module[\s\S]*$/, '').trim();
 
 // Rename to buildPrintableHtml_
 fnBody = fnBody.replace('function buildContinuousDynamicHtml(r)', 'function buildPrintableHtml_(r)');

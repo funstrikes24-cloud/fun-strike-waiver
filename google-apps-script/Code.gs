@@ -1879,5 +1879,3 @@ function buildPrintableHtml_(r) {
 </body>
 </html>`;
 }
-
-module.exports = { buildContinuousDynamicHtml };
