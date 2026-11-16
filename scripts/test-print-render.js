@@ -67,9 +67,9 @@ function buildDocumentHtml(r) {
       <tr>
         <td style="text-align: center; font-weight: bold; color: #475569;">${idx + 1}</td>
         <td><strong>${escapeHtml(pName)}</strong></td>
-        <td style="text-align: center;">${escapeHtml(pDob)}</td>
+        <td style="text-align: center; white-space: nowrap;">${escapeHtml(pDob)}</td>
         <td style="white-space: nowrap;">${ageBadge}</td>
-        <td>${relBadge}</td>
+        <td style="white-space: nowrap;">${relBadge}</td>
       </tr>
     `;
   }).join("");
@@ -511,9 +511,9 @@ function buildDocumentHtml(r) {
         <tr>
           <th style="width: 30px; text-align: center;">#</th>
           <th>Full Legal Name of Participant</th>
-          <th style="width: 95px; text-align: center;">Date of Birth</th>
-          <th style="width: 180px;">Age &amp; Category</th>
-          <th style="width: 140px;">Relationship to Signer</th>
+          <th style="width: 90px; text-align: center; white-space: nowrap;">Date of Birth</th>
+          <th style="width: 160px; white-space: nowrap;">Age &amp; Category</th>
+          <th style="width: 175px; white-space: nowrap;">Relationship to Signer</th>
         </tr>
       </thead>
       <tbody>
