@@ -1099,20 +1099,18 @@ function escapeHtml_(str) {
 
 function buildPrintableHtml_(r) {
   const isGokart = /kart/i.test(r.activity || "") || /kart/i.test(r.branch || "");
-  const activityTitle = isGokart ? "GO-KARTING TRACK" : "TRAMPOLINE & SOFT PLAY PARK";
+  const activityTitle = isGokart ? "GO-KARTING TRACK (18+)" : "TRAMPOLINE ARENA & SOFT PLAY PARK";
+  const activitySub = isGokart ? "Go-Karting Speedway Operational Directives & Safety Protocol" : "Trampoline Bounce Rules, Grip Socks Policy & Play Regulations";
 
   const riderLines = String(r.allRiders || r.fullName || "")
     .split(/\r?\n/)
     .filter(Boolean);
 
   const totalCount = riderLines.length;
-  const isDense = totalCount > 6;
-  const isGrid2Col = totalCount > 8;
 
-  let participantsHtml = '';
-
-  if (isGrid2Col) {
-    // 2-column split table for 9-20 participants so it takes half the vertical space!
+  // Schedule II Table
+  let schedule2Html = '';
+  if (totalCount > 8) {
     const half = Math.ceil(totalCount / 2);
     const col1 = riderLines.slice(0, half);
     const col2 = riderLines.slice(half);
@@ -1145,7 +1143,7 @@ function buildPrintableHtml_(r) {
       }).join('');
     }
 
-    participantsHtml = `
+    schedule2Html = `
       <div style="display:flex; gap:6px; width:100%;">
         <table class="data-table dense-table" style="width:50%;">
           <thead>
@@ -1172,7 +1170,6 @@ function buildPrintableHtml_(r) {
       </div>
     `;
   } else {
-    // 1-8 participants: standard wide table
     const rows = riderLines.map(function(line, idx) {
       const cleanLine = line.replace(/^\d+\.\s*/, "");
       const parts = cleanLine.split(" | ");
@@ -1200,8 +1197,8 @@ function buildPrintableHtml_(r) {
       </tr>`;
     }).join('');
 
-    participantsHtml = `
-      <table class="data-table ${isDense ? 'dense-table' : ''}">
+    schedule2Html = `
+      <table class="data-table ${totalCount > 5 ? 'dense-table' : ''}">
         <thead>
           <tr>
             <th style="width: 5%; text-align: center;">#</th>
@@ -1213,6 +1210,121 @@ function buildPrintableHtml_(r) {
         </thead>
         <tbody>${rows}</tbody>
       </table>
+    `;
+  }
+
+  // Activity-Specific Clauses
+  let clausesHtml = '';
+  let checklistHtml = '';
+  let marshalCheckHtml = '';
+
+  if (isGokart) {
+    clausesHtml = `
+      <div class="clause-item highlight-clause">
+        <strong>1. STRICT 18+ ADULT POLICY &amp; SOLE MINOR LIABILITY CLAUSE:</strong> The Go-Karting Track is strictly designed, engineered, and operated exclusively for adult drivers aged 18 and older. If a minor under 18 years of age operates a kart or signs this instrument, the primary signer and parent/legal guardian explicitly warrant, covenant, and declare that <strong>ONE HUNDRED PERCENT (100%) OF ALL RISKS, PERSONAL INJURIES, VEHICLE LIABILITIES, AND DAMAGES REST SOLELY WITH THEM</strong>. Fun Strikes Entertainment LLP, its designated partners, and track marshals bear ZERO liability under any circumstances.
+      </div>
+      <div class="clause-item">
+        <strong>2. TRACK RULES, SAFETY EQUIPMENT &amp; MANDATORY HEIGHT VERIFICATION:</strong> Single-kart drivers must meet the strict minimum height requirement of <strong>5 ft 5 in (165 cm)</strong>. Full-face protective helmets must be securely buckled prior to entering the pit lane and accelerating. Closed-toe footwear is mandatory at all times (no crocs, sandals, high heels, or loose footwear). Loose clothing, scarves, dupattas must be tucked in securely; long hair must be tied securely above shoulder level. <strong>ZERO-TOLERANCE BUMPING POLICY:</strong> Intentional ramming, bumping, or hazardous driving results in immediate disqualification and ejection from the circuit on first warning without refund.
+      </div>
+      <div class="clause-item">
+        <strong>3. VOLUNTARY ASSUMPTION OF INHERENT MOTORSPORTS RISKS:</strong> The participant and their guardian knowingly, voluntarily, and freely assume all inherent risks associated with high-speed motorized karting, collisions, vehicle rollover, mechanical failures, falls, fractures, sprains, disability, spinal injury, or fatal injury. The participant hereby forever releases, discharges, defends, and indemnifies Fun Strikes Entertainment LLP, its affiliates, track marshals, safety stewards, employees, and agents from any and all legal suits, damages, or liabilities.
+      </div>
+      <div class="clause-item">
+        <strong>4. CUSTOMER PROPERTY DAMAGE &amp; EQUIPMENT BREAKAGE LIABILITY:</strong> Any physical damage, breakage, loss, or impairment caused to go-karts, engines, chassis, safety barriers, or venue property resulting from reckless conduct, disobeying track marshals, or rule violations must be paid in full by the customer as assessed by management before departing the facility premises.
+      </div>
+      <div class="clause-item">
+        <strong>5. PROHIBITED SUBSTANCES, INTOXICATION &amp; LOOSE ARTICLES POLICY:</strong> Possession or consumption of alcohol, narcotics, drugs, or smoking/vaping is strictly prohibited on the premises. Persons suspected of being under the influence will be denied track access immediately. Mobile phones, cameras, selfie sticks, and loose items are prohibited while driving.
+      </div>
+      <div class="clause-item highlight-clause">
+        <strong>6. STRICT 100% NON-REFUNDABLE &amp; NON-TRANSFERABLE PAYMENT POLICY:</strong> All ticket fees, admissions, and session charges are <strong>STRICTLY 100% NON-REFUNDABLE AND NON-TRANSFERABLE</strong> once paid. No refunds, credits, chargebacks, or date transfers shall be granted if a participant voluntarily withdraws, claims they "did not have fun", is disqualified or ejected for safety violations, fails height/attire checks, or in the event of equipment downtime or rain/weather interruptions.
+      </div>
+      <div class="clause-item">
+        <strong>7. MEDICAL FITNESS WARRANTY &amp; CARDIOVASCULAR RESTRICTIONS:</strong> The participant warrants that all covered drivers are in sound physical and psychological health. Participation is strictly prohibited for individuals who are pregnant, suffer from hypertension, cardiovascular disorders, neck/back/spinal impairments, epilepsy, recent surgical operations, or who are impaired by alcohol, narcotics, or medications.
+      </div>
+      <div class="clause-item">
+        <strong>8. SPEED GOVERNOR TAMPERING &amp; PIT LANE REGULATIONS:</strong> Any customer attempting to tamper with kart engines, governor cables, tire barriers, or safety switches will be permanently barred from the facility. Drivers must enter the pit lane at walking pace only; spinning out in the pit lane results in automatic termination of track privileges.
+      </div>
+      <div class="clause-item">
+        <strong>9. CCTV SURVEILLANCE, SECURITY &amp; MEDIA RELEASE:</strong> The facility operates under continuous 24/7 CCTV surveillance. The participant grants Fun Strikes Entertainment LLP irrevocable permission to record, store, and utilize photographs and video recordings for venue security, promotional broadcasts, and safety investigations without monetary claim.
+      </div>
+      <div class="clause-item">
+        <strong>10. EMERGENCY MEDICAL AUTHORIZATION &amp; FIRST AID CONSENT:</strong> In the event of injury, acute illness, or accident, the signer hereby authorizes Fun Strikes Entertainment LLP marshals and designated medical personnel to administer necessary first aid and, if warranted, arrange transport to the nearest medical emergency facility at the customer's sole financial expense.
+      </div>
+      <div class="clause-item">
+        <strong>11. INDEMNIFICATION, GOVERNING LAW &amp; DIGITAL ADMISSIBILITY:</strong> The signer covenants to indemnify and hold harmless Fun Strikes Entertainment LLP from any claims arising from rule violations. This agreement is governed exclusively by the laws of India with exclusive jurisdiction in the courts of Surat, Gujarat. Pursuant to Sections 4 and 10A of the Information Technology Act, 2000, this digital signature and electronic contract hold full legal validity and admissibility.
+      </div>
+    `;
+
+    checklistHtml = `
+      <table class="checklist-table">
+        <tr>
+          <td><span class="check-box-icon">&#10003;</span> Full-Face Helmet Sized &amp; Strapped</td>
+          <td><span class="check-box-icon">&#10003;</span> Closed-Toe Shoes Inspected</td>
+          <td><span class="check-box-icon">&#10003;</span> Driver Height &ge; 5ft 5in Confirmed</td>
+          <td><span class="check-box-icon">&#10003;</span> Track Flags Briefing Understood</td>
+        </tr>
+      </table>
+    `;
+
+    marshalCheckHtml = `
+      <div>
+        <strong>COUNTER MARSHAL CHECK:</strong>
+        <span>Safety Helmet Buckled &bull; Closed-Toe Shoes &bull; Height Verified &ge; 5'5" &bull; Wristbands Issued (${totalCount})</span>
+      </div>
+      <div class="marshal-status-badge">STATUS: CLEARED FOR TRACK</div>
+    `;
+  } else {
+    // TRAMPOLINE & SOFT PLAY SPECIFIC
+    clausesHtml = `
+      <div class="clause-item highlight-clause">
+        <strong>1. MANDATORY NON-SLIP GRIP SOCKS POLICY:</strong> Approved non-slip trampoline grip socks must be worn at all times by every participant inside the trampoline arena and soft play structures. Bare feet, street footwear, sandals, sneakers, and regular smooth socks are strictly prohibited on trampoline beds.
+      </div>
+      <div class="clause-item">
+        <strong>2. ONE PERSON PER TRAMPOLINE MAT &amp; NO DOUBLE BOUNCING:</strong> Strictly one jumper is permitted on any individual trampoline mat/square at a time. Double-bouncing, jumping into another participant's bounce zone, or landing on another jumper is hazardous and strictly prohibited.
+      </div>
+      <div class="clause-item">
+        <strong>3. STUNT RESTRICTIONS &amp; FOAM PIT SAFETY DIRECTIVE:</strong> Inverted maneuvers, somersaults, multi-flips, and head-first diving into foam pits or airbag zones are strictly prohibited. Jumpers must always land on both feet simultaneously or in a seated bottom position. Always check that the foam pit is completely clear before jumping in.
+      </div>
+      <div class="clause-item">
+        <strong>4. POCKETS EMPTY &amp; JEWELRY/SHARP OBJECTS PROHIBITION:</strong> All participants must empty all pockets and remove all jewelry, smartwatches, belt buckles, keychains, loose coins, pens, eyeglasses (unless sport-strapped), and mobile devices before stepping onto the jumping mats.
+      </div>
+      <div class="clause-item">
+        <strong>5. ACTIVE PARENTAL SUPERVISION &amp; ZONE SEGREGATION:</strong> Parents and guardians bear 100% responsibility for actively supervising accompanying minors at all times. Toddler Soft Play zones are strictly reserved for toddlers and young children; adult jumping or rough play in toddler areas is prohibited. No running on safety pads, no climbing on peripheral netting, and no hanging on basketball rims.
+      </div>
+      <div class="clause-item highlight-clause">
+        <strong>6. STRICT 100% NON-REFUNDABLE &amp; NON-TRANSFERABLE PAYMENT POLICY:</strong> All ticket fees, grip sock purchases, admissions, and session charges are <strong>STRICTLY 100% NON-REFUNDABLE AND NON-TRANSFERABLE</strong> once paid. No refunds, credits, chargebacks, or session date transfers shall be granted if a participant voluntarily leaves early, claims they "did not have fun", is ejected for safety violations, or in the event of venue capacity/equipment downtime.
+      </div>
+      <div class="clause-item">
+        <strong>7. VOLUNTARY ASSUMPTION OF INHERENT JUMPING RISKS:</strong> Soft play and trampoline activities involve physical exertion, high impacts, jumping, and rapid balance changes. The participant and guardian freely assume all inherent risks including sprains, joint dislocations, bone fractures, spinal trauma, or accidental collisions. Fun Strikes Entertainment LLP bears ZERO liability.
+      </div>
+      <div class="clause-item">
+        <strong>8. MEDICAL FITNESS WARRANTY &amp; HEALTH RESTRICTIONS:</strong> Participation is strictly prohibited for pregnant individuals or persons suffering from cardiovascular ailments, hypertension, spinal/back/neck impairments, epilepsy, recent surgical procedures, or individuals under the influence of alcohol, medications, or narcotics.
+      </div>
+      <div class="clause-item">
+        <strong>9. CUSTOMER LIABILITY FOR MAT &amp; EQUIPMENT BREAKAGE:</strong> If any damage, tear, or breakage is caused to trampoline beds, protective spring pads, enclosure nets, foam pit blocks, or soft-play equipment due to reckless behavior, sharp objects, or rule violations, the customer agrees to pay full repair/replacement costs before leaving.
+      </div>
+      <div class="clause-item">
+        <strong>10. CCTV SURVEILLANCE, FIRST AID &amp; JURISDICTION:</strong> The facility operates under 24/7 CCTV surveillance. Signer authorizes marshals to administer first aid or call emergency medical transport at the customer's expense. Governed by the laws of India under the exclusive jurisdiction of Surat courts; admissible under IT Act 2000 § 4 &amp; 10A.
+      </div>
+    `;
+
+    checklistHtml = `
+      <table class="checklist-table">
+        <tr>
+          <td><span class="check-box-icon">&#10003;</span> Non-Slip Grip Socks Inspected</td>
+          <td><span class="check-box-icon">&#10003;</span> Pockets Emptied &amp; Sharp Items Removed</td>
+          <td><span class="check-box-icon">&#10003;</span> 1 Jumper Per Mat Rule Understood</td>
+          <td><span class="check-box-icon">&#10003;</span> Court Monitor Whistle Signals Briefed</td>
+        </tr>
+      </table>
+    `;
+
+    marshalCheckHtml = `
+      <div>
+        <strong>COUNTER MARSHAL CHECK:</strong>
+        <span>Grip Socks Verified &bull; Pockets Emptied &bull; Rules Briefed &bull; Wristbands Issued (${totalCount})</span>
+      </div>
+      <div class="marshal-status-badge">STATUS: CLEARED FOR ARENA</div>
     `;
   }
 
@@ -1239,8 +1351,8 @@ function buildPrintableHtml_(r) {
       font-family: "Times New Roman", Times, "Liberation Serif", Georgia, serif;
       color: #0f172a;
       background: #f8fafc;
-      font-size: 8.6pt;
-      line-height: 1.33;
+      font-size: 8.5pt;
+      line-height: 1.32;
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
     }
@@ -1267,34 +1379,18 @@ function buildPrintableHtml_(r) {
       font-size: 12px;
     }
 
-    .sheet-page {
+    /* CONTINUOUS DYNAMIC FLOW WITH CRISP A4 BORDERS */
+    .document-container {
       width: 100%;
       max-width: 190mm;
-      border: 1.5px solid #0f172a;
-      padding: 7mm 9mm;
-      background: #ffffff;
-      margin: 0 auto 12mm auto;
-      page-break-after: always;
-      break-after: page;
-      page-break-inside: avoid;
-      break-inside: avoid;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 275mm;
-    }
-    .sheet-page:last-child {
-      page-break-after: avoid;
-      break-after: avoid;
-      margin-bottom: 0;
+      margin: 0 auto;
     }
 
-    .page-content-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: ${totalCount > 10 ? '5px' : '6.5px'};
-      flex: 1 1 auto;
+    /* SECTION BLOCK WITH INTELLIGENT PAGE-BREAK AVOIDANCE */
+    .doc-section {
+      break-inside: avoid;
+      page-break-inside: avoid;
+      margin-bottom: 6px;
     }
 
     .header-table {
@@ -1302,7 +1398,7 @@ function buildPrintableHtml_(r) {
       border-collapse: collapse;
       border-bottom: 1.5px solid #0f172a;
       padding-bottom: 5px;
-      margin-bottom: 1px;
+      margin-bottom: 2px;
     }
     .header-table td {
       vertical-align: middle;
@@ -1352,6 +1448,7 @@ function buildPrintableHtml_(r) {
       border-collapse: collapse;
       font-size: 7.6pt;
       font-family: Arial, sans-serif;
+      margin-bottom: 5px;
     }
     .meta-bar td {
       padding: 3px 6px;
@@ -1380,6 +1477,7 @@ function buildPrintableHtml_(r) {
       width: 100%;
       border-collapse: collapse;
       font-size: 7.8pt;
+      margin-bottom: 4px;
     }
     .data-table th, .data-table td {
       border: 1px solid #cbd5e1;
@@ -1427,12 +1525,14 @@ function buildPrintableHtml_(r) {
     .clauses-container {
       display: flex;
       flex-direction: column;
-      gap: ${totalCount > 10 ? '4px' : '5px'};
+      gap: 4px;
+      margin-top: 3px;
+      margin-bottom: 4px;
     }
     .clause-item {
-      font-size: ${totalCount > 10 ? '7.8pt' : '8.1pt'};
+      font-size: 8pt;
       text-align: justify;
-      line-height: ${totalCount > 10 ? '1.28' : '1.32'};
+      line-height: 1.3;
     }
     .clause-item strong {
       color: #0f172a;
@@ -1452,6 +1552,8 @@ function buildPrintableHtml_(r) {
       padding: 4px 7px;
       font-size: 7.5pt;
       line-height: 1.28;
+      margin-top: 2px;
+      margin-bottom: 2px;
     }
     .info-callout strong {
       color: #0f172a;
@@ -1462,6 +1564,7 @@ function buildPrintableHtml_(r) {
       border-collapse: collapse;
       font-size: 7.4pt;
       font-family: Arial, sans-serif;
+      margin-bottom: 4px;
     }
     .checklist-table td {
       border: 1px solid #cbd5e1;
@@ -1475,19 +1578,6 @@ function buildPrintableHtml_(r) {
       margin-right: 3px;
     }
 
-    .continuation-banner {
-      border: 1px dashed #64748b;
-      background: #f8fafc;
-      padding: 3.5px 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-family: Arial, sans-serif;
-      font-size: 7.2pt;
-      font-weight: bold;
-      color: #334155;
-    }
-
     .declaration-box {
       border: 1.2px solid #0f172a;
       background: #fafaf9;
@@ -1495,6 +1585,7 @@ function buildPrintableHtml_(r) {
       font-size: 8pt;
       line-height: 1.34;
       text-align: justify;
+      margin-bottom: 5px;
     }
 
     .signature-grid {
@@ -1502,6 +1593,7 @@ function buildPrintableHtml_(r) {
       width: 100%;
       border: 1.2px solid #0f172a;
       background: #ffffff;
+      margin-bottom: 5px;
     }
     .sig-col-left {
       width: 58%;
@@ -1555,6 +1647,7 @@ function buildPrintableHtml_(r) {
       align-items: center;
       font-family: Arial, sans-serif;
       font-size: 7.4pt;
+      margin-bottom: 5px;
     }
     .marshal-status-badge {
       background: #166534;
@@ -1578,8 +1671,7 @@ function buildPrintableHtml_(r) {
       font-weight: bold;
       color: #475569;
       width: 100%;
-      margin-top: 3px;
-      flex: 0 0 auto;
+      margin-top: 4px;
     }
     .page-footer-left {
       flex: 0 0 auto;
@@ -1611,11 +1703,9 @@ function buildPrintableHtml_(r) {
       .print-bar {
         display: none !important;
       }
-      .sheet-page {
+      .document-container {
+        max-width: 100% !important;
         margin: 0 !important;
-        border: 1.5px solid #0f172a !important;
-        box-shadow: none !important;
-        height: 278mm !important;
       }
     }
   </style>
@@ -1623,13 +1713,14 @@ function buildPrintableHtml_(r) {
 <body>
 
   <div class="print-bar">
-    <span>OFFICIAL LEGAL RECORD: Ref <strong>${escapeHtml_(r.refCode || "FS")}</strong> &bull; ${escapeHtml_(r.fullName || "Signer")} (${totalCount} Participants)</span>
-    <button class="print-btn" onclick="window.print()">Print Legal Document (2 Pages)</button>
+    <span>OFFICIAL LEGAL RECORD: Ref <strong>${escapeHtml_(r.refCode || "FS")}</strong> &bull; ${escapeHtml_(r.fullName || "Signer")} (${totalCount} Participants) &bull; ${escapeHtml_(activityTitle)}</span>
+    <button class="print-btn" onclick="window.print()">Print Legal Document</button>
   </div>
 
-  <!-- PAGE 1 OF 2 -->
-  <div class="sheet-page">
-    <div class="page-content-wrapper">
+  <div class="document-container">
+    
+    <!-- 1. HEADER BLOCK -->
+    <div class="doc-section">
       <table class="header-table">
         <tr>
           <td class="logo-cell"><img src="data:image/png;base64,${logoBase64}" class="logo-img" alt="Fun Strike Logo"></td>
@@ -1645,11 +1736,14 @@ function buildPrintableHtml_(r) {
         <tr>
           <td><strong>ZONE:</strong> ${escapeHtml_(activityTitle)}</td>
           <td><strong>BRANCH:</strong> ${escapeHtml_(r.branch || "Gauravpath Road, Pal, Surat")}</td>
-          <td><strong>TOTAL PARTICIPANTS:</strong> ${totalCount} DRIVERS</td>
+          <td><strong>TOTAL PARTICIPANTS:</strong> ${totalCount}</td>
           <td><strong>DOCUMENT REF:</strong> ${escapeHtml_(r.refCode || "FS-RECORD")}</td>
         </tr>
       </table>
+    </div>
 
+    <!-- 2. SCHEDULE I: PRIMARY SIGNER -->
+    <div class="doc-section">
       <div class="section-title">
         <span>Schedule I: Primary Signer &amp; Legal Guardian Identification</span>
         <span>FORM FS-W9</span>
@@ -1668,8 +1762,8 @@ function buildPrintableHtml_(r) {
           <td class="value-cell" style="word-break: break-all;">${escapeHtml_(r.email || "—")}</td>
         </tr>
         <tr>
-          <td class="label-cell">Height Verification:</td>
-          <td class="value-cell"><strong>${escapeHtml_(r.heightInches ? r.heightInches + ' in (Verified ≥ 5ft 5in)' : 'Verified On-Site')}</strong></td>
+          <td class="label-cell">${isGokart ? 'Height Verification:' : 'Participant Type:'}</td>
+          <td class="value-cell"><strong>${isGokart ? escapeHtml_(r.heightInches ? r.heightInches + ' in (Verified ≥ 5ft 5in)' : 'Verified On-Site') : 'Arena Jumper / Guardian'}</strong></td>
           <td class="label-cell">Signed By / Role:</td>
           <td class="value-cell">${escapeHtml_(r.fullName ? r.fullName.split(' ')[0] : 'Signer')} (Self &amp; Legal Guardian)</td>
         </tr>
@@ -1678,118 +1772,50 @@ function buildPrintableHtml_(r) {
           <td class="value-cell" colspan="3" style="word-break: break-word;">${escapeHtml_(r.address || "Surat, Gujarat, India")}</td>
         </tr>
       </table>
+    </div>
 
+    <!-- 3. SCHEDULE II: COVERED PARTICIPANTS (FLOWS DOWN DYNAMICALLY) -->
+    <div class="doc-section">
       <div class="section-title">
         <span>Schedule II: Schedule of Covered Participants &amp; Dependents (${totalCount})</span>
         <span>INDIVIDUAL ACKNOWLEDGEMENT</span>
       </div>
-      
-      ${participantsHtml}
+      ${schedule2Html}
+    </div>
 
+    <!-- 4. SCHEDULE III: LEGALLY BINDING RULES & COVENANTS (ACTIVITY-SPECIFIC) -->
+    <div class="doc-section">
       <div class="section-title">
-        <span>Schedule III (Part A): Operational Regulations &amp; Safety Directives</span>
-        <span>MANDATORY DIRECTIVES</span>
+        <span>Schedule III: ${escapeHtml_(activitySub)}</span>
+        <span>ENFORCEABLE LEGAL CONTRACT</span>
       </div>
       <div class="clauses-container">
-        <div class="clause-item highlight-clause">
-          <strong>1. STRICT 18+ ADULT POLICY &amp; SOLE MINOR LIABILITY CLAUSE:</strong> The Go-Karting Track is strictly designed, engineered, and operated exclusively for adult drivers aged 18 and older. If a minor under 18 years of age operates a kart or signs this instrument, the primary signer and parent/legal guardian explicitly warrant, covenant, and declare that <strong>ONE HUNDRED PERCENT (100%) OF ALL RISKS, PERSONAL INJURIES, VEHICLE LIABILITIES, AND DAMAGES REST SOLELY WITH THEM</strong>. Fun Strikes Entertainment LLP, its designated partners, and track marshals bear ZERO liability under any circumstances.
-        </div>
-        <div class="clause-item">
-          <strong>2. TRACK RULES, SAFETY EQUIPMENT &amp; MANDATORY HEIGHT VERIFICATION:</strong> Single-kart drivers must meet the strict minimum height requirement of <strong>5'5" (165 cm)</strong>. Full-face protective helmets must be securely buckled prior to entering the pit lane and accelerating. Closed-toe footwear is mandatory at all times (no crocs, sandals, high heels, or loose footwear). Loose clothing, scarves, dupattas must be tucked in securely; long hair must be tied securely above shoulder level. <strong>ZERO-TOLERANCE BUMPING POLICY:</strong> Intentional ramming, bumping, or hazardous driving results in immediate disqualification and ejection from the circuit on first warning without refund.
-        </div>
-        <div class="clause-item">
-          <strong>3. VOLUNTARY ASSUMPTION OF INHERENT OPERATIONAL RISKS:</strong> The participant and their guardian knowingly, voluntarily, and freely assume all inherent risks associated with high-speed motorized karting, trampoline jumping, collisions, vehicle rollover, mechanical failures, falls, fractures, sprains, disability, spinal injury, or fatal injury. The participant hereby forever releases, discharges, defends, and indemnifies Fun Strikes Entertainment LLP, its affiliates, track marshals, safety stewards, employees, and agents from any and all legal suits, damages, or liabilities.
-        </div>
-        <div class="clause-item">
-          <strong>4. CUSTOMER PROPERTY DAMAGE &amp; EQUIPMENT BREAKAGE LIABILITY:</strong> Any physical damage, breakage, loss, or impairment caused to go-karts, engines, chassis, safety barriers, trampolines, foam pit, safety gear, or venue property resulting from reckless conduct, disobeying track marshals, or rule violations must be paid in full by the customer as assessed by management before departing the facility premises.
-        </div>
-        <div class="clause-item">
-          <strong>5. PROHIBITED SUBSTANCES, INTOXICATION &amp; LOOSE ARTICLES POLICY:</strong> Possession or consumption of alcohol, narcotics, drugs, or smoking/vaping is strictly prohibited on the premises. Persons suspected of being under the influence will be denied track access immediately. Mobile phones, cameras, selfie sticks, and loose items are prohibited while driving or jumping.
-        </div>
-      </div>
-
-      <div class="info-callout">
-        <strong>MANDATORY PRE-RACE BRIEFING &amp; EQUIPMENT ATTESTATION:</strong> All participants have undergone the compulsory safety orientation, had personal protective gear verified by marshals, and agreed to obey active track flags (Yellow = Slow down / No passing, Red = Complete immediate stop, Checkered = Return to pit lane at walking pace).
-      </div>
-
-      <table class="checklist-table">
-        <tr>
-          <td><span class="check-box-icon">&#10003;</span> Helmet Sized &amp; Strapped</td>
-          <td><span class="check-box-icon">&#10003;</span> Closed Shoes Inspected</td>
-          <td><span class="check-box-icon">&#10003;</span> Height &ge; 5'5" Confirmed</td>
-          <td><span class="check-box-icon">&#10003;</span> Track Flags Briefing Understood</td>
-        </tr>
-      </table>
-
-      <div class="continuation-banner">
-        <span>NOTICE: CONTINUED ON PAGE 2 FOR LEGAL COVENANTS, PAYMENT POLICY &amp; BINDING SIGNATURE</span>
-        <span>PLEASE TURN OVER &rarr;</span>
+        ${clausesHtml}
       </div>
     </div>
 
-    <footer class="page-footer">
-      <span class="page-footer-left">Fun Strikes Entertainment LLP</span>
-      <span class="page-footer-center">Made with &#10084; by Aryan and NexoraOneSolution</span>
-      <span class="page-footer-right">Ref: ${escapeHtml_(r.refCode || "FS")} &bull; Page 1 of 2</span>
-    </footer>
-  </div>
-
-  <!-- PAGE 2 OF 2 -->
-  <div class="sheet-page">
-    <div class="page-content-wrapper">
-      <table class="header-table">
-        <tr>
-          <td class="logo-cell"><img src="data:image/png;base64,${logoBase64}" class="logo-img" alt="Fun Strike Logo"></td>
-          <td class="title-cell" style="text-align: left; padding-left: 12px !important;">
-            <div class="company-title" style="font-size: 11pt;">FUN STRIKES ENTERTAINMENT LLP &mdash; LEGAL COVENANTS</div>
-            <div class="company-sub">Participant Waiver, Indemnity Contract &amp; Binding Execution (Schedule III Continued)</div>
-          </td>
-          <td style="text-align: right; width: 35%; font-family: Arial, sans-serif; font-size: 7.5pt; color: #475569;">
-            <div><strong>DOCUMENT REF:</strong> ${escapeHtml_(r.refCode || "FS-RECORD")}</div>
-            <div style="word-break: break-word;">Primary Signer: <strong>${escapeHtml_(r.fullName || "Signer")}</strong></div>
-            <div>Date of Execution: <strong>${escapeHtml_(r.timestamp ? String(r.timestamp).split(' ')[0] : '16-11-2026')}</strong></div>
-          </td>
-        </tr>
-      </table>
-
-      <div class="section-title">
-        <span>Schedule III (Part B): Legally Binding Terms, Covenants &amp; Operational Regulations</span>
-        <span>ENFORCEABLE LEGAL CONTRACT</span>
+    <!-- 5. PRE-ACTIVITY SAFETY BRIEFING ATTESTATION & CHECKLIST -->
+    <div class="doc-section">
+      <div class="info-callout">
+        <strong>MANDATORY PRE-ACTIVITY ATTESTATION:</strong> All participants have undergone the compulsory safety orientation, had personal protective equipment / grip socks verified by marshals, and agreed to obey active attendant whistle signals and venue rules.
       </div>
+      ${checklistHtml}
+    </div>
 
-      <div class="clauses-container">
-        <div class="clause-item highlight-clause">
-          <strong>6. STRICT 100% NON-REFUNDABLE &amp; NON-TRANSFERABLE PAYMENT POLICY:</strong> All ticket fees, admissions, and session charges are <strong>STRICTLY 100% NON-REFUNDABLE AND NON-TRANSFERABLE</strong> once paid. No refunds, credits, chargebacks, or date transfers shall be granted if a participant voluntarily withdraws, claims they "did not have fun", is disqualified or ejected for safety violations, fails height/attire checks, or in the event of equipment downtime or rain/weather interruptions.
-        </div>
-        <div class="clause-item">
-          <strong>7. MEDICAL FITNESS WARRANTY &amp; HEALTH RESTRICTIONS:</strong> The participant warrants that all covered participants are in sound physical and psychological health. Participation is strictly prohibited for individuals who are pregnant, suffer from hypertension, cardiovascular disorders, neck/back/spinal impairments, epilepsy, recent surgical operations, or who are impaired by alcohol, narcotics, or medications.
-        </div>
-        <div class="clause-item">
-          <strong>8. CCTV SURVEILLANCE, SECURITY &amp; MEDIA RELEASE:</strong> The facility operates under continuous 24/7 CCTV surveillance. The participant grants Fun Strikes Entertainment LLP irrevocable permission to record, store, and utilize photographs and video recordings for venue security, promotional broadcasts, and safety investigations without monetary claim.
-        </div>
-        <div class="clause-item">
-          <strong>9. EMERGENCY MEDICAL AUTHORIZATION &amp; FIRST AID CONSENT:</strong> In the event of injury, acute illness, or accident, the signer hereby authorizes Fun Strikes Entertainment LLP marshals and designated medical personnel to administer necessary first aid and, if warranted, arrange transport to the nearest medical emergency facility at the customer's sole financial expense.
-        </div>
-        <div class="clause-item">
-          <strong>10. INDEMNIFICATION, DEFENSE &amp; HOLD HARMLESS COVENANT:</strong> The signer covenants and agrees to indemnify, hold harmless, and defend Fun Strikes Entertainment LLP, its designated partners, directors, track stewards, marshals, and staff from any third-party claims, property losses, or liabilities arising directly or indirectly from the participant's actions or breach of track rules.
-        </div>
-        <div class="clause-item">
-          <strong>11. SPEED GOVERNOR TAMPERING &amp; PIT LANE CONDUCT:</strong> Any customer attempting to tamper with kart engines, governor cables, tire barriers, or safety switches will be permanently barred from the facility. Drivers must enter the pit lane at walking pace only; spinning out in the pit lane will result in automatic termination of track privileges.
-        </div>
-        <div class="clause-item">
-          <strong>12. GOVERNING JURISDICTION, SEVERABILITY &amp; DIGITAL ADMISSIBILITY:</strong> This agreement is governed exclusively by the laws of India. Any legal dispute or proceeding arising out of or related to this waiver shall be instituted exclusively in the competent courts having jurisdiction over Surat, Gujarat, India. Pursuant to Sections 4 and 10A of the Information Technology Act, 2000, this digital signature and electronic contract hold full legal validity and admissibility.
-        </div>
-      </div>
-
+    <!-- 6. SOLEMN AFFIRMATION & LEGAL DECLARATION -->
+    <div class="doc-section">
       <div class="declaration-box">
         <strong>SOLEMN AFFIRMATION &amp; LEGAL DECLARATION BY PRIMARY SIGNER / LEGAL GUARDIAN:</strong><br>
         I, the undersigned participant, parent, or lawful legal guardian, do hereby solemnly declare under penalty of perjury under Indian law that I am at least 18 years of age, and all personal details, identification records, and participant schedules set forth in Schedules I &amp; II are true, correct, and complete. I have thoroughly read, fully understood, and freely agreed to all operational safety directives, liability indemnities, risk assumption clauses, and non-refundable payment conditions. I hereby execute this instrument intending to be legally bound thereby on behalf of myself and all covered minors/dependents.
       </div>
+    </div>
 
+    <!-- 7. EXECUTION & DIGITAL SIGNATURE AUDIT BLOCK -->
+    <div class="doc-section">
       <div class="signature-grid">
         <div class="sig-col-left">
           <div style="font-size: 7.4pt; font-weight: bold; text-transform: uppercase; color: #475569; font-family: Arial, sans-serif;">
-            Signature of Driver / Parent / Legal Guardian:
+            Signature of Customer / Parent / Legal Guardian:
           </div>
           <div style="text-align: center; margin: 3px 0;">
             ${sigHtml}
@@ -1808,7 +1834,7 @@ function buildPrintableHtml_(r) {
             <span class="audit-val">${escapeHtml_(r.timestamp ? String(r.timestamp).split(' ').slice(1).join(' ') : '05:15:30 PM IST')}</span>
           </div>
           <div class="audit-row">
-            <span class="audit-label">Terms &amp; 18+ Ack:</span>
+            <span class="audit-label">Terms &amp; Policy Ack:</span>
             <span class="audit-val" style="color: #166534;">CONFIRMED &amp; AGREED</span>
           </div>
           <div class="audit-row">
@@ -1821,22 +1847,26 @@ function buildPrintableHtml_(r) {
           </div>
         </div>
       </div>
+    </div>
 
+    <!-- 8. COUNTER MARSHAL CLEARANCE STRIP -->
+    <div class="doc-section">
       <div class="marshal-strip">
-        <div>
-          <strong>COUNTER MARSHAL CHECK:</strong>
-          <span>Safety Helmet Buckled &bull; Closed-Toe Shoes &bull; Height Verified &ge; 5'5" &bull; Wristbands Issued (${totalCount})</span>
-        </div>
-        <div class="marshal-status-badge">STATUS: CLEARED FOR TRACK</div>
+        ${marshalCheckHtml}
       </div>
     </div>
 
-    <footer class="page-footer">
-      <span class="page-footer-left">Fun Strikes Entertainment LLP</span>
-      <span class="page-footer-center">Made with &#10084; by Aryan and NexoraOneSolution</span>
-      <span class="page-footer-right">Ref: ${escapeHtml_(r.refCode || "FS")} &bull; Page 2 of 2</span>
-    </footer>
+    <!-- 9. 3-PART FOOTER -->
+    <div class="doc-section">
+      <footer class="page-footer">
+        <span class="page-footer-left">Fun Strikes Entertainment LLP</span>
+        <span class="page-footer-center">Made with &#10084; by Aryan and NexoraOneSolution</span>
+        <span class="page-footer-right">Ref: ${escapeHtml_(r.refCode || "FS")} &bull; ${escapeHtml_(r.branch ? r.branch.split(',')[0] : 'Pal')}</span>
+      </footer>
+    </div>
+
   </div>
+
 </body>
 </html>`;
 }
