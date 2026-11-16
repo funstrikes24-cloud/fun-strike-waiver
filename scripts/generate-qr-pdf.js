@@ -355,17 +355,33 @@ async function generate() {
     /* Footer */
     .venue-footer {
       border-top: 2px solid #e2e8f0;
-      padding-top: 6px;
+      padding-top: 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .venue-footer-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 12.5px;
+      font-size: 12px;
       color: #475569;
       font-weight: 600;
     }
     .venue-footer strong {
       color: #0f172a;
       font-weight: 900;
+    }
+    .venue-footer-credit {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: #64748b;
+      font-weight: 700;
+      border-top: 1px dashed #e2e8f0;
+      padding-top: 3px;
     }
   `;
 
@@ -484,11 +500,12 @@ async function generate() {
 
         <!-- Footer -->
         <footer class="venue-footer">
-          <div>
-            <strong>Fun Strikes Entertainment LLP</strong> &bull; Gauravpath Road, Pal (Surat)
+          <div class="venue-footer-row">
+            <div><strong>Fun Strikes Entertainment LLP</strong> &bull; Gauravpath Road, Pal (Surat)</div>
+            <div>Pit Reception: <strong>+91 76005 57671</strong> &bull; funstrike.in</div>
           </div>
-          <div>
-            Pit Reception: <strong>+91 76005 57671</strong> &bull; funstrike.in
+          <div class="venue-footer-credit">
+            Made with ❤️ by Aryan and NexoraOneSolution (nexoraonesolution.com)
           </div>
         </footer>
 
@@ -611,11 +628,12 @@ async function generate() {
 
         <!-- Footer -->
         <footer class="venue-footer">
-          <div>
-            <strong>Fun Strikes Entertainment LLP</strong> &bull; Gauravpath Road, Pal (Surat)
+          <div class="venue-footer-row">
+            <div><strong>Fun Strikes Entertainment LLP</strong> &bull; Gauravpath Road, Pal (Surat)</div>
+            <div>Arena Reception: <strong>+91 76005 57671</strong> &bull; funstrike.in</div>
           </div>
-          <div>
-            Arena Reception: <strong>+91 76005 57671</strong> &bull; funstrike.in
+          <div class="venue-footer-credit">
+            Made with ❤️ by Aryan and NexoraOneSolution (nexoraonesolution.com)
           </div>
         </footer>
 
@@ -738,11 +756,12 @@ async function generate() {
 
         <!-- Footer -->
         <footer class="venue-footer">
-          <div>
-            <strong>Fun Strikes Entertainment LLP</strong> &bull; Mota Varachha (Surat)
+          <div class="venue-footer-row">
+            <div><strong>Fun Strikes Entertainment LLP</strong> &bull; Mota Varachha (Surat)</div>
+            <div>Arena Reception: <strong>+91 76005 57671</strong> &bull; funstrike.in</div>
           </div>
-          <div>
-            Arena Reception: <strong>+91 76005 57671</strong> &bull; funstrike.in
+          <div class="venue-footer-credit">
+            Made with ❤️ by Aryan and NexoraOneSolution (nexoraonesolution.com)
           </div>
         </footer>
 

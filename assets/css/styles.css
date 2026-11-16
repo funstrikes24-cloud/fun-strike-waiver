@@ -938,6 +938,50 @@ select {
   color: var(--ink-muted);
 }
 
+.creator-credit-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 18px auto 10px auto;
+  padding: 8px 20px;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 9999px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #475569;
+  text-align: center;
+  width: fit-content;
+  max-width: 95%;
+}
+
+.creator-credit-badge .heart-icon {
+  color: #e11d48;
+  display: inline-block;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.creator-credit-badge a {
+  color: #0f172a;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1.5px solid #cbd5e1;
+  transition: all 0.2s ease-in-out;
+  padding-bottom: 1px;
+}
+
+.creator-credit-badge a:hover {
+  color: #be123c;
+  border-bottom-color: #be123c;
+}
+
 .credit-line {
   width: 100%;
   text-align: center;
