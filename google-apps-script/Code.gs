@@ -167,6 +167,9 @@ function setupAllThreeZoneSheets() {
  */
 function forceRecreate3Sheets() {
   const props = PropertiesService.getScriptProperties();
+  props.deleteProperty("ROOT_FOLDER_ID");
+  props.deleteProperty("SHEET_ID_GOKART");
+  props.deleteProperty("SHEET_ID_SOFTPLAY");
   Object.keys(STREAMS).forEach(function (k) {
     props.deleteProperty(STREAMS[k].propKey);
   });
