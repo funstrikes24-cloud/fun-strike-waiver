@@ -1377,13 +1377,13 @@ function buildPrintableHtml_(r) {
       letter-spacing: 0.3px;
     }
     .c-footer-left {
-      font-weight: 800;
-      color: #0f172a;
+      font-weight: normal;
+      color: #334155;
       text-transform: uppercase;
       white-space: nowrap;
     }
     .c-footer-right {
-      font-weight: 700;
+      font-weight: normal;
       color: #334155;
       text-transform: uppercase;
       white-space: nowrap;
@@ -1725,8 +1725,8 @@ function buildPrintableHtml_(r) {
         <td class="waiver-footer-td">
           <div class="clean-footer-wrap">
             <div class="footer-top-line">
-              <span class="c-footer-left">FUN STRIKES ENTERTAINMENT LLP</span>
-              <span class="c-footer-right">Fun Strike! Game Zone &bull; ${escapeHtml_(r.branch || "Gauravpath Road, Pal, Surat")}</span>
+              <span class="c-footer-left">Fun Strikes Entertainment LLP</span>
+              <span class="c-footer-right">${escapeHtml_(r.branch || "Gauravpath Road, Pal, Surat")}</span>
             </div>
             <div class="footer-bottom-line">
               MADE WITH &#10084; BY ARYAN AND NEXORAONESOLUTION
