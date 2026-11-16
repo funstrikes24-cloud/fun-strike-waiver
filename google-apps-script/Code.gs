@@ -1279,7 +1279,7 @@ function buildPrintableHtml_(r) {
   <style>
     @page {
       size: A4 portrait;
-      margin: 8mm 9mm 9mm 9mm;
+      margin: 7mm 8mm 7mm 8mm;
     }
     * {
       box-sizing: border-box;
@@ -1289,9 +1289,9 @@ function buildPrintableHtml_(r) {
     html, body {
       font-family: "Times New Roman", Times, "Liberation Serif", Georgia, serif;
       color: #0f172a;
-      background: #f1f5f9;
-      font-size: 8.6pt;
-      line-height: 1.32;
+      background: #ffffff !important; /* PURE WHITE - ZERO GRAY ANYWHERE */
+      font-size: 8.5pt;
+      line-height: 1.30;
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
     }
@@ -1318,33 +1318,34 @@ function buildPrintableHtml_(r) {
       font-size: 12px;
     }
 
-    /* FIXED RECTANGLE BORDER FRAME ON EVERY PRINTED PAGE */
-    .page-frame-border {
-      position: fixed;
-      top: 0;
-      left: 0;
+    /* MASTER TABLE PRINT WRAPPER: PREVENTS TEXT COLLIDING WITH FOOTER */
+    .waiver-page-table {
       width: 100%;
-      height: 100%;
-      border: 1.5px solid #0f172a;
-      pointer-events: none;
-      box-sizing: border-box;
-      z-index: 9999;
+      max-width: 194mm;
+      margin: 0 auto;
+      border-collapse: collapse;
+      background: #ffffff;
     }
 
-    /* FIXED 2-LINE FOOTER REPEATED ON EVERY PRINTED PAGE */
-    .page-frame-footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      border-top: 1.2px solid #0f172a;
-      padding: 3.5px 10px;
+    /* CLOSED RECTANGLE BORDER ON CONTENT AREA */
+    .waiver-content-td {
+      border: 1.5px solid #0f172a;
+      border-bottom: none;
+      padding: 5mm 7mm 3mm 7mm;
       background: #ffffff;
-      font-family: Arial, sans-serif;
-      color: #475569;
-      box-sizing: border-box;
-      z-index: 10000;
+      vertical-align: top;
     }
+
+    /* CLOSED RECTANGLE BORDER ON FOOTER (REPEATS AT BOTTOM OF EVERY PAGE) */
+    .waiver-footer-td {
+      border: 1.5px solid #0f172a;
+      border-top: 1.2px solid #0f172a;
+      padding: 3.5px 8px;
+      background: #ffffff;
+      vertical-align: middle;
+      font-family: Arial, sans-serif;
+    }
+
     .footer-line-1 {
       display: flex;
       justify-content: space-between;
@@ -1360,18 +1361,6 @@ function buildPrintableHtml_(r) {
       justify-content: space-between;
       font-size: 6.8pt;
       color: #64748b;
-    }
-
-    /* CONTINUOUS LEGAL CONTRACT FLOW PADDED INSIDE THE FRAME */
-    .waiver-document-flow {
-      max-width: 190mm;
-      margin: 0 auto;
-      background: #ffffff;
-      padding: 6mm 8mm 12mm 8mm; /* Bottom padding gives room for fixed 2-line footer */
-      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
     }
 
     /* PROTECT ATOMIC LOGICAL UNITS AGAINST SPLITTING ACROSS A PAGE LINE */
@@ -1394,7 +1383,7 @@ function buildPrintableHtml_(r) {
       width: 100%;
       border-collapse: collapse;
       border-bottom: 2px solid #0f172a;
-      padding-bottom: 4px;
+      padding-bottom: 3px;
       margin-bottom: 2px;
     }
     .header-table td {
@@ -1414,9 +1403,9 @@ function buildPrintableHtml_(r) {
       text-align: center;
     }
     .company-title {
-      font-size: 14pt;
+      font-size: 13.5pt;
       font-weight: 900;
-      letter-spacing: 1px;
+      letter-spacing: 0.8px;
       color: #0f172a;
       text-transform: uppercase;
     }
@@ -1428,10 +1417,10 @@ function buildPrintableHtml_(r) {
       margin-top: 1px;
     }
     .doc-main-heading {
-      font-size: 8.8pt;
+      font-size: 8.6pt;
       font-weight: bold;
       color: #b91c1c;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
       margin-top: 2px;
       text-transform: uppercase;
     }
@@ -1519,9 +1508,9 @@ function buildPrintableHtml_(r) {
     .clauses-container {
       display: flex;
       flex-direction: column;
-      gap: 3.5px;
-      font-size: 8.2pt;
-      line-height: 1.30;
+      gap: 3px;
+      font-size: 8pt;
+      line-height: 1.28;
       text-align: justify;
     }
     .clause-item {
@@ -1545,8 +1534,8 @@ function buildPrintableHtml_(r) {
       border: 1px solid #cbd5e1;
       border-left: 3px solid #0284c7;
       padding: 4px 8px;
-      font-size: 7.8pt;
-      line-height: 1.28;
+      font-size: 7.6pt;
+      line-height: 1.26;
       margin-bottom: 3px;
     }
     .checklist-table {
@@ -1574,8 +1563,8 @@ function buildPrintableHtml_(r) {
       border: 1.2px solid #0f172a;
       background: #ffffff;
       padding: 4px 7px;
-      font-size: 7.5pt;
-      line-height: 1.28;
+      font-size: 7.4pt;
+      line-height: 1.26;
       text-align: justify;
     }
 
@@ -1597,12 +1586,12 @@ function buildPrintableHtml_(r) {
       width: 44%;
       padding: 6px 10px;
       background: #f8fafc;
-      font-size: 7.4pt;
+      font-size: 7.3pt;
       font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      gap: 3.5px;
+      gap: 3px;
     }
     .sig-img {
       max-height: 48px;
@@ -1659,192 +1648,194 @@ function buildPrintableHtml_(r) {
 
     @media print {
       body {
-        background: #ffffff;
+        background: #ffffff !important;
         padding: 0;
       }
       .print-bar {
         display: none !important;
       }
-      .waiver-document-flow {
+      .waiver-page-table {
         max-width: 100% !important;
         margin: 0 !important;
-        border: none !important; /* Fixed outer frame draws the border on EVERY page! */
-        padding: 5mm 6mm 11mm 6mm !important;
-        box-shadow: none !important;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- FIXED RECTANGLE BORDER ON EVERY PRINTED PAGE -->
-  <div class="page-frame-border"></div>
-
-  <!-- FIXED 2-LINE FOOTER ON EVERY PRINTED PAGE -->
-  <div class="page-frame-footer">
-    <div class="footer-line-1">
-      <span>Fun Strikes Entertainment LLP</span>
-      <span>Made with &#10084; by Aryan and NexoraOneSolution</span>
-      <span>Ref: ${escapeHtml_(r.refCode || "FS")} &bull; IT Act 2000 &amp; DPDP Act 2023 Compliant</span>
-    </div>
-    <div class="footer-line-2">
-      <span>Fun Strike! Game Zone &bull; ${escapeHtml_(r.branch || "Gauravpath Road, Pal, Surat")}</span>
-      <span>Enforceable Digital Participant Liability Record &bull; Confidential &bull; All Rights Reserved</span>
-    </div>
-  </div>
-
   <div class="print-bar">
     <span>OFFICIAL LEGAL RECORD: Ref <strong>${escapeHtml_(r.refCode || "FS")}</strong> &bull; ${escapeHtml_(r.fullName || "Signer")} (${totalCount} Participants) &bull; ${escapeHtml_(activityTitle)}</span>
     <button class="print-btn" onclick="window.print()">Print Legal Contract</button>
   </div>
 
-  <div class="waiver-document-flow">
-    
-    <!-- 1. HEADER -->
-    <div class="doc-unit">
-      <table class="header-table">
-        <tr>
-          <td class="logo-cell"><img src="data:image/png;base64,${logoBase64}" class="logo-img" alt="Fun Strike Logo"></td>
-          <td class="title-cell">
-            <div class="company-title">FUN STRIKES ENTERTAINMENT LLP</div>
-            <div class="company-sub">Registered LLP under Indian Limited Liability Partnership Act, 2008 &bull; Surat, Gujarat, India</div>
-            <div class="doc-main-heading">PARTICIPANT LIABILITY WAIVER, INDEMNITY AGREEMENT & RULES OF OPERATION</div>
-          </td>
-        </tr>
-      </table>
-
-      <!-- 2x2 BALANCED META BAR (2 ITEMS PER ROW) -->
-      <table class="meta-bar">
-        <tr>
-          <td style="width: 52%;"><strong>ZONE / ACTIVITY:</strong> ${escapeHtml_(activityTitle)}</td>
-          <td style="width: 48%;"><strong>DOCUMENT REF:</strong> ${escapeHtml_(r.refCode || "FS-RECORD")}</td>
-        </tr>
-        <tr>
-          <td><strong>LOCATION / BRANCH:</strong> ${escapeHtml_(r.branch || "Gauravpath Road, Pal, Surat")}</td>
-          <td><strong>TOTAL PARTICIPANTS:</strong> ${totalCount} (${isGokart ? 'DRIVERS' : 'JUMPERS'})</td>
-        </tr>
-      </table>
-    </div>
-
-    <!-- 2. SCHEDULE I: PRIMARY SIGNER -->
-    <div class="doc-unit">
-      <div class="section-title">
-        <span>Schedule I: Primary Signer &amp; Legal Guardian Identification</span>
-        <span>FORM FS-W9</span>
-      </div>
-      <table class="data-table">
-        <tr>
-          <td class="label-cell">Primary Signer:</td>
-          <td class="value-cell" style="word-break: break-word;"><strong>${escapeHtml_(r.fullName || "—")}</strong></td>
-          <td class="label-cell">Verified Mobile:</td>
-          <td class="value-cell"><strong>${escapeHtml_(r.phone || "—")}</strong></td>
-        </tr>
-        <tr>
-          <td class="label-cell">Date of Birth &amp; Age:</td>
-          <td class="value-cell">${escapeHtml_(r.dob || "—")} (${escapeHtml_(r.ageRole || "Adult")})</td>
-          <td class="label-cell">Official Email:</td>
-          <td class="value-cell" style="word-break: break-all;">${escapeHtml_(r.email || "—")}</td>
-        </tr>
-        <tr>
-          <td class="label-cell">${isGokart ? 'Height Verification:' : 'Participant Type:'}</td>
-          <td class="value-cell"><strong>${isGokart ? escapeHtml_(r.heightInches ? r.heightInches + ' in (Verified ≥ 5ft 5in)' : 'Verified On-Site') : 'Arena Jumper / Guardian'}</strong></td>
-          <td class="label-cell">Signed By / Role:</td>
-          <td class="value-cell">${escapeHtml_(r.fullName ? r.fullName.split(' ')[0] : 'Signer')} (Self &amp; Legal Guardian)</td>
-        </tr>
-        <tr>
-          <td class="label-cell">Residential Address:</td>
-          <td class="value-cell" colspan="3" style="word-break: break-word;">${escapeHtml_(r.address || "Surat, Gujarat, India")}</td>
-        </tr>
-      </table>
-    </div>
-
-    <!-- 3. SCHEDULE II: COVERED PARTICIPANTS (1 LINE PER PARTICIPANT) -->
-    <div class="doc-unit">
-      <div class="section-title">
-        <span>Schedule II: Schedule of Covered Participants &amp; Dependents (${totalCount})</span>
-        <span>INDIVIDUAL ACKNOWLEDGEMENT (1 LINE PER PARTICIPANT)</span>
-      </div>
-      ${schedule2Html}
-    </div>
-
-    <!-- 4. SCHEDULE III: FLOWS IMMEDIATELY UNDER SCHEDULE II DYNAMICALLY! -->
-    <div class="doc-unit-flow">
-      <div class="section-title">
-        <span>Schedule III: ${escapeHtml_(activitySub)}</span>
-        <span>ENFORCEABLE LEGAL CONTRACT</span>
-      </div>
-      <div class="clauses-container">
-        ${clausesHtml}
-      </div>
-    </div>
-
-    <!-- 5. PRE-ACTIVITY ATTESTATION & CHECKLIST -->
-    <div class="doc-unit">
-      <div class="info-callout">
-        <strong>MANDATORY PRE-ACTIVITY ATTESTATION:</strong> All participants have undergone the compulsory safety orientation, had personal protective equipment / grip socks verified by marshals, and agreed to obey active attendant whistle signals and venue rules.
-      </div>
-      ${checklistHtml}
-    </div>
-
-    <!-- 6. SOLEMN AFFIRMATION & DECLARATION -->
-    <div class="doc-unit">
-      <div class="declaration-box">
-        <strong>SOLEMN AFFIRMATION &amp; LEGAL DECLARATION BY PRIMARY SIGNER / LEGAL GUARDIAN:</strong><br>
-        I, the undersigned participant, parent, or lawful legal guardian, do hereby solemnly declare under penalty of perjury under Indian law that I am at least 18 years of age, and all personal details, identification records, and participant schedules set forth in Schedules I &amp; II are true, correct, and complete. I have thoroughly read, fully understood, and freely agreed to all operational safety directives, liability indemnities, risk assumption clauses, and non-refundable payment conditions. I hereby execute this instrument intending to be legally bound thereby on behalf of myself and all covered minors/dependents.
-      </div>
-    </div>
-
-    <!-- 7. EXECUTION & DIGITAL SIGNATURE AUDIT BLOCK -->
-    <div class="doc-unit">
-      <div class="signature-grid">
-        <div class="sig-col-left">
-          <div style="font-size: 7.2pt; font-weight: bold; text-transform: uppercase; color: #475569; font-family: Arial, sans-serif;">
-            Signature of Customer / Parent / Legal Guardian:
+  <table class="waiver-page-table">
+    <tfoot>
+      <tr>
+        <td class="waiver-footer-td">
+          <div class="footer-line-1">
+            <span>Fun Strikes Entertainment LLP</span>
+            <span>Made with &#10084; by Aryan and NexoraOneSolution</span>
+            <span>Ref: ${escapeHtml_(r.refCode || "FS")} &bull; IT Act 2000 &amp; DPDP Act 2023 Compliant</span>
           </div>
-          <div style="text-align: center; margin: 2px 0;">
-            ${sigHtml}
+          <div class="footer-line-2">
+            <span>Fun Strike! Game Zone &bull; ${escapeHtml_(r.branch || "Gauravpath Road, Pal, Surat")}</span>
+            <span>Enforceable Digital Participant Liability Record &bull; Confidential &bull; All Rights Reserved</span>
           </div>
-          <div style="border-top: 1px solid #0f172a; padding-top: 2px;">
-            <strong style="font-size: 8.2pt; word-break: break-word;">${escapeHtml_(r.fullName || "Signer")}</strong> <span style="font-size: 7.2pt; color: #64748b;">(Primary Signer &amp; Guardian)</span>
-          </div>
-        </div>
-        <div class="sig-col-right">
-          <div class="audit-row">
-            <span class="audit-label">Execution Date:</span>
-            <span class="audit-val">${escapeHtml_(r.timestamp ? String(r.timestamp).split(' ')[0] : '16-11-2026')}</span>
-          </div>
-          <div class="audit-row">
-            <span class="audit-label">Submission Time:</span>
-            <span class="audit-val">${escapeHtml_(r.timestamp ? String(r.timestamp).split(' ').slice(1).join(' ') : '05:15:30 PM IST')}</span>
-          </div>
-          <div class="audit-row">
-            <span class="audit-label">Terms &amp; Policy Ack:</span>
-            <span class="audit-val" style="color: #166534;">CONFIRMED &amp; AGREED</span>
-          </div>
-          <div class="audit-row">
-            <span class="audit-label">Security Audit Hash:</span>
-            <span class="audit-val" style="font-family: monospace; font-size: 7pt;">${escapeHtml_(r.refCode || "FS-RECORD")}-SEC-OK</span>
-          </div>
-          <div class="audit-row">
-            <span class="audit-label">Legal Framework:</span>
-            <span class="audit-val" style="color: #166534;">IT Act 2000 (Sec 4 &amp; 10A)</span>
-          </div>
-          <div class="audit-row" style="border-bottom: none;">
-            <span class="audit-label">Data Privacy:</span>
-            <span class="audit-val" style="color: #166534;">DPDP Act 2023 Compliant</span>
-          </div>
-        </div>
-      </div>
-    </div>
+        </td>
+      </tr>
+    </tfoot>
+    <tbody>
+      <tr>
+        <td class="waiver-content-td">
 
-    <!-- 8. COUNTER MARSHAL CLEARANCE STRIP -->
-    <div class="doc-unit">
-      <div class="marshal-strip">
-        ${marshalCheckHtml}
-      </div>
-    </div>
+          <!-- 1. HEADER -->
+          <div class="doc-unit">
+            <table class="header-table">
+              <tr>
+                <td class="logo-cell"><img src="data:image/png;base64,${logoBase64}" class="logo-img" alt="Fun Strike Logo"></td>
+                <td class="title-cell">
+                  <div class="company-title">FUN STRIKES ENTERTAINMENT LLP</div>
+                  <div class="company-sub">Registered LLP under Indian Limited Liability Partnership Act, 2008 &bull; Surat, Gujarat, India</div>
+                  <div class="doc-main-heading">PARTICIPANT LIABILITY WAIVER, INDEMNITY AGREEMENT & RULES OF OPERATION</div>
+                </td>
+              </tr>
+            </table>
 
-  </div>
+            <!-- 2x2 BALANCED META BAR (2 ITEMS PER ROW) -->
+            <table class="meta-bar">
+              <tr>
+                <td style="width: 52%;"><strong>ZONE / ACTIVITY:</strong> ${escapeHtml_(activityTitle)}</td>
+                <td style="width: 48%;"><strong>DOCUMENT REF:</strong> ${escapeHtml_(r.refCode || "FS-RECORD")}</td>
+              </tr>
+              <tr>
+                <td><strong>LOCATION / BRANCH:</strong> ${escapeHtml_(r.branch || "Gauravpath Road, Pal, Surat")}</td>
+                <td><strong>TOTAL PARTICIPANTS:</strong> ${totalCount} (${isGokart ? 'DRIVERS' : 'JUMPERS'})</td>
+              </tr>
+            </table>
+          </div>
+
+          <!-- 2. SCHEDULE I: PRIMARY SIGNER -->
+          <div class="doc-unit">
+            <div class="section-title">
+              <span>Schedule I: Primary Signer &amp; Legal Guardian Identification</span>
+              <span>FORM FS-W9</span>
+            </div>
+            <table class="data-table">
+              <tr>
+                <td class="label-cell">Primary Signer:</td>
+                <td class="value-cell" style="word-break: break-word;"><strong>${escapeHtml_(r.fullName || "—")}</strong></td>
+                <td class="label-cell">Verified Mobile:</td>
+                <td class="value-cell"><strong>${escapeHtml_(r.phone || "—")}</strong></td>
+              </tr>
+              <tr>
+                <td class="label-cell">Date of Birth &amp; Age:</td>
+                <td class="value-cell">${escapeHtml_(r.dob || "—")} (${escapeHtml_(r.ageRole || "Adult")})</td>
+                <td class="label-cell">Official Email:</td>
+                <td class="value-cell" style="word-break: break-all;">${escapeHtml_(r.email || "—")}</td>
+              </tr>
+              <tr>
+                <td class="label-cell">${isGokart ? 'Height Verification:' : 'Participant Type:'}</td>
+                <td class="value-cell"><strong>${isGokart ? escapeHtml_(r.heightInches ? r.heightInches + ' in (Verified ≥ 5ft 5in)' : 'Verified On-Site') : 'Arena Jumper / Guardian'}</strong></td>
+                <td class="label-cell">Signed By / Role:</td>
+                <td class="value-cell">${escapeHtml_(r.fullName ? r.fullName.split(' ')[0] : 'Signer')} (Self &amp; Legal Guardian)</td>
+              </tr>
+              <tr>
+                <td class="label-cell">Residential Address:</td>
+                <td class="value-cell" colspan="3" style="word-break: break-word;">${escapeHtml_(r.address || "Surat, Gujarat, India")}</td>
+              </tr>
+            </table>
+          </div>
+
+          <!-- 3. SCHEDULE II: COVERED PARTICIPANTS (1 LINE PER PARTICIPANT) -->
+          <div class="doc-unit">
+            <div class="section-title">
+              <span>Schedule II: Schedule of Covered Participants &amp; Dependents (${totalCount})</span>
+              <span>INDIVIDUAL ACKNOWLEDGEMENT (1 LINE PER PARTICIPANT)</span>
+            </div>
+            ${schedule2Html}
+          </div>
+
+          <!-- 4. SCHEDULE III: FLOWS IMMEDIATELY UNDER SCHEDULE II DYNAMICALLY! -->
+          <div class="doc-unit-flow">
+            <div class="section-title">
+              <span>Schedule III: ${escapeHtml_(activitySub)}</span>
+              <span>ENFORCEABLE LEGAL CONTRACT</span>
+            </div>
+            <div class="clauses-container">
+              ${clausesHtml}
+            </div>
+          </div>
+
+          <!-- 5. PRE-ACTIVITY ATTESTATION & CHECKLIST -->
+          <div class="doc-unit">
+            <div class="info-callout">
+              <strong>MANDATORY PRE-ACTIVITY ATTESTATION:</strong> All participants have undergone the compulsory safety orientation, had personal protective equipment / grip socks verified by marshals, and agreed to obey active attendant whistle signals and venue rules.
+            </div>
+            ${checklistHtml}
+          </div>
+
+          <!-- 6. SOLEMN AFFIRMATION & DECLARATION -->
+          <div class="doc-unit">
+            <div class="declaration-box">
+              <strong>SOLEMN AFFIRMATION &amp; LEGAL DECLARATION BY PRIMARY SIGNER / LEGAL GUARDIAN:</strong><br>
+              I, the undersigned participant, parent, or lawful legal guardian, do hereby solemnly declare under penalty of perjury under Indian law that I am at least 18 years of age, and all personal details, identification records, and participant schedules set forth in Schedules I &amp; II are true, correct, and complete. I have thoroughly read, fully understood, and freely agreed to all operational safety directives, liability indemnities, risk assumption clauses, and non-refundable payment conditions. I hereby execute this instrument intending to be legally bound thereby on behalf of myself and all covered minors/dependents.
+            </div>
+          </div>
+
+          <!-- 7. EXECUTION & DIGITAL SIGNATURE AUDIT BLOCK -->
+          <div class="doc-unit">
+            <div class="signature-grid">
+              <div class="sig-col-left">
+                <div style="font-size: 7.2pt; font-weight: bold; text-transform: uppercase; color: #475569; font-family: Arial, sans-serif;">
+                  Signature of Customer / Parent / Legal Guardian:
+                </div>
+                <div style="text-align: center; margin: 2px 0;">
+                  ${sigHtml}
+                </div>
+                <div style="border-top: 1px solid #0f172a; padding-top: 2px;">
+                  <strong style="font-size: 8.2pt; word-break: break-word;">${escapeHtml_(r.fullName || "Signer")}</strong> <span style="font-size: 7.2pt; color: #64748b;">(Primary Signer &amp; Guardian)</span>
+                </div>
+              </div>
+              <div class="sig-col-right">
+                <div class="audit-row">
+                  <span class="audit-label">Execution Date:</span>
+                  <span class="audit-val">${escapeHtml_(r.timestamp ? String(r.timestamp).split(' ')[0] : '16-11-2026')}</span>
+                </div>
+                <div class="audit-row">
+                  <span class="audit-label">Submission Time:</span>
+                  <span class="audit-val">${escapeHtml_(r.timestamp ? String(r.timestamp).split(' ').slice(1).join(' ') : '05:15:30 PM IST')}</span>
+                </div>
+                <div class="audit-row">
+                  <span class="audit-label">Terms &amp; Policy Ack:</span>
+                  <span class="audit-val" style="color: #166534;">CONFIRMED &amp; AGREED</span>
+                </div>
+                <div class="audit-row">
+                  <span class="audit-label">Security Audit Hash:</span>
+                  <span class="audit-val" style="font-family: monospace; font-size: 7pt;">${escapeHtml_(r.refCode || "FS-RECORD")}-SEC-OK</span>
+                </div>
+                <div class="audit-row">
+                  <span class="audit-label">Legal Framework:</span>
+                  <span class="audit-val" style="color: #166534;">IT Act 2000 (Sec 4 &amp; 10A)</span>
+                </div>
+                <div class="audit-row" style="border-bottom: none;">
+                  <span class="audit-label">Data Privacy:</span>
+                  <span class="audit-val" style="color: #166534;">DPDP Act 2023 Compliant</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 8. COUNTER MARSHAL CLEARANCE STRIP -->
+          <div class="doc-unit">
+            <div class="marshal-strip">
+              ${marshalCheckHtml}
+            </div>
+          </div>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
 </body>
 </html>`;

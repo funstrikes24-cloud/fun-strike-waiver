@@ -79,18 +79,32 @@ tests.forEach(t => {
   const pages = (pdfBuf.toString('latin1').match(/\/Type\s*\/Page\b/g) || []).length;
   const pdfSizeKb = Math.round(pdfBuf.length / 1024);
 
+  // Clean up temporary html & png files so printables folder stays completely clean
+  try {
+    fs.unlinkSync(htmlFile);
+    fs.unlinkSync(pngFile);
+  } catch (e) {}
+
   const res = {
     label: t.label,
     activity: isTramp ? 'Trampoline' : 'Go-Karting',
     participants: t.count,
     pdfPages: pages,
     fileSize: `${pdfSizeKb} KB`,
-    pdfPath: pdfFile,
-    pngPath: pngFile
+    pdfPath: pdfFile
   };
   results.push(res);
   console.log(`[PASS] ${res.activity} (${res.participants} Names) -> Pages: ${res.pdfPages} | Size: ${res.fileSize}`);
 });
+
+// Also update Fun-Strike-Signed-Waiver-Print-Demo.pdf with the clean 1-driver waiver
+try {
+  fs.copyFileSync(
+    'E:/Aryan/fun-strikes-waiver/printables/verify-gokart-1.pdf',
+    'E:/Aryan/fun-strikes-waiver/printables/Fun-Strike-Signed-Waiver-Print-Demo.pdf'
+  );
+  console.log('[OK] Updated Fun-Strike-Signed-Waiver-Print-Demo.pdf');
+} catch (e) {}
 
 console.log('\n--- FINAL TEST RESULTS SUMMARY ---');
 console.table(results.map(r => ({
