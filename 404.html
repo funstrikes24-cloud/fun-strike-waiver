@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Redirecting to Fun Strike! Waiver...</title>
+  <script>
+    (function() {
+      var path = window.location.pathname.toLowerCase().replace(/\/+$/, '');
+      if (path.indexOf('gokart') !== -1) {
+        window.location.replace('/gokart/');
+      } else if (path.indexOf('pal') !== -1 || path.indexOf('trampoline') !== -1) {
+        window.location.replace('/pal/');
+      } else if (path.indexOf('varachha') !== -1 || path.indexOf('motavarachha') !== -1) {
+        window.location.replace('/varachha/');
+      } else {
+        window.location.replace('/');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <p>Redirecting to Fun Strike! Waiver System...</p>
+</body>
+</html>
