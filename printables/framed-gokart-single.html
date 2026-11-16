@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Official Waiver - FS-FRAME-GOKART-SINGLE - Fun Strike!</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 10mm 12mm;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      font-family: "Times New Roman", Times, "Liberation Serif", Georgia, serif;
+      color: #0f172a;
+      background: #f1f5f9;
+      font-size: 8.8pt;
+      line-height: 1.34;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    .print-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 8px 18px;
+      font-family: Arial, sans-serif;
+      font-size: 11px;
+      margin-bottom: 14px;
+    }
+    .print-btn {
+      background: #e11d48;
+      color: #ffffff;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    /* THE PROFESSIONAL FRAMED LEGAL CONTRACT WRAPPER */
+    .legal-frame-wrapper {
+      max-width: 190mm;
+      margin: 0 auto;
+      background: #ffffff;
+      border: 2px solid #0f172a; /* Clean solid professional outer border */
+      padding: 10mm 12mm;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+
+    /* EACH SECTION PROTECTED AGAINST AWKWARD PAGE CUTS */
+    .doc-section {
+      break-inside: avoid;
+      page-break-inside: avoid;
+      margin-bottom: 7px;
+    }
+
+    .header-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 6px;
+      margin-bottom: 3px;
+    }
+    .header-table td {
+      vertical-align: middle;
+      border: none;
+      padding: 0;
+    }
+    .logo-cell {
+      width: 62px;
+    }
+    .logo-img {
+      width: 58px;
+      height: 58px;
+      object-fit: contain;
+      display: block;
+    }
+    .title-cell {
+      text-align: center;
+      padding: 0 10px !important;
+    }
+    .company-title {
+      font-size: 13.5pt;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      color: #0f172a;
+      text-transform: uppercase;
+      line-height: 1.15;
+    }
+    .company-sub {
+      font-size: 7.2pt;
+      color: #475569;
+      font-family: Arial, sans-serif;
+      margin-top: 2px;
+    }
+    .doc-main-heading {
+      font-size: 9.5pt;
+      font-weight: 800;
+      color: #991b1b;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-top: 3px;
+    }
+
+    .meta-bar {
+      width: 100%;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-collapse: collapse;
+      font-size: 7.8pt;
+      font-family: Arial, sans-serif;
+      margin-bottom: 6px;
+    }
+    .meta-bar td {
+      padding: 3.5px 7px;
+      border: 1px solid #cbd5e1;
+    }
+
+    .section-title {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 3.5px 8px;
+      font-size: 8.2pt;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .section-title span:last-child {
+      font-size: 7.2pt;
+      font-weight: normal;
+      color: #cbd5e1;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8pt;
+      margin-bottom: 4px;
+    }
+    .data-table th, .data-table td {
+      border: 1px solid #cbd5e1;
+      padding: 3.5px 6px;
+      text-align: left;
+    }
+    .data-table th {
+      background: #f1f5f9;
+      font-weight: bold;
+      font-size: 7.4pt;
+      text-transform: uppercase;
+      color: #334155;
+    }
+    .label-cell {
+      width: 23%;
+      font-weight: bold;
+      background: #f8fafc;
+      color: #334155;
+      font-size: 7.4pt;
+      text-transform: uppercase;
+    }
+    .value-cell {
+      width: 27%;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-size: 6.8pt;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    .badge-adult { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+    .badge-minor { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+    .badge-primary { background: #0f172a; color: #ffffff; }
+
+    .clauses-container {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-top: 3px;
+      margin-bottom: 4px;
+    }
+    .clause-item {
+      font-size: 8.2pt;
+      text-align: justify;
+      line-height: 1.33;
+    }
+    .clause-item strong {
+      color: #0f172a;
+    }
+    .highlight-clause {
+      background: #fff1f2;
+      border-left: 3px solid #e11d48;
+      padding: 4px 7px;
+      border-top: 1px solid #ffe4e6;
+      border-bottom: 1px solid #ffe4e6;
+      border-right: 1px solid #ffe4e6;
+    }
+
+    .info-callout {
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      padding: 4px 8px;
+      font-size: 7.6pt;
+      line-height: 1.3;
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+    .info-callout strong {
+      color: #0f172a;
+    }
+
+    .checklist-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 7.5pt;
+      font-family: Arial, sans-serif;
+      margin-bottom: 4px;
+    }
+    .checklist-table td {
+      border: 1px solid #cbd5e1;
+      padding: 3px 6px;
+      background: #ffffff;
+    }
+    .check-box-icon {
+      font-weight: bold;
+      color: #166534;
+      font-size: 9pt;
+      margin-right: 3px;
+    }
+
+    .declaration-box {
+      border: 1.2px solid #0f172a;
+      background: #fafaf9;
+      padding: 7px 10px;
+      font-size: 8.2pt;
+      line-height: 1.35;
+      text-align: justify;
+      margin-bottom: 5px;
+    }
+
+    .signature-grid {
+      display: flex;
+      width: 100%;
+      border: 1.2px solid #0f172a;
+      background: #ffffff;
+      margin-bottom: 5px;
+    }
+    .sig-col-left {
+      width: 58%;
+      border-right: 1.2px solid #0f172a;
+      padding: 7px 11px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .sig-col-right {
+      width: 42%;
+      padding: 7px 11px;
+      background: #f8fafc;
+      font-size: 7.5pt;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 4px;
+    }
+    .sig-img {
+      max-height: 52px;
+      max-width: 100%;
+      object-fit: contain;
+      display: block;
+      margin: 3px auto;
+    }
+    .audit-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dotted #cbd5e1;
+      padding-bottom: 2px;
+    }
+    .audit-label {
+      color: #64748b;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 7pt;
+    }
+    .audit-val {
+      font-weight: bold;
+      color: #0f172a;
+    }
+
+    .marshal-strip {
+      border: 1.5px solid #166534;
+      background: #f0fdf4;
+      padding: 6px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      font-size: 7.5pt;
+      margin-bottom: 5px;
+    }
+    .marshal-status-badge {
+      background: #166534;
+      color: #ffffff;
+      padding: 3.5px 9px;
+      border-radius: 3px;
+      font-weight: bold;
+      font-size: 8pt;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    /* CLEAN PROFESSIONAL FOOTER ATTACHED DIRECTLY TO CONTENT */
+    .page-footer {
+      border-top: 1.5px solid #0f172a;
+      padding-top: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      font-size: 7.2pt;
+      font-weight: bold;
+      color: #475569;
+      width: 100%;
+      margin-top: 5px;
+    }
+    .page-footer-left {
+      flex: 0 0 auto;
+      text-align: left;
+      color: #0f172a;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .page-footer-center {
+      flex: 1 1 auto;
+      text-align: center;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+    .page-footer-right {
+      flex: 0 0 auto;
+      text-align: right;
+      color: #334155;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .print-bar {
+        display: none !important;
+      }
+      .legal-frame-wrapper {
+        max-width: 100% !important;
+        margin: 0 !important;
+        border: 2px solid #0f172a !important;
+        padding: 8mm 10mm !important;
+        box-shadow: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="print-bar">
+    <span>OFFICIAL LEGAL RECORD: Ref <strong>FS-FRAME-GOKART-SINGLE</strong> &bull; Aarav Harshvardhansinh Sharma (1 Participants) &bull; GO-KARTING TRACK (18+)</span>
+    <button class="print-btn" onclick="window.print()">Print Legal Document</button>
+  </div>
+
+  <div class="legal-frame-wrapper">
+    
+    <!-- 1. HEADER -->
+    <div class="doc-section">
+      <table class="header-table">
+        <tr>
+          <td class="logo-cell"><img src="data:image/png;base64,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" class="logo-img" alt="Fun Strike Logo"></td>
+          <td class="title-cell">
+            <div class="company-title">FUN STRIKES ENTERTAINMENT LLP</div>
+            <div class="company-sub">Registered LLP under Indian Limited Liability Partnership Act, 2008 &bull; Surat, Gujarat, India</div>
+            <div class="doc-main-heading">PARTICIPANT LIABILITY WAIVER, INDEMNITY AGREEMENT & RULES OF OPERATION</div>
+          </td>
+        </tr>
+      </table>
+
+      <table class="meta-bar">
+        <tr>
+          <td><strong>ZONE:</strong> GO-KARTING TRACK (18+)</td>
+          <td><strong>BRANCH:</strong> Gauravpath Road, Pal, Surat</td>
+          <td><strong>TOTAL PARTICIPANTS:</strong> 1</td>
+          <td><strong>DOCUMENT REF:</strong> FS-FRAME-GOKART-SINGLE</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- 2. SCHEDULE I: PRIMARY SIGNER -->
+    <div class="doc-section">
+      <div class="section-title">
+        <span>Schedule I: Primary Signer &amp; Legal Guardian Identification</span>
+        <span>FORM FS-W9</span>
+      </div>
+      <table class="data-table">
+        <tr>
+          <td class="label-cell">Primary Signer:</td>
+          <td class="value-cell" style="word-break: break-word;"><strong>Aarav Harshvardhansinh Sharma</strong></td>
+          <td class="label-cell">Verified Mobile:</td>
+          <td class="value-cell"><strong>+91 98765 43210</strong></td>
+        </tr>
+        <tr>
+          <td class="label-cell">Date of Birth &amp; Age:</td>
+          <td class="value-cell">1996-04-12 (Adult (30 yrs))</td>
+          <td class="label-cell">Official Email:</td>
+          <td class="value-cell" style="word-break: break-all;">aarav.sharma@example.com</td>
+        </tr>
+        <tr>
+          <td class="label-cell">Height Verification:</td>
+          <td class="value-cell"><strong>66 in (Verified ≥ 5ft 5in)</strong></td>
+          <td class="label-cell">Signed By / Role:</td>
+          <td class="value-cell">Aarav (Self &amp; Legal Guardian)</td>
+        </tr>
+        <tr>
+          <td class="label-cell">Residential Address:</td>
+          <td class="value-cell" colspan="3" style="word-break: break-word;">102, Shivalik Heights, Gauravpath Road, Pal, Surat, Gujarat - 395009</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- 3. SCHEDULE II: COVERED PARTICIPANTS (SINGLE LINE PER PARTICIPANT) -->
+    <div class="doc-section">
+      <div class="section-title">
+        <span>Schedule II: Schedule of Covered Participants &amp; Dependents (1)</span>
+        <span>INDIVIDUAL ACKNOWLEDGEMENT</span>
+      </div>
+      
+    <table class="data-table participants-table">
+      <thead>
+        <tr>
+          <th style="width: 24px; text-align: center;">#</th>
+          <th>Full Legal Name of Participant</th>
+          <th style="width: 80px; text-align: center;">Date of Birth</th>
+          <th style="width: 95px; text-align: center;">Age &amp; Category</th>
+          <th style="width: 110px;">Relationship</th>
+        </tr>
+      </thead>
+      <tbody><tr>
+      <td style="text-align: center; font-weight: bold; color: #475569; width: 24px; white-space: nowrap;">1</td>
+      <td style="white-space: nowrap; font-weight: bold; color: #0f172a; padding: 4px 8px;">Aarav Harshvardhansinh Sharma</td>
+      <td style="text-align: center; white-space: nowrap; padding: 4px 6px;">1996-04-12</td>
+      <td style="text-align: center; white-space: nowrap; padding: 4px 6px;"><span class="badge badge-adult">ADULT</span> 30 yrs</td>
+      <td style="white-space: nowrap; padding: 4px 8px;"><span class="badge badge-primary">PRIMARY SIGNER</span></td>
+    </tr></tbody>
+    </table>
+  
+    </div>
+
+    <!-- 4. SCHEDULE III: ACTIVITY-SPECIFIC RULES & COVENANTS -->
+    <div class="doc-section">
+      <div class="section-title">
+        <span>Schedule III: Go-Karting Speedway Operational Directives &amp; Safety Protocol</span>
+        <span>ENFORCEABLE LEGAL CONTRACT</span>
+      </div>
+      <div class="clauses-container">
+        
+      <div class="clause-item highlight-clause">
+        <strong>1. STRICT 18+ ADULT POLICY &amp; SOLE MINOR LIABILITY CLAUSE:</strong> The Go-Karting Track is strictly designed, engineered, and operated exclusively for adult drivers aged 18 and older. If a minor under 18 years of age operates a kart or signs this instrument, the primary signer and parent/legal guardian explicitly warrant, covenant, and declare that <strong>ONE HUNDRED PERCENT (100%) OF ALL RISKS, PERSONAL INJURIES, VEHICLE LIABILITIES, AND DAMAGES REST SOLELY WITH THEM</strong>. Fun Strikes Entertainment LLP, its designated partners, and track marshals bear ZERO liability under any circumstances.
+      </div>
+      <div class="clause-item">
+        <strong>2. TRACK RULES, SAFETY EQUIPMENT &amp; MANDATORY HEIGHT VERIFICATION:</strong> Single-kart drivers must meet the strict minimum height requirement of <strong>5 ft 5 in (165 cm)</strong>. Full-face protective helmets must be securely buckled prior to entering the pit lane and accelerating. Closed-toe footwear is mandatory at all times (no crocs, sandals, high heels, or loose footwear). Loose clothing, scarves, dupattas must be tucked in securely; long hair must be tied securely above shoulder level. <strong>ZERO-TOLERANCE BUMPING POLICY:</strong> Intentional ramming, bumping, or hazardous driving results in immediate disqualification and ejection from the circuit on first warning without refund.
+      </div>
+      <div class="clause-item">
+        <strong>3. VOLUNTARY ASSUMPTION OF INHERENT MOTORSPORTS RISKS:</strong> The participant and their guardian knowingly, voluntarily, and freely assume all inherent risks associated with high-speed motorized karting, collisions, vehicle rollover, mechanical failures, falls, fractures, sprains, disability, spinal injury, or fatal injury. The participant hereby forever releases, discharges, defends, and indemnifies Fun Strikes Entertainment LLP, its affiliates, track marshals, safety stewards, employees, and agents from any and all legal suits, damages, or liabilities.
+      </div>
+      <div class="clause-item">
+        <strong>4. CUSTOMER PROPERTY DAMAGE &amp; EQUIPMENT BREAKAGE LIABILITY:</strong> Any physical damage, breakage, loss, or impairment caused to go-karts, engines, chassis, safety barriers, or venue property resulting from reckless conduct, disobeying track marshals, or rule violations must be paid in full by the customer as assessed by management before departing the facility premises.
+      </div>
+      <div class="clause-item">
+        <strong>5. PROHIBITED SUBSTANCES, INTOXICATION &amp; LOOSE ARTICLES POLICY:</strong> Possession or consumption of alcohol, narcotics, drugs, or smoking/vaping is strictly prohibited on the premises. Persons suspected of being under the influence will be denied track access immediately. Mobile phones, cameras, selfie sticks, and loose items are prohibited while driving.
+      </div>
+      <div class="clause-item highlight-clause">
+        <strong>6. STRICT 100% NON-REFUNDABLE &amp; NON-TRANSFERABLE PAYMENT POLICY:</strong> All ticket fees, admissions, and session charges are <strong>STRICTLY 100% NON-REFUNDABLE AND NON-TRANSFERABLE</strong> once paid. No refunds, credits, chargebacks, or date transfers shall be granted if a participant voluntarily withdraws, claims they "did not have fun", is disqualified or ejected for safety violations, fails height/attire checks, or in the event of equipment downtime or rain/weather interruptions.
+      </div>
+      <div class="clause-item">
+        <strong>7. MEDICAL FITNESS WARRANTY &amp; CARDIOVASCULAR RESTRICTIONS:</strong> The participant warrants that all covered drivers are in sound physical and psychological health. Participation is strictly prohibited for individuals who are pregnant, suffer from hypertension, cardiovascular disorders, neck/back/spinal impairments, epilepsy, recent surgical operations, or who are impaired by alcohol, narcotics, or medications.
+      </div>
+      <div class="clause-item">
+        <strong>8. SPEED GOVERNOR TAMPERING &amp; PIT LANE REGULATIONS:</strong> Any customer attempting to tamper with kart engines, governor cables, tire barriers, or safety switches will be permanently barred from the facility. Drivers must enter the pit lane at walking pace only; spinning out in the pit lane results in automatic termination of track privileges.
+      </div>
+      <div class="clause-item">
+        <strong>9. CCTV SURVEILLANCE, SECURITY &amp; MEDIA RELEASE:</strong> The facility operates under continuous 24/7 CCTV surveillance. The participant grants Fun Strikes Entertainment LLP irrevocable permission to record, store, and utilize photographs and video recordings for venue security, promotional broadcasts, and safety investigations without monetary claim.
+      </div>
+      <div class="clause-item">
+        <strong>10. EMERGENCY MEDICAL AUTHORIZATION &amp; FIRST AID CONSENT:</strong> In the event of injury, acute illness, or accident, the signer hereby authorizes Fun Strikes Entertainment LLP marshals and designated medical personnel to administer necessary first aid and, if warranted, arrange transport to the nearest medical emergency facility at the customer's sole financial expense.
+      </div>
+      <div class="clause-item">
+        <strong>11. INDEMNIFICATION, GOVERNING LAW &amp; DIGITAL ADMISSIBILITY:</strong> The signer covenants to indemnify and hold harmless Fun Strikes Entertainment LLP from any claims arising from rule violations. This agreement is governed exclusively by the laws of India with exclusive jurisdiction in the courts of Surat, Gujarat. Pursuant to Sections 4 and 10A of the Information Technology Act, 2000, this digital signature and electronic contract hold full legal validity and admissibility.
+      </div>
+    
+      </div>
+    </div>
+
+    <!-- 5. PRE-ACTIVITY ATTESTATION & CHECKLIST -->
+    <div class="doc-section">
+      <div class="info-callout">
+        <strong>MANDATORY PRE-ACTIVITY ATTESTATION:</strong> All participants have undergone the compulsory safety orientation, had personal protective equipment / grip socks verified by marshals, and agreed to obey active attendant whistle signals and venue rules.
+      </div>
+      
+      <table class="checklist-table">
+        <tr>
+          <td><span class="check-box-icon">&#10003;</span> Full-Face Helmet Sized &amp; Strapped</td>
+          <td><span class="check-box-icon">&#10003;</span> Closed-Toe Shoes Inspected</td>
+          <td><span class="check-box-icon">&#10003;</span> Driver Height &ge; 5ft 5in Confirmed</td>
+          <td><span class="check-box-icon">&#10003;</span> Track Flags Briefing Understood</td>
+        </tr>
+      </table>
+    
+    </div>
+
+    <!-- 6. SOLEMN AFFIRMATION & DECLARATION -->
+    <div class="doc-section">
+      <div class="declaration-box">
+        <strong>SOLEMN AFFIRMATION &amp; LEGAL DECLARATION BY PRIMARY SIGNER / LEGAL GUARDIAN:</strong><br>
+        I, the undersigned participant, parent, or lawful legal guardian, do hereby solemnly declare under penalty of perjury under Indian law that I am at least 18 years of age, and all personal details, identification records, and participant schedules set forth in Schedules I &amp; II are true, correct, and complete. I have thoroughly read, fully understood, and freely agreed to all operational safety directives, liability indemnities, risk assumption clauses, and non-refundable payment conditions. I hereby execute this instrument intending to be legally bound thereby on behalf of myself and all covered minors/dependents.
+      </div>
+    </div>
+
+    <!-- 7. EXECUTION & DIGITAL SIGNATURE AUDIT BLOCK -->
+    <div class="doc-section">
+      <div class="signature-grid">
+        <div class="sig-col-left">
+          <div style="font-size: 7.4pt; font-weight: bold; text-transform: uppercase; color: #475569; font-family: Arial, sans-serif;">
+            Signature of Customer / Parent / Legal Guardian:
+          </div>
+          <div style="text-align: center; margin: 3px 0;">
+            <img src="data:image/png;base64,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" class="sig-img" alt="Digital Signature" />
+          </div>
+          <div style="border-top: 1px solid #0f172a; padding-top: 2px;">
+            <strong style="font-size: 8.4pt; word-break: break-word;">Aarav Harshvardhansinh Sharma</strong> <span style="font-size: 7.3pt; color: #64748b;">(Primary Signer &amp; Guardian)</span>
+          </div>
+        </div>
+        <div class="sig-col-right">
+          <div class="audit-row">
+            <span class="audit-label">Execution Date:</span>
+            <span class="audit-val">16-11-2026</span>
+          </div>
+          <div class="audit-row">
+            <span class="audit-label">Submission Time:</span>
+            <span class="audit-val">05:15:30 PM</span>
+          </div>
+          <div class="audit-row">
+            <span class="audit-label">Terms &amp; Policy Ack:</span>
+            <span class="audit-val" style="color: #166534;">CONFIRMED &amp; AGREED</span>
+          </div>
+          <div class="audit-row">
+            <span class="audit-label">Security Audit Hash:</span>
+            <span class="audit-val" style="font-family: monospace; font-size: 7.2pt;">FS-FRAME-GOKART-SINGLE-SEC-OK</span>
+          </div>
+          <div class="audit-row" style="border-bottom: none;">
+            <span class="audit-label">IT Act 2000 Status:</span>
+            <span class="audit-val" style="color: #166534;">&sect; 4 &amp; 10A ADMISSIBLE</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. COUNTER MARSHAL CLEARANCE STRIP -->
+    <div class="doc-section">
+      <div class="marshal-strip">
+        
+      <div>
+        <strong>COUNTER MARSHAL CHECK:</strong>
+        <span>Safety Helmet Buckled &bull; Closed-Toe Shoes &bull; Height Verified &ge; 5'5" &bull; Wristbands Issued (1)</span>
+      </div>
+      <div class="marshal-status-badge">STATUS: CLEARED FOR TRACK</div>
+    
+      </div>
+    </div>
+
+    <!-- 9. 3-PART FOOTER (DIRECTLY UNDER CONTENT) -->
+    <div class="doc-section">
+      <footer class="page-footer">
+        <span class="page-footer-left">Fun Strikes Entertainment LLP</span>
+        <span class="page-footer-center">Made with &#10084; by Aryan and NexoraOneSolution</span>
+        <span class="page-footer-right">Ref: FS-FRAME-GOKART-SINGLE &bull; Gauravpath Road</span>
+      </footer>
+    </div>
+
+  </div>
+
+</body>
+</html>
