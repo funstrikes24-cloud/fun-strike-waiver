@@ -54,9 +54,10 @@ function buildDocumentHtml(r) {
     const pRel = parts[3] || (idx === 0 ? "Primary Signer" : "Participant");
 
     const isMinor = /minor/i.test(pAge);
+    const cleanAge = pAge.replace(/\s*\((minor|adult)\)/gi, "").trim();
     const ageBadge = isMinor
-      ? `<span class="badge badge-minor">MINOR</span> ${escapeHtml(pAge)}`
-      : `<span class="badge badge-adult">ADULT</span> ${escapeHtml(pAge)}`;
+      ? `<span class="badge badge-minor">MINOR</span> ${escapeHtml(cleanAge)}`
+      : `<span class="badge badge-adult">ADULT</span> ${escapeHtml(cleanAge)}`;
 
     const relBadge = (idx === 0)
       ? `<span class="badge badge-primary">PRIMARY SIGNER</span>`
@@ -67,7 +68,7 @@ function buildDocumentHtml(r) {
         <td style="text-align: center; font-weight: bold; color: #475569;">${idx + 1}</td>
         <td><strong>${escapeHtml(pName)}</strong></td>
         <td style="text-align: center;">${escapeHtml(pDob)}</td>
-        <td>${ageBadge}</td>
+        <td style="white-space: nowrap;">${ageBadge}</td>
         <td>${relBadge}</td>
       </tr>
     `;
@@ -511,8 +512,8 @@ function buildDocumentHtml(r) {
           <th style="width: 30px; text-align: center;">#</th>
           <th>Full Legal Name of Participant</th>
           <th style="width: 95px; text-align: center;">Date of Birth</th>
-          <th style="width: 140px;">Age &amp; Category</th>
-          <th style="width: 150px;">Relationship to Signer</th>
+          <th style="width: 180px;">Age &amp; Category</th>
+          <th style="width: 140px;">Relationship to Signer</th>
         </tr>
       </thead>
       <tbody>
