@@ -278,6 +278,7 @@ function buildDocumentHtml(r) {
       font-weight: bold;
       font-size: 7.8pt;
       text-transform: uppercase;
+      white-space: nowrap;
     }
     table.participants-table tbody tr:nth-child(even) {
       background: #f8fafc;
@@ -509,11 +510,11 @@ function buildDocumentHtml(r) {
     <table class="participants-table">
       <thead>
         <tr>
-          <th style="width: 30px; text-align: center;">#</th>
+          <th style="width: 28px; text-align: center; white-space: nowrap;">#</th>
           <th>Full Legal Name of Participant</th>
-          <th style="width: 90px; text-align: center; white-space: nowrap;">Date of Birth</th>
-          <th style="width: 160px; white-space: nowrap;">Age &amp; Category</th>
-          <th style="width: 175px; white-space: nowrap;">Relationship to Signer</th>
+          <th style="width: 95px; text-align: center; white-space: nowrap;">Date of Birth</th>
+          <th style="width: 175px; white-space: nowrap;">Age &amp; Category</th>
+          <th style="width: 195px; white-space: nowrap;">Relationship to Signer</th>
         </tr>
       </thead>
       <tbody>

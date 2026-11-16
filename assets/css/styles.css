@@ -926,78 +926,49 @@ select {
 
 .sheet-footer {
   margin-top: 20px;
-  padding-top: 12px;
-  border-top: 1px solid #e2e8f0;
+  padding-top: 14px;
+  border-top: 1.5px solid #e2e8f0;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px 14px;
+  flex-direction: column;
+  gap: 8px;
   font-size: 0.78rem;
   font-weight: 600;
   color: var(--ink-muted);
 }
 
-.creator-credit-badge {
+.sheet-footer-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  width: 100%;
+}
+
+.sheet-footer-credit {
+  width: 100%;
+  text-align: center;
+  padding-top: 8px;
+  border-top: 1px dashed #e2e8f0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #64748b;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  margin: 18px auto 10px auto;
-  padding: 8px 20px;
-  background: #ffffff;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 9999px;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: #475569;
-  text-align: center;
-  width: fit-content;
-  max-width: 95%;
+  gap: 5px;
 }
 
-.creator-credit-badge .heart-icon {
-  color: #e11d48;
-  display: inline-block;
-  animation: pulse 2s infinite ease-in-out;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-}
-
-.creator-credit-badge a {
-  color: #0f172a;
-  font-weight: 700;
-  text-decoration: none;
-  border-bottom: 1.5px solid #cbd5e1;
-  transition: all 0.2s ease-in-out;
-  padding-bottom: 1px;
-}
-
-.creator-credit-badge a:hover {
-  color: #be123c;
-  border-bottom-color: #be123c;
-}
-
-.credit-line {
-  width: 100%;
-  text-align: center;
-  padding-top: 6px;
-  border-top: 1px dashed #e2e8f0;
-}
-
-.credit-line a {
-  color: var(--brand-red-dark);
+.sheet-footer-credit a {
+  color: var(--brand-red-dark, #be123c);
   font-weight: 700;
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-underline-offset: 2.5px;
+  transition: color 0.15s ease-in-out;
 }
 
-.credit-line a:hover {
-  color: var(--brand-navy);
+.sheet-footer-credit a:hover {
+  color: #0f172a;
 }
 
 /* Feedback Banner */
