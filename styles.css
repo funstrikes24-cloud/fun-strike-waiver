@@ -789,7 +789,8 @@ select {
   margin-bottom: 7px;
 }
 
-.signature-header label {
+.signature-header label,
+.signature-header .sig-label-text {
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.02em;

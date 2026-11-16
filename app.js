@@ -30,6 +30,7 @@
   const minHeightInEl = document.getElementById("minHeightIn");
   const minHeightCmEl = document.getElementById("minHeightCm");
   const agreeTermsEl = document.getElementById("agreeTerms");
+  const agreeGokart18El = document.getElementById("agreeGokart18");
   const signDateEl = document.getElementById("signDate");
   const signTimeEl = document.getElementById("signTime");
 
@@ -50,8 +51,10 @@
    */
   function createSignaturePad(canvas, placeholderEl) {
     const ctx = canvas.getContext("2d");
+    const MIN_SIGNATURE_STROKE_PX = 12;
     let drawing = false;
     let hasInk = false;
+    let strokeLength = 0;
     let lastPoint = null;
 
     function configureContext() {
@@ -120,6 +123,7 @@
       if (!drawing || !lastPoint) return;
       evt.preventDefault();
       const pt = getPoint(evt);
+      strokeLength += Math.hypot(pt.x - lastPoint.x, pt.y - lastPoint.y);
       ctx.beginPath();
       ctx.moveTo(lastPoint.x, lastPoint.y);
       ctx.lineTo(pt.x, pt.y);
@@ -149,6 +153,7 @@
       ctx.restore();
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       configureContext();
+      strokeLength = 0;
       setInkState(false);
     }
 
@@ -160,13 +165,18 @@
         resize();
         const rect = canvas.getBoundingClientRect();
         ctx.drawImage(img, 0, 0, rect.width || canvas.width, rect.height || canvas.height);
+        strokeLength = MIN_SIGNATURE_STROKE_PX;
         setInkState(true);
       };
       img.src = dataUrl;
     }
 
+    function hasValidStroke() {
+      return hasInk && strokeLength >= MIN_SIGNATURE_STROKE_PX;
+    }
+
     function toCompactDataURL() {
-      if (!hasInk) return "";
+      if (!hasValidStroke()) return "";
       const outW = 360;
       const outH = 80;
       const offscreen = document.createElement("canvas");
@@ -195,7 +205,7 @@
 
     return {
       clear,
-      hasSignature: () => hasInk,
+      hasSignature: hasValidStroke,
       toDataURL: toCompactDataURL
     };
   }
@@ -285,29 +295,64 @@
   });
 
   // Zone Selection & Multi-Participant Management
+  function getEffectiveZone() {
+    const fixed = document.body.dataset.fixedZone;
+    if (fixed) return fixed;
+    const selected = getSelectedZoneRadio();
+    return selected ? (selected.getAttribute("data-zone") || "gokart") : "gokart";
+  }
+
   function getSelectedZoneRadio() {
     return zoneRadios.find((rb) => rb.checked) || zoneRadios[0];
   }
 
   function syncZoneVisibility() {
+    const currentZone = getEffectiveZone();
+
     zoneRadios.forEach((rb) => {
       const zone = rb.getAttribute("data-zone");
       const block = document.getElementById(`rules-${zone}`);
-      if (block) block.hidden = !rb.checked;
+      if (block) block.hidden = (zone !== currentZone);
     });
+
+    const gokartBlock = document.getElementById("rules-gokart");
+    if (gokartBlock) gokartBlock.hidden = (currentZone !== "gokart");
+    const softplayBlock = document.getElementById("rules-softplay");
+    if (softplayBlock) softplayBlock.hidden = (currentZone !== "softplay");
+
+    const gokartConsent = document.getElementById("gokart18ConsentBlock");
+    if (gokartConsent) {
+      gokartConsent.hidden = (currentZone !== "gokart");
+      if (agreeGokart18El) {
+        if (currentZone !== "gokart") {
+          agreeGokart18El.checked = false;
+          agreeGokart18El.required = false;
+          agreeGokart18El.closest(".checkbox-label")?.classList.remove("is-invalid");
+        } else {
+          agreeGokart18El.required = true;
+        }
+      }
+    }
   }
 
   function applyInitialZoneFromUrl() {
+    const fixed = document.body.dataset.fixedZone;
+    if (fixed) {
+      const match = zoneRadios.find((rb) => rb.getAttribute("data-zone") === fixed);
+      if (match) match.checked = true;
+      syncZoneVisibility();
+      return;
+    }
     const zParam = (urlParams.get("zone") || "").toLowerCase().trim();
     if (!zParam) {
-      zoneRadios[0].checked = true;
+      if (zoneRadios[0]) zoneRadios[0].checked = true;
       syncZoneVisibility();
       return;
     }
     const target = zoneRadios.find((rb) => rb.getAttribute("data-zone") === zParam);
     if (target) {
       target.checked = true;
-    } else {
+    } else if (zoneRadios[0]) {
       zoneRadios[0].checked = true;
     }
     syncZoneVisibility();
@@ -456,10 +501,16 @@
     }
 
     const mobileDigits = mobileEl.value.replace(/\D/g, "");
-    if (mobileEl.value.trim() && mobileDigits.length < 7) {
+    if (mobileEl.value.trim() && (mobileDigits.length < 7 || mobileDigits.length > 15)) {
       mobileEl.classList.add("is-invalid");
-      errors.push("Valid Mobile Number (at least 7 digits)");
+      errors.push("Valid Mobile Number (7–15 digits)");
       if (!firstInvalid) firstInvalid = mobileEl;
+    }
+
+    if (dobEl.value && calculateAge(dobEl.value) === null) {
+      dobEl.classList.add("is-invalid");
+      errors.push("Valid Date of Birth (cannot be in the future)");
+      if (!firstInvalid) firstInvalid = dobEl;
     }
 
     if (emailEl.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) {
@@ -477,9 +528,9 @@
         errors.push(`Additional Rider #${i + 1} Name`);
         if (!firstInvalid) firstInvalid = nameIn;
       }
-      if (!dobIn.value) {
+      if (!dobIn.value || calculateAge(dobIn.value) === null) {
         dobIn.classList.add("is-invalid");
-        errors.push(`Additional Rider #${i + 1} DOB`);
+        errors.push(`Additional Rider #${i + 1} Valid DOB`);
         if (!firstInvalid) firstInvalid = dobIn;
       }
     });
@@ -487,6 +538,15 @@
     if (!primaryIsRidingEl.checked && riderCards.length === 0) {
       errors.push("At least 1 Participant (check primary signer is participating or add a name)");
       if (!firstInvalid) firstInvalid = document.getElementById("btnAddRider");
+    }
+
+    const currentActiveZone = getEffectiveZone();
+    if (currentActiveZone === "gokart" && agreeGokart18El) {
+      if (!agreeGokart18El.checked) {
+        agreeGokart18El.closest(".checkbox-label")?.classList.add("is-invalid");
+        errors.push("Go-Karting 18+ Sole Responsibility Acknowledgement");
+        if (!firstInvalid) firstInvalid = agreeGokart18El;
+      }
     }
 
     if (!agreeTermsEl.checked) {
@@ -550,9 +610,9 @@
       });
     });
 
+    const selectedZone = getEffectiveZone();
     const selectedRadio = getSelectedZoneRadio();
-    const selectedZone = selectedRadio.getAttribute("data-zone") || "gokart";
-    const selectedActivity = selectedRadio.value;
+    const selectedActivity = selectedZone === "softplay" ? "Soft Play & Trampoline" : "Go-Karting";
 
     return {
       refCode: generateRefCode(),
@@ -560,7 +620,7 @@
       zone: selectedZone,
       activity: selectedActivity,
       activitiesText: selectedActivity,
-      branch: branchEl.value,
+      branch: branchEl ? branchEl.value : "Fun Strike! Surat",
       fullName: fullNameEl.value.trim(),
       dob: dobEl.value,
       mobileNumber: mobileEl.value.trim(),
@@ -569,9 +629,10 @@
       primaryIsRiding: primaryIsRidingEl.checked,
       totalRiders: riders.length,
       riders,
-      minHeightIn: selectedZone === "gokart" ? minHeightInEl.value.trim() : "",
-      minHeightCm: selectedZone === "gokart" ? minHeightCmEl.value.trim() : "",
+      minHeightIn: selectedZone === "gokart" && minHeightInEl ? minHeightInEl.value.trim() : "",
+      minHeightCm: selectedZone === "gokart" && minHeightCmEl ? minHeightCmEl.value.trim() : "",
       agreed: agreeTermsEl.checked,
+      agreeGokart18: selectedZone === "gokart" && agreeGokart18El ? agreeGokart18El.checked : null,
       signDate: signDateEl.value,
       signTime: signTimeEl.value,
       guestSignature: guestSig.toDataURL(),
@@ -628,11 +689,11 @@
     } else if (sheetResult.reason === "not_configured") {
       sheetSyncStatus.hidden = false;
       sheetSyncStatus.className = "sync-status-note is-warn";
-      sheetSyncStatus.textContent = "Online sync is not connected yet. Please show this screen or print/save PDF at the counter.";
+      sheetSyncStatus.textContent = "Please show this confirmation screen at the counter to collect your activity wristbands.";
     } else {
       sheetSyncStatus.hidden = false;
       sheetSyncStatus.className = "sync-status-note is-warn";
-      sheetSyncStatus.textContent = `Could not reach server (${sheetResult.reason}). Please show this screen or print/save PDF at the counter.`;
+      sheetSyncStatus.textContent = "Please show this confirmation screen at the counter to collect your activity wristbands.";
     }
 
     summaryContactDl.innerHTML = `
@@ -678,12 +739,12 @@
   function resetFormForNextGuest() {
     submissionScreen.hidden = true;
     form.hidden = false;
-    const keepMinIn = minHeightInEl.value;
-    const keepMinCm = minHeightCmEl.value;
+    const keepMinIn = minHeightInEl ? minHeightInEl.value : "";
+    const keepMinCm = minHeightCmEl ? minHeightCmEl.value : "";
     form.reset();
     applyInitialZoneFromUrl();
-    minHeightInEl.value = keepMinIn;
-    minHeightCmEl.value = keepMinCm;
+    if (minHeightInEl) minHeightInEl.value = keepMinIn;
+    if (minHeightCmEl) minHeightCmEl.value = keepMinCm;
     additionalRidersContainer.innerHTML = "";
     primaryIsRidingEl.checked = true;
     primaryAgeTag.hidden = true;
@@ -707,17 +768,17 @@
     }
   });
 
-  document.getElementById("btnStartNextGuest").addEventListener("click", resetFormForNextGuest);
+  document.getElementById("btnStartNextGuest")?.addEventListener("click", resetFormForNextGuest);
 
-  document.getElementById("btnPrintCurrent").addEventListener("click", () => {
+  document.getElementById("btnPrintCurrent")?.addEventListener("click", () => {
     window.print();
   });
 
-  document.getElementById("btnPrintFromConfirm").addEventListener("click", () => {
+  document.getElementById("btnPrintFromConfirm")?.addEventListener("click", () => {
     window.print();
   });
 
-  document.getElementById("btnPrintBlank").addEventListener("click", () => {
+  document.getElementById("btnPrintBlank")?.addEventListener("click", () => {
     const wasHidden = form.hidden;
     const wasChecked = agreeTermsEl.checked;
     form.hidden = false;

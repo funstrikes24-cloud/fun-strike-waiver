@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#be123c" />
+  <meta name="description"
+    content="Official Go-Karting 18+ participant waiver and track safety agreement for Fun Strike! Game Zone, Pal (Surat)." />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <title>Pal — Go-Karting Waiver (18+) &bull; Fun Strike! Game Zone</title>
+  <link rel="icon" type="image/png" href="assets/funstrike-logo.png" />
+  <link rel="stylesheet" href="styles.css?v=20261116b" />
+</head>
+
+<body data-fixed-zone="gokart">
+  <!-- Sticky Header Bar (No Print Buttons) -->
+  <header class="toolbar no-print" aria-label="Form header">
+    <div class="toolbar-inner">
+      <div class="toolbar-brand">
+        <img src="assets/funstrike-logo.png" alt="Fun Strike! Game Zone" class="toolbar-logo-img" />
+        <div class="toolbar-brand-text">
+          <span class="toolbar-title">Fun Strikes Entertainment LLP</span>
+          <span class="toolbar-sub">Pal Branch &bull; Go-Karting Track (18+)</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrapper">
+    <!-- CUSTOMER WAIVER FORM -->
+    <form id="waiverForm" class="waiver-sheet" novalidate>
+      <div class="sheet-top-bar" aria-hidden="true" style="background: linear-gradient(90deg, #e11d48, #be123c);"></div>
+
+      <!-- Branded Venue Banner -->
+      <section class="sheet-header">
+        <div class="logo-box">
+          <img src="assets/funstrike-logo.png" alt="Fun Strike! Game Zone Official Logo" class="brand-logo" />
+        </div>
+
+        <div class="header-text">
+          <h1>Fun Strikes Entertainment LLP</h1>
+          <p class="subtitle">
+            Fun Strike! Game Zone &mdash; Go-Karting Track Waiver, Release &amp; 18+ Terms
+          </p>
+          <div class="venue-meta-chips" style="margin-top: 8px;">
+            <span class="meta-chip" style="background: #0f172a; color: #fff; font-weight: 700;">📍 Branch: Gauravpath Road, Pal (Surat)</span>
+            <span class="meta-chip" style="background: #e11d48; color: #fff; font-weight: 700;">🏎️ Activity: Go-Karting (18+)</span>
+            <span class="meta-chip">+91 76005 57671</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Participant & Group Details -->
+      <section class="form-section participant-fields" aria-label="Participant and group details">
+        <input type="text" id="hpWebsite" name="companyWebsite" class="hp-field" tabindex="-1" autocomplete="off"
+          aria-hidden="true" />
+        <div class="section-heading-row">
+          <div>
+            <h2>Driver / Parent or Guardian Details</h2>
+            <p class="section-desc">Enter the primary driver or guardian details and add any additional drivers below.</p>
+          </div>
+          <span class="rider-count-pill" id="riderCountBadge">Total Drivers: 1</span>
+        </div>
+
+        <!-- FIXED BRANCH (PAL ONLY - NO DROPDOWN) -->
+        <input type="hidden" id="branch" name="branch" value="Gauravpath Road, Pal (Surat)" />
+        <input type="radio" name="activity" value="Go-Karting" data-zone="gokart" checked hidden />
+
+        <div class="field-grid-2">
+          <div class="field-row">
+            <label>LOCATION / BRANCH</label>
+            <input type="text" value="Gauravpath Road, Pal (Surat)" readonly tabindex="-1"
+              style="background: #f1f5f9; cursor: not-allowed; font-weight: 700; color: #0f172a; border-color: #cbd5e1;" />
+          </div>
+          <div class="field-row">
+            <label for="fullName">FULL NAME (PRIMARY SIGNER)<span class="req">*</span></label>
+            <input type="text" id="fullName" name="fullName" placeholder="e.g. Rahul Sharma" autocomplete="name"
+              required />
+          </div>
+        </div>
+
+        <div class="field-grid-2">
+          <div class="field-row">
+            <label for="dob">
+              DATE OF BIRTH<span class="req">*</span>
+              <span id="primaryAgeTag" class="age-tag" hidden></span>
+            </label>
+            <input type="date" id="dob" name="dob" required />
+          </div>
+          <div class="field-row">
+            <label for="mobileNumber">MOBILE NUMBER (10 DIGITS)<span class="req">*</span></label>
+            <input type="tel" id="mobileNumber" name="mobileNumber" placeholder="9876543210" pattern="[0-9]{10}"
+              inputmode="numeric" autocomplete="tel" required />
+          </div>
+        </div>
+
+        <div class="field-grid-2">
+          <div class="field-row">
+            <label for="address">CITY / ADDRESS<span class="req">*</span></label>
+            <input type="text" id="address" name="address" placeholder="e.g. Vesu, Surat" autocomplete="street-address"
+              required />
+          </div>
+          <div class="field-row">
+            <label for="emailId">EMAIL ID (OPTIONAL)</label>
+            <input type="email" id="emailId" name="emailId" placeholder="name@example.com" autocomplete="email" />
+          </div>
+        </div>
+
+        <div class="signer-riding-toggle no-print">
+          <label class="toggle-control">
+            <input type="checkbox" id="primaryIsRiding" name="primaryIsRiding" checked />
+            <span class="toggle-label">
+              <strong>Primary signer is driving</strong>
+              <small>Uncheck if you are an adult signing strictly for accompanying drivers/minors without driving yourself.</small>
+            </span>
+          </label>
+        </div>
+
+        <div class="additional-riders-wrapper">
+          <div class="additional-riders-header">
+            <div>
+              <h3>Additional Drivers (Group / Family / Friends)</h3>
+              <p class="section-desc">Add up to 19 more drivers on this single waiver form.</p>
+            </div>
+            <button type="button" id="btnAddRider" class="btn btn-accent-outline no-print">
+              + Add Another Driver
+            </button>
+          </div>
+          <div id="additionalRidersContainer" class="additional-riders-list"></div>
+        </div>
+      </section>
+
+      <!-- Activity Rules & Terms -->
+      <section class="form-section rules-section" aria-label="Activity safety rules">
+        <div class="section-heading-row">
+          <div>
+            <h2>Go-Kart Track Safety Rules &amp; Regulations</h2>
+            <p class="section-desc">Review track rules, helmet requirements, and safety policies.</p>
+          </div>
+        </div>
+
+        <!-- GO-KART RULES BLOCK -->
+        <div id="rules-gokart" class="zone-rules-block">
+          <div class="warning-box" role="alert">
+            <strong>GO-KART SAFETY WARNING:</strong> Go-karts have rotating and moving parts. Hair longer than
+            shoulder-length must be secured above the shoulder, and all personal items (loose clothing, scarves,
+            dupattas, jewelry, phones, etc.) must be secured and contained inside the seating area; otherwise, serious
+            injury or death may occur.
+          </div>
+
+          <!-- PROMINENT 18+ SOLE RESPONSIBILITY WARNING -->
+          <div class="warning-box warning-gokart-18" role="alert" style="background:#fee2e2; border: 2px solid #e11d48; color:#9f1239; margin: 12px 0; padding: 14px 16px; border-radius: 10px;">
+            <strong style="font-size: 14px; text-transform: uppercase; display: block; margin-bottom: 6px;">⚠️ STRICT 18+ ADULT POLICY &amp; MINOR SOLE RESPONSIBILITY NOTICE:</strong>
+            Go-Karting at Fun Strike! Game Zone is strictly designed, engineered, and operated for participants aged <strong>18 and above (18+)</strong>. If you are under 18 years of age (minor) and sign/submit this waiver yourself, or if you drive/participate without legal adult guardian supervision, <strong>ALL RESPONSIBILITY, INJURIES, ACCIDENTS, VEHICLE DAMAGES, AND LEGAL LIABILITIES REST 100% WITH YOU AND YOUR PARENTS / LEGAL GUARDIANS</strong>. Fun Strikes Entertainment LLP, owners, management, and track marshals bear <strong>ZERO LIABILITY</strong> under any circumstances.
+          </div>
+
+          <ul class="rules-list">
+            <li class="height-rule">
+              All single-kart drivers must meet the minimum track height requirement of <strong>5'5" (5 ft 5 in / 165 cm)</strong> tall.
+              <input type="hidden" id="minHeightIn" name="minHeightIn" value="65" />
+              <input type="hidden" id="minHeightCm" name="minHeightCm" value="165" />
+            </li>
+            <li>
+              For double-seat go-karts, passengers must be at least <strong>40 in (101.6 cm)</strong> tall and possess
+              upper-body control, with the driver being at least <strong>18 years of age</strong> or the parent/legal
+              guardian of the passenger.
+            </li>
+            <li>Any <strong>HAIR</strong> longer than shoulder-length <strong>MUST</strong> be tied and secured above
+              the shoulder; approved helmets must be worn properly fastened if provided.</li>
+            <li>All <strong>LOOSE CLOTHING</strong> must be fastened and secured before entering the track area.</li>
+            <li>Closed <strong>SHOES</strong> and a <strong>SHIRT</strong> must be worn at all times while in the track
+              area.</li>
+            <li><strong>EATING, DRINKING, AND SMOKING / VAPING</strong> are strictly prohibited in go-karts and anywhere
+              inside the track or pit area.</li>
+            <li>Both hands must remain on the steering wheel and both feet inside the go-kart floorboard at all times
+              unless instructed otherwise by a track attendant.</li>
+            <li>Anyone suspected of being under the influence of <strong>ALCOHOL OR DRUGS</strong> will be denied entry
+              immediately.</li>
+            <li><strong>BUMPING, RAMMING, OR INTENTIONAL CONTACT</strong> between go-karts or against track barriers is
+              strictly prohibited.</li>
+            <li>When entering the pit area, go-karts must be slowed down completely and riders must remain seated and
+              await attendants' instructions.</li>
+            <li>Seat belts / safety harnesses must be properly worn and fastened at all times while seated in a go-kart.
+            </li>
+            <li>Drivers and passengers must remain seated inside the go-kart at all times. If a kart stops or trouble
+              arises, remain seated and raise one hand to alert an attendant &mdash; never step onto an active track.
+            </li>
+            <li>Any misconduct, reckless driving, or failure to obey attendant signals will result in immediate removal
+              from the track area. <strong>Disqualification applies on the 1st warning</strong> without exception.</li>
+          </ul>
+        </div>
+
+        <!-- UNIVERSAL TERMS & CONDITIONS -->
+        <h3 class="tc-subheading">Medical Fitness, Minors &amp; Assumption of Risk</h3>
+        <ul class="rules-list">
+          <li>
+            Go-karting involves physical exertion, balance, speed, and sudden movement. Participation is <strong>not recommended</strong> for individuals with heart, neck, back, or spine problems, recent surgery, bone/joint injuries, or for pregnant women. Participation is strictly at your own risk.
+          </li>
+          <li>
+            If your child or minor ward has any health issues, allergies, or medical conditions and you allow them to participate, it is entirely your responsibility as parent/legal guardian.
+          </li>
+          <li>
+            <strong>Fun Strikes Entertainment LLP / Fun Strike! Game Zone</strong> reserves the right to refuse service or deny entry to any guest for safety, medical, or operational reasons.
+          </li>
+        </ul>
+
+        <h3 class="tc-subheading">Equipment Breakage &amp; Damage Liability</h3>
+        <div class="policy-callout policy-damage">
+          <strong>CUSTOMER LIABILITY FOR DAMAGE OR BREAKAGE:</strong> If any damage, breakage, or loss is caused by the customer or any participant under this form (including damage to go-karts, helmets, track barriers, or any venue property) due to reckless driving, rule violation, negligence, or misuse, <strong>the customer/guest is solely responsible and agrees to pay the full repair or replacement amount</strong> as assessed by Fun Strikes Entertainment LLP before leaving the venue.
+        </div>
+
+        <h3 class="tc-subheading">Strict No-Refund &amp; No-Cancellation Policy</h3>
+        <div class="policy-callout policy-refund">
+          <strong>NO REFUNDS AFTER PAYMENT:</strong> All tickets, sessions, and payments are <strong>100% NON-REFUNDABLE, NON-CANCELLABLE, AND NON-TRANSFERABLE</strong> once paid. <strong>No cash, card, UPI, or partial refund will be issued under any circumstances</strong> after payment &mdash; including if a customer changes their mind, feels scared, dislikes the experience, claims they &ldquo;did not have fun&rdquo;, is disqualified or removed for breaking safety rules, or if any kart experiences a mechanical fault, breakdown, or temporary operational pause.
+        </div>
+
+        <p class="closing-banner">THANK YOU FOR RACING AT FUN STRIKE! &mdash; PAL BRANCH, SURAT</p>
+      </section>
+
+      <!-- Agreement & Signature -->
+      <section class="form-section agreement-section" aria-label="Agreement and customer signature">
+        
+        <!-- GO-KARTING 18+ SOLE RESPONSIBILITY CHECKBOX -->
+        <div id="gokart18ConsentBlock" class="agree-checkbox-row gokart-clause" style="margin-bottom: 12px;">
+          <label class="checkbox-label" style="background: #fff1f2; border: 2px solid #fecdd3; border-radius: 10px; padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px;">
+            <input type="checkbox" id="agreeGokart18" name="agreeGokart18" required />
+            <span style="font-size: 13px; color: #9f1239; font-weight: 600; line-height: 1.45;">
+              <strong>GO-KARTING 18+ SOLE RESPONSIBILITY ACKNOWLEDGEMENT:</strong> I understand that Go-Karting is intended for ages 18+. If I am under 18 years of age and signing this waiver myself, or if any participant listed is under 18, I explicitly acknowledge and declare that <strong>ALL RESPONSIBILITY, INJURIES, VEHICLE DAMAGES, AND LIABILITIES REST 100% WITH ME / MY PARENTS / GUARDIANS</strong>, and Fun Strikes Entertainment LLP bears ZERO liability.
+            </span>
+          </label>
+        </div>
+
+        <div class="agree-checkbox-row">
+          <label class="checkbox-label">
+            <input type="checkbox" id="agreeTerms" name="agreeTerms" required />
+            <span>
+              I have read and agree to be bound by all applicable Activity Safety Rules, Damage &amp; Breakage Liability
+              terms, and the Strict No-Refund Policy of <strong>Fun Strike! Game Zone (Fun Strikes Entertainment
+                LLP)</strong> on behalf of myself and every participant listed on this form (confirming I am at least 18
+              years old or the parent/legal guardian of any minor listed).
+            </span>
+          </label>
+        </div>
+
+        <div class="signature-block">
+          <div class="signature-header">
+            <span id="guestSigLabel" class="sig-label-text">DRIVER / PARENT / GUARDIAN SIGNATURE<span class="req">*</span></span>
+            <button type="button" class="btn-clear-sig no-print" data-clear="guestSigCanvas">Clear Signature</button>
+          </div>
+          <div class="sig-pad-wrap">
+            <canvas id="guestSigCanvas" class="sig-canvas" width="760" height="150"
+              role="img" aria-labelledby="guestSigLabel"></canvas>
+            <div class="sig-baseline" aria-hidden="true"></div>
+            <span class="sig-placeholder" id="guestSigPlaceholder">Sign above this line with finger, stylus, or mouse</span>
+          </div>
+        </div>
+
+        <div class="datetime-grid">
+          <div class="field-row">
+            <label for="signDate">DATE<span class="req">*</span></label>
+            <input type="date" id="signDate" name="signDate" required />
+          </div>
+          <div class="field-row">
+            <label for="signTime">TIME<span class="req">*</span></label>
+            <div class="time-input-group">
+              <input type="time" id="signTime" name="signTime" required />
+              <button type="button" id="btnNow" class="btn-mini no-print" title="Set current date and time">Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="customer-submit-bar no-print">
+          <p class="submit-note">
+            By clicking <strong>Submit Waiver</strong>, you confirm all driver details are accurate and accept the 18+ rules &amp; terms above.
+          </p>
+          <button type="submit" id="btnCustomerSubmit" class="btn btn-primary btn-lg" style="background: #e11d48; border-color: #be123c;">
+            Submit Go-Karting Waiver
+          </button>
+        </div>
+      </section>
+
+      <div id="formFeedback" class="form-feedback no-print" role="status" aria-live="polite" hidden></div>
+
+      <footer class="sheet-footer">
+        <span>Fun Strikes Entertainment LLP &bull; Fun Strike! Game Zone</span>
+        <span>Gauravpath Road, Pal &bull; Surat, Gujarat</span>
+      </footer>
+    </form>
+
+    <!-- CUSTOMER CONFIRMATION SCREEN (NO PRINT BUTTONS) -->
+    <section id="submissionScreen" class="submission-card no-print" hidden aria-live="polite">
+      <div class="submission-badge" aria-hidden="true">✓</div>
+      <h2>Go-Karting Waiver Received!</h2>
+      <p class="submission-lead">
+        Thank you! Please show this confirmation screen at the <strong>Pal Pit Lane / Helmet Counter</strong> to collect your helmet and start racing.
+      </p>
+
+      <div class="ref-code-card">
+        <span class="ref-label">YOUR WAIVER REFERENCE CODE</span>
+        <div class="ref-code-row">
+          <span id="displayRefCode" class="ref-code">FS-KART</span>
+          <button type="button" id="btnCopyRef" class="btn-copy-ref" title="Copy Reference ID">Copy</button>
+        </div>
+        <span id="displayTimestamp" class="ref-meta"></span>
+      </div>
+
+      <div id="sheetSyncStatus" class="sync-status-note" hidden></div>
+
+      <div class="summary-grid">
+        <div class="summary-panel">
+          <h3>Primary Driver &amp; Location</h3>
+          <dl class="summary-dl" id="summaryContactDl"></dl>
+        </div>
+        <div class="summary-panel">
+          <h3>Drivers Covered (<span id="summaryRiderCount">0</span>)</h3>
+          <ul class="summary-riders-list" id="summaryRidersList"></ul>
+          <div class="summary-sig-preview">
+            <span>Customer Signature:</span>
+            <img id="summaryGuestSigImg"
+              src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+              alt="Customer signature preview" hidden />
+          </div>
+        </div>
+      </div>
+
+      <div class="submission-footer-actions">
+        <button type="button" id="btnStartNextGuest" class="btn btn-primary btn-lg" style="width: 100%;">
+          Submit Another Waiver
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js?v=20261116b"></script>
+</body>
+
+</html>
