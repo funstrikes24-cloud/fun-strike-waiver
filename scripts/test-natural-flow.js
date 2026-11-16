@@ -258,42 +258,43 @@ function buildContinuousDynamicHtml(r) {
     .waiver-footer-td {
       border: 1.5px solid #0f172a;
       border-top: 1.2px solid #0f172a;
-      padding: 5px 12px;
+      padding: 4px 12px;
       background: #ffffff;
       vertical-align: middle;
     }
     .clean-footer-wrap {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      flex-direction: column;
+      gap: 2px;
       font-family: Arial, sans-serif;
-      font-size: 7.4pt;
-      color: #475569;
       width: 100%;
     }
+    .footer-top-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 7.4pt;
+      letter-spacing: 0.3px;
+    }
     .c-footer-left {
-      flex: 0 0 auto;
       font-weight: 800;
       color: #0f172a;
       text-transform: uppercase;
-      letter-spacing: 0.3px;
-      white-space: nowrap;
-    }
-    .c-footer-center {
-      flex: 1 1 auto;
-      text-align: center;
-      font-weight: 700;
-      color: #475569;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
       white-space: nowrap;
     }
     .c-footer-right {
-      flex: 0 0 auto;
       font-weight: 700;
       color: #334155;
       text-transform: uppercase;
-      letter-spacing: 0.2px;
+      white-space: nowrap;
+    }
+    .footer-bottom-line {
+      text-align: center;
+      font-size: 7pt;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       white-space: nowrap;
     }
 
@@ -607,9 +608,13 @@ function buildContinuousDynamicHtml(r) {
       <tr>
         <td class="waiver-footer-td">
           <div class="clean-footer-wrap">
-            <span class="c-footer-left">FUN STRIKES ENTERTAINMENT LLP</span>
-            <span class="c-footer-center">MADE WITH &#10084; BY ARYAN AND NEXORAONESOLUTION</span>
-            <span class="c-footer-right">Fun Strike! Game Zone &bull; ${escapeHtml(r.branch || "Gauravpath Road, Pal, Surat")}</span>
+            <div class="footer-top-line">
+              <span class="c-footer-left">FUN STRIKES ENTERTAINMENT LLP</span>
+              <span class="c-footer-right">Fun Strike! Game Zone &bull; ${escapeHtml(r.branch || "Gauravpath Road, Pal, Surat")}</span>
+            </div>
+            <div class="footer-bottom-line">
+              MADE WITH &#10084; BY ARYAN AND NEXORAONESOLUTION
+            </div>
           </div>
         </td>
       </tr>
