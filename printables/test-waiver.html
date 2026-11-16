@@ -67,27 +67,43 @@
     .waiver-footer-td {
       border: 1.5px solid #0f172a;
       border-top: 1.2px solid #0f172a;
-      padding: 3.5px 8px;
+      padding: 5px 12px;
       background: #ffffff;
       vertical-align: middle;
-      font-family: Arial, sans-serif;
     }
-
-    .footer-line-1 {
+    .clean-footer-wrap {
       display: flex;
       justify-content: space-between;
-      font-weight: bold;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      font-size: 7.4pt;
+      color: #475569;
+      width: 100%;
+    }
+    .c-footer-left {
+      flex: 0 0 auto;
+      font-weight: 800;
       color: #0f172a;
-      font-size: 7.2pt;
-      margin-bottom: 1.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+    .c-footer-center {
+      flex: 1 1 auto;
+      text-align: center;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      white-space: nowrap;
+    }
+    .c-footer-right {
+      flex: 0 0 auto;
+      font-weight: 700;
+      color: #334155;
       text-transform: uppercase;
       letter-spacing: 0.2px;
-    }
-    .footer-line-2 {
-      display: flex;
-      justify-content: space-between;
-      font-size: 6.8pt;
-      color: #64748b;
+      white-space: nowrap;
     }
 
     /* PROTECT ATOMIC LOGICAL UNITS AGAINST SPLITTING ACROSS A PAGE LINE */
@@ -399,14 +415,10 @@
     <tfoot>
       <tr>
         <td class="waiver-footer-td">
-          <div class="footer-line-1">
-            <span>Fun Strikes Entertainment LLP</span>
-            <span>Made with &#10084; by Aryan and NexoraOneSolution</span>
-            <span>Ref: FS-TEST-1 &bull; IT Act 2000 &amp; DPDP Act 2023 Compliant</span>
-          </div>
-          <div class="footer-line-2">
-            <span>Fun Strike! Game Zone &bull; Gauravpath Road, Pal, Surat</span>
-            <span>Enforceable Digital Participant Liability Record &bull; Confidential &bull; All Rights Reserved</span>
+          <div class="clean-footer-wrap">
+            <span class="c-footer-left">FUN STRIKES ENTERTAINMENT LLP</span>
+            <span class="c-footer-center">MADE WITH &#10084; BY ARYAN AND NEXORAONESOLUTION</span>
+            <span class="c-footer-right">Fun Strike! Game Zone &bull; Gauravpath Road, Pal, Surat</span>
           </div>
         </td>
       </tr>
