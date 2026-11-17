@@ -403,15 +403,15 @@
         const childNum = idx + 1;
         if (titleEl) {
           titleEl.innerHTML = childNum === 1
-            ? `👶 <strong>${isGokart ? 'DRIVER' : 'CHILD / MINOR'} #1</strong> <span class="rider-card-mandatory-badge">MANDATORY</span>`
-            : `👶 <strong>${isGokart ? 'DRIVER' : 'CHILD / MINOR'} #${childNum}</strong>`;
+            ? `👶 <strong>${isGokart ? 'CHILD / DRIVER' : 'CHILD / MINOR'} #1</strong> <span class="rider-card-mandatory-badge">MANDATORY</span>`
+            : `👶 <strong>${isGokart ? 'CHILD / DRIVER' : 'CHILD / MINOR'} #${childNum}</strong>`;
         }
         if (removeBtn) {
           // Hide remove on child #1 since at least 1 child is required
           removeBtn.style.display = childNum === 1 ? "none" : "inline-flex";
         }
-        if (nameLabel) nameLabel.innerHTML = `${isGokart ? 'DRIVER' : 'CHILD'} FULL LEGAL NAME:<span class="req">*</span>`;
-        if (dobLabel) dobLabel.innerHTML = `${isGokart ? 'DRIVER' : 'CHILD'} DATE OF BIRTH:<span class="req">*</span>`;
+        if (nameLabel) nameLabel.innerHTML = `${isGokart ? 'CHILD / DRIVER' : 'CHILD'} FULL LEGAL NAME:<span class="req">*</span>`;
+        if (dobLabel) dobLabel.innerHTML = `${isGokart ? 'CHILD / DRIVER' : 'CHILD'} DATE OF BIRTH:<span class="req">*</span>`;
       } else {
         card.classList.remove("child-card");
         const partNum = idx + 2;
@@ -455,16 +455,16 @@
 
     card.innerHTML = `
       <div class="rider-card-head">
-        <span class="rider-card-title">${isParentMode ? '👶 CHILD / MINOR' : 'Additional Participant'}</span>
+        <span class="rider-card-title">${isParentMode ? (isGokart ? '👶 CHILD / DRIVER' : '👶 CHILD / MINOR') : 'Additional Participant'}</span>
         <button type="button" class="btn-remove-rider no-print">Remove</button>
       </div>
       <div class="rider-fields-grid">
         <div class="field-row">
-          <label for="${nameId}" class="rider-name-label">${isParentMode ? (isGokart ? 'DRIVER' : 'CHILD') : 'PARTICIPANT'} FULL LEGAL NAME:<span class="req">*</span></label>
+          <label for="${nameId}" class="rider-name-label">${isParentMode ? (isGokart ? 'CHILD / DRIVER' : 'CHILD') : 'PARTICIPANT'} FULL LEGAL NAME:<span class="req">*</span></label>
           <input type="text" id="${nameId}" name="${nameId}" class="rider-name-input" placeholder="${isParentMode ? 'e.g. Aarav Patel' : 'Enter full legal name'}" value="${escapeHtml(initialData.name || "")}" required />
         </div>
         <div class="field-row">
-          <label for="${dobId}" class="rider-dob-label">${isParentMode ? (isGokart ? 'DRIVER' : 'CHILD') : 'PARTICIPANT'} DATE OF BIRTH:<span class="req">*</span></label>
+          <label for="${dobId}" class="rider-dob-label">${isParentMode ? (isGokart ? 'CHILD / DRIVER' : 'CHILD') : 'PARTICIPANT'} DATE OF BIRTH:<span class="req">*</span></label>
           <div class="dob-wrap">
             <input type="date" id="${dobId}" name="${dobId}" max="${todayISO()}" class="rider-dob-input" value="${escapeHtml(initialData.dob || "")}" required />
             <span class="age-tag rider-age-tag" hidden></span>
@@ -539,16 +539,16 @@
 
       if (additionalSectionTitle) {
         additionalSectionTitle.innerHTML = isGokart
-          ? '🏎️ Driver(s) Participating (At least 1 Required)'
+          ? '🏎️ Child / Minor Driver(s) (At least 1 Required)'
           : '👶 Children / Minors Participating (At least 1 Required)';
       }
       if (additionalSectionDesc) {
         additionalSectionDesc.textContent = isGokart
-          ? 'Enter each driver participating under your legal parental consent.'
+          ? 'Enter each child or minor driver participating under your legal parental consent.'
           : 'Please enter each child or minor who will be playing under your legal supervision.';
       }
       if (btnAddRiderEl) {
-        btnAddRiderEl.textContent = isGokart ? '+ Add Another Driver' : '+ Add Another Child / Minor';
+        btnAddRiderEl.textContent = isGokart ? '+ Add Another Child / Driver' : '+ Add Another Child / Minor';
       }
 
       // Automatically open Child #1 if no child is present
