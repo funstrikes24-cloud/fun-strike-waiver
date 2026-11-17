@@ -57,11 +57,37 @@
           aria-hidden="true" />
         <div class="section-heading-row">
           <div>
-            <h2>Participant / Parent or Guardian Details</h2>
-            <p class="section-desc">Enter the primary contact details and add any extra children or group members below.</p>
+            <h2 id="participantSectionTitle">Participant &amp; Contact Details</h2>
+            <p class="section-desc" id="participantSectionDesc">Choose who is playing and enter contact information.</p>
           </div>
           <span class="rider-count-pill" id="riderCountBadge">Total Jumpers: 1</span>
         </div>
+
+        <!-- WHO IS PARTICIPATING SELECTOR AT THE TOP -->
+        <div class="waiver-type-selector no-print" role="radiogroup" aria-label="Select participant type">
+          <label class="waiver-type-option" id="optSelfParticipating">
+            <input type="radio" name="signerTypeRadio" id="radioSelf" value="self" checked />
+            <span class="type-card">
+              <span class="type-icon">🤸</span>
+              <span class="type-text">
+                <strong>I am Jumping Myself (Adult)</strong>
+                <small>Adult playing (plus any friends/group)</small>
+              </span>
+            </span>
+          </label>
+          <label class="waiver-type-option" id="optParentGuardian">
+            <input type="radio" name="signerTypeRadio" id="radioParent" value="parent" />
+            <span class="type-card">
+              <span class="type-icon">👨‍👧</span>
+              <span class="type-text">
+                <strong>Parent / Guardian for Child</strong>
+                <small>Signing for kids (I am not jumping)</small>
+              </span>
+            </span>
+          </label>
+        </div>
+
+        <input type="checkbox" id="primaryIsRiding" name="primaryIsRiding" checked hidden />
 
         <!-- FIXED BRANCH (MOTA VARACHHA ONLY - NO DROPDOWN) -->
         <input type="hidden" id="branch" name="branch" value="Mota Varachha, Surat" />
@@ -74,7 +100,7 @@
               style="background: #f1f5f9; cursor: not-allowed; font-weight: 700; color: #0f172a; border-color: #cbd5e1;" />
           </div>
           <div class="field-row">
-            <label for="fullName">FULL NAME (PRIMARY SIGNER / PARENT)<span class="req">*</span></label>
+            <label for="fullName" id="lblFullName">FULL LEGAL NAME (PLAYER)<span class="req">*</span></label>
             <input type="text" id="fullName" name="fullName" placeholder="e.g. Priya Patel" autocomplete="name"
               required />
           </div>
@@ -82,14 +108,14 @@
 
         <div class="field-grid-2">
           <div class="field-row">
-            <label for="dob">
+            <label for="dob" id="lblDob">
               DATE OF BIRTH<span class="req">*</span>
               <span id="primaryAgeTag" class="age-tag" hidden></span>
             </label>
             <input type="date" id="dob" name="dob" required />
           </div>
           <div class="field-row">
-            <label for="mobileNumber">MOBILE NUMBER (10 DIGITS)<span class="req">*</span></label>
+            <label for="mobileNumber" id="lblMobile">MOBILE NUMBER (10 DIGITS)<span class="req">*</span></label>
             <input type="tel" id="mobileNumber" name="mobileNumber" placeholder="9876543210" pattern="[0-9]{10}"
               inputmode="numeric" autocomplete="tel" required />
           </div>
@@ -102,26 +128,16 @@
               required />
           </div>
           <div class="field-row">
-            <label for="emailId">EMAIL ID (OPTIONAL)</label>
+            <label for="emailId" id="lblEmail">EMAIL ID (OPTIONAL)</label>
             <input type="email" id="emailId" name="emailId" placeholder="name@example.com" autocomplete="email" />
           </div>
         </div>
 
-        <div class="signer-riding-toggle no-print">
-          <label class="toggle-control">
-            <input type="checkbox" id="primaryIsRiding" name="primaryIsRiding" checked />
-            <span class="toggle-label">
-              <strong>Primary signer is jumping/participating</strong>
-              <small>Uncheck if you are an adult/parent signing strictly for your children/kids without jumping yourself.</small>
-            </span>
-          </label>
-        </div>
-
-        <div class="additional-riders-wrapper">
+        <div class="additional-riders-wrapper" id="additionalRidersWrapper">
           <div class="additional-riders-header">
             <div>
-              <h3>Additional Jumpers / Children / Group</h3>
-              <p class="section-desc">Add up to 19 more family members or kids on this single waiver form.</p>
+              <h3 id="additionalSectionTitle">Additional Jumpers / Children / Group</h3>
+              <p class="section-desc" id="additionalSectionDesc">Add up to 19 more family members or kids on this single waiver form.</p>
             </div>
             <button type="button" id="btnAddRider" class="btn btn-accent-outline no-print">
               + Add Another Jumper / Child

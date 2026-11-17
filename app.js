@@ -27,6 +27,14 @@
   const riderCountBadge = document.getElementById("riderCountBadge");
   const additionalRidersContainer = document.getElementById("additionalRidersContainer");
 
+  const radioSelf = document.getElementById("radioSelf");
+  const radioParent = document.getElementById("radioParent");
+  const lblFullName = document.getElementById("lblFullName");
+  const lblDob = document.getElementById("lblDob");
+  const lblMobile = document.getElementById("lblMobile");
+  const additionalSectionTitle = document.getElementById("additionalSectionTitle");
+  const additionalSectionDesc = document.getElementById("additionalSectionDesc");
+
   const minHeightInEl = document.getElementById("minHeightIn");
   const minHeightCmEl = document.getElementById("minHeightCm");
   const agreeTermsEl = document.getElementById("agreeTerms");
@@ -435,6 +443,8 @@
     const relSelect = card.querySelector(".rider-rel-input");
     if (initialData.relation) {
       relSelect.value = initialData.relation;
+    } else if (radioParent && radioParent.checked) {
+      relSelect.value = "Family / Child";
     }
 
     const dobInput = card.querySelector(".rider-dob-input");
@@ -469,6 +479,45 @@
       addRiderCard();
     }
   });
+
+  function syncSignerMode() {
+    const isParentMode = radioParent && radioParent.checked;
+    if (primaryIsRidingEl) {
+      primaryIsRidingEl.checked = !isParentMode;
+    }
+
+    const currentZone = getEffectiveZone();
+    const isGokart = currentZone === "gokart";
+
+    if (isParentMode) {
+      if (lblFullName) lblFullName.innerHTML = 'PARENT / GUARDIAN FULL LEGAL NAME<span class="req">*</span>';
+      if (lblDob) lblDob.innerHTML = 'PARENT DATE OF BIRTH (18+ ONLY)<span class="req">*</span> <span id="primaryAgeTag" class="age-tag" hidden></span>';
+      if (lblMobile) lblMobile.innerHTML = 'PARENT MOBILE NUMBER (FOR VERIFICATION)<span class="req">*</span>';
+      if (additionalSectionTitle) additionalSectionTitle.textContent = isGokart ? 'Drivers Participating (At least 1 Required)' : 'Children / Minors Participating (At least 1 Required)';
+      if (additionalSectionDesc) additionalSectionDesc.textContent = isGokart ? 'Enter each driver participating under your legal parental consent.' : 'Enter each child or minor who will be playing under your supervision.';
+      if (btnAddRiderEl) btnAddRiderEl.textContent = isGokart ? '+ Add Another Driver' : '+ Add Another Child / Minor';
+
+      // Automatically add child card #1 if none is present
+      if (additionalRidersContainer.querySelectorAll(".rider-card").length === 0) {
+        addRiderCard();
+      }
+    } else {
+      if (lblFullName) lblFullName.innerHTML = isGokart ? 'DRIVER FULL LEGAL NAME (18+)<span class="req">*</span>' : 'PLAYER FULL LEGAL NAME<span class="req">*</span>';
+      if (lblDob) lblDob.innerHTML = 'DATE OF BIRTH<span class="req">*</span> <span id="primaryAgeTag" class="age-tag" hidden></span>';
+      if (lblMobile) lblMobile.innerHTML = 'MOBILE NUMBER (10 DIGITS)<span class="req">*</span>';
+      if (additionalSectionTitle) additionalSectionTitle.textContent = isGokart ? 'Additional Drivers (Group / Family / Friends)' : 'Additional Jumpers / Children / Group';
+      if (additionalSectionDesc) additionalSectionDesc.textContent = isGokart ? 'Add up to 19 more drivers on this single waiver form.' : 'Add up to 19 more family members or kids on this single waiver form.';
+      if (btnAddRiderEl) btnAddRiderEl.textContent = isGokart ? '+ Add Another Driver' : '+ Add Another Jumper / Child';
+    }
+
+    updateRiderCount();
+  }
+
+  if (radioSelf && radioParent) {
+    radioSelf.addEventListener("change", syncSignerMode);
+    radioParent.addEventListener("change", syncSignerMode);
+  }
+
   primaryIsRidingEl.addEventListener("change", updateRiderCount);
 
   function showFeedback(message, type) {
@@ -762,7 +811,10 @@
     if (minHeightInEl) minHeightInEl.value = keepMinIn;
     if (minHeightCmEl) minHeightCmEl.value = keepMinCm;
     additionalRidersContainer.innerHTML = "";
+    if (radioSelf) radioSelf.checked = true;
+    if (radioParent) radioParent.checked = false;
     primaryIsRidingEl.checked = true;
+    syncSignerMode();
     primaryAgeTag.hidden = true;
     guestSig.clear();
     clearFeedback();
