@@ -79,11 +79,8 @@ const HEADERS = [
   "Address",
   "Total in Group",
   "All Participants in Waiver",
-  "Min Height",
   "18+ Policy Acknowledged",
   "Agreed to T&C",
-  "Sign Date",
-  "Sign Time",
   "Signature Image",
   "Print / View Waiver",
   "Activity / Zone",
@@ -131,6 +128,11 @@ function updateSheetHeadersToNewLayout() {
     const sheet = ss.getSheetByName(monthTab);
     if (!sheet) return;
     
+    const lastCol = sheet.getLastColumn();
+    if (lastCol > HEADERS.length) {
+      sheet.getRange(1, HEADERS.length + 1, 1, lastCol - HEADERS.length).clearContent();
+    }
+
     sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
     sheet.getRange(1, 1, 1, HEADERS.length)
       .setFontWeight("bold")
@@ -592,15 +594,12 @@ function doPost(e) {
         safeCell_(cleanAddress),                          // 8: Address
         totalCount,                                       // 9: Total in Group
         safeCell_(allNamesList),                          // 10: All Participants in Waiver
-        safeCell_(heightStr),                             // 11: Min Height
-        is18Ack,                                          // 12: 18+ Policy Acknowledged
-        data.agreed ? "YES" : "NO",                       // 13: Agreed to T&C
-        safeCell_(cleanSignDate),                         // 14: Sign Date
-        safeCell_(cleanSignTime),                         // 15: Sign Time
-        sigCellValue,                                     // 16: Signature Image
-        printFormula,                                     // 17: Print / View Waiver
-        safeCell_(cleanActivity),                         // 18: Activity / Zone (at the end)
-        safeCell_(cleanBranch)                            // 19: Branch (at the end)
+        is18Ack,                                          // 11: 18+ Policy Acknowledged
+        data.agreed ? "YES" : "NO",                       // 12: Agreed to T&C
+        sigCellValue,                                     // 13: Signature Image
+        printFormula,                                     // 14: Print / View Waiver
+        safeCell_(cleanActivity),                         // 15: Activity / Zone (at the end)
+        safeCell_(cleanBranch)                            // 16: Branch (at the end)
       ];
     });
 
@@ -659,8 +658,7 @@ function doGet(e) {
   }
 
   const m = found.match;
-  const isNewLayout = /kart|softplay|trampoline/i.test(String(m[18] || "")) || /^\d{4}-\d{2}-\d{2}$/.test(String(m[3] || ""));
-  const sigColIndex = isNewLayout ? 17 : (m.length >= 20 ? 19 : 18);
+  const sigColIndex = getSigColumnNumber_(found.sheet, m, found.colOffset);
   const sigFormula = found.sheet.getRange(found.rowNum, found.colOffset + sigColIndex).getFormula();
   const record = parseRecordFromRowValues_(m, sigFormula, cfg);
 
@@ -668,10 +666,78 @@ function doGet(e) {
     .setTitle("Print Waiver — " + record.refCode);
 }
 
+function detectLayoutType_(rowVals) {
+  // Legacy layout: Activity in col 3 (index 2), Branch in col 4 (index 3)
+  if (/kart|softplay|trampoline|bounce/i.test(String(rowVals[2] || "")) || /surat|pal|motavarachha/i.test(String(rowVals[3] || ""))) {
+    return "legacy";
+  }
+  // 17-column clean layout: Activity in col 16 (index 15) or total length <= 18
+  if (/kart|softplay|trampoline|bounce/i.test(String(rowVals[15] || "")) || rowVals.length <= 18) {
+    return "clean17";
+  }
+  // 20-column layout: Activity in col 19 (index 18)
+  return "layout20";
+}
+
+function getSigColumnNumber_(sheet, rowVals, colOffset) {
+  // 1. Try finding column by header name in row 1
+  try {
+    if (sheet && sheet.getLastRow() >= 1) {
+      const colOff = colOffset || 0;
+      const numCols = Math.max(sheet.getLastColumn(), 17);
+      const headers = sheet.getRange(1, 1 + colOff, 1, numCols).getDisplayValues()[0];
+      for (let c = 0; c < headers.length; c++) {
+        if (/signature/i.test(String(headers[c] || ""))) {
+          return c + 1; // 1-based column
+        }
+      }
+    }
+  } catch (e) {}
+
+  // 2. Scan row values for signature markers
+  for (let i = 0; i < rowVals.length; i++) {
+    const val = String(rowVals[i] || "");
+    if (/✍️|view signature/i.test(val) || isValidSignatureDataUrl_(val) || /drive\.google\.com/i.test(val)) {
+      return i + 1;
+    }
+  }
+
+  // 3. Fallback based on layout type
+  const layout = detectLayoutType_(rowVals);
+  if (layout === "clean17") return 14;
+  if (layout === "layout20") return 17;
+  return rowVals.length >= 20 ? 19 : 18;
+}
+
 function parseRecordFromRowValues_(rowVals, sigFormula, cfg) {
-  const isNewLayout = /kart|softplay|trampoline/i.test(String(rowVals[18] || "")) || /^\d{4}-\d{2}-\d{2}$/.test(String(rowVals[3] || ""));
-  
-  if (isNewLayout) {
+  const layout = detectLayoutType_(rowVals);
+
+  if (layout === "clean17") {
+    const rawSigVal = rowVals[13];
+    const resolvedSigUrl = resolveSignatureDataUrl_(rawSigVal, sigFormula);
+    return {
+      submittedAt: rowVals[0],
+      refCode: rowVals[1],
+      fullName: rowVals[2],
+      dob: rowVals[3],
+      ageRole: rowVals[4],
+      signedBy: rowVals[5],
+      mobile: rowVals[6],
+      phone: rowVals[6],
+      mobileNumber: rowVals[6],
+      email: rowVals[7],
+      emailId: rowVals[7],
+      address: rowVals[8],
+      totalRiders: rowVals[9],
+      allRiders: rowVals[10],
+      is18Ack: rowVals[11],
+      agreed: rowVals[12],
+      signatureUrl: resolvedSigUrl,
+      signatureDataUrl: resolvedSigUrl,
+      activity: rowVals[15] || (cfg && cfg.activityLabel) || "Trampoline Arena & Soft Play",
+      branch: rowVals[16] || (cfg && cfg.branchLabel) || "Surat"
+    };
+  } else if (layout === "layout20") {
     const rawSigVal = rowVals[16];
     const resolvedSigUrl = resolveSignatureDataUrl_(rawSigVal, sigFormula);
     return {
@@ -696,7 +762,7 @@ function parseRecordFromRowValues_(rowVals, sigFormula, cfg) {
       signTime: rowVals[15],
       signatureUrl: resolvedSigUrl,
       signatureDataUrl: resolvedSigUrl,
-      activity: rowVals[18] || (cfg && cfg.activityLabel) || "Go-Karting",
+      activity: rowVals[18] || (cfg && cfg.activityLabel) || "Trampoline Arena & Soft Play",
       branch: rowVals[19] || (cfg && cfg.branchLabel) || "Surat"
     };
   } else {
@@ -738,7 +804,8 @@ function findPrintRow_(sheet, refCode, token, props, colOffset) {
   }
 
   const startCol = 1 + colOffset;
-  const allVals = sheet.getRange(2, startCol, sheet.getLastRow() - 1, HEADERS.length).getDisplayValues();
+  const numCols = Math.max(sheet.getLastColumn() - colOffset, HEADERS.length);
+  const allVals = sheet.getRange(2, startCol, sheet.getLastRow() - 1, numCols).getDisplayValues();
   let sawRef = false;
 
   for (let i = 0; i < allVals.length; i++) {
@@ -775,8 +842,7 @@ function printSelectedWaiver() {
 
   const numCols = Math.max(sheet.getLastColumn(), HEADERS.length);
   const vals = sheet.getRange(rowIndex, 1, 1, numCols).getDisplayValues()[0];
-  const isNewLayout = /kart|softplay|trampoline/i.test(String(vals[18] || "")) || /^\d{4}-\d{2}-\d{2}$/.test(String(vals[3] || ""));
-  const sigColIndex = isNewLayout ? 17 : (vals.length >= 20 ? 19 : 18);
+  const sigColIndex = getSigColumnNumber_(sheet, vals, 0);
   const sigFormula = sheet.getRange(rowIndex, sigColIndex).getFormula();
   const record = parseRecordFromRowValues_(vals, sigFormula, null);
 
@@ -791,7 +857,6 @@ function printSelectedWaiver() {
     .setHeight(720);
 
   ui.showModalDialog(output, "Print Waiver — " + (record.refCode || record.fullName));
-}
 }
 
 // ---------- Helpers ----------
@@ -1111,7 +1176,7 @@ function constantTimeEquals_(a, b) {
 
 function isValidSignatureDataUrl_(val) {
   const s = String(val || "");
-  return s.length <= 49000 && /^data:image\/(webp|jpeg|png);base64,[A-Za-z0-9+/=]+$/.test(s);
+  return s.length <= 300000 && /^data:image\/(webp|jpeg|png);base64,[A-Za-z0-9+/=]+$/.test(s);
 }
 
 function runSelfCheck() {
@@ -1345,6 +1410,23 @@ function buildPrintableHtml_(r) {
   const sigHtml = hasSig
     ? `<img src="${sigRaw}" class="sig-img" alt="Digital Signature" style="max-height: 48px; max-width: 240px; object-fit: contain; display: block; margin: 0 auto;">`
     : `<div style="height: 38px; line-height: 38px; font-style: italic; color: #1e293b; font-family: 'Brush Script MT', cursive, sans-serif; font-size: 15pt; text-align: center;">${escapeHtml_(signerName)}</div>`;
+
+  let execDate = "17-11-2026";
+  let execTime = "05:30:00 PM IST";
+  const subStr = String(r.submittedAt || r.timestamp || r.signDate || "");
+  if (subStr) {
+    if (subStr.includes("T")) {
+      const parts = subStr.split("T");
+      execDate = parts[0];
+      execTime = parts[1].replace(/Z|\.\d+Z?$/i, "") + " IST";
+    } else if (subStr.includes(" ")) {
+      const parts = subStr.split(" ");
+      execDate = parts[0];
+      execTime = parts.slice(1).join(" ");
+    } else {
+      execDate = subStr;
+    }
+  }
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -1913,11 +1995,11 @@ function buildPrintableHtml_(r) {
               <div class="sig-col-right">
                 <div class="audit-row">
                   <span class="audit-label">Execution Date:</span>
-                  <span class="audit-val">${escapeHtml_(r.timestamp ? String(r.timestamp).split(' ')[0] : '16-11-2026')}</span>
+                  <span class="audit-val">${escapeHtml_(execDate)}</span>
                 </div>
                 <div class="audit-row">
                   <span class="audit-label">Submission Time:</span>
-                  <span class="audit-val">${escapeHtml_(r.timestamp ? String(r.timestamp).split(' ').slice(1).join(' ') : '05:15:30 PM IST')}</span>
+                  <span class="audit-val">${escapeHtml_(execTime)}</span>
                 </div>
                 <div class="audit-row">
                   <span class="audit-label">Terms &amp; Policy Ack:</span>

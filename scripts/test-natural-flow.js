@@ -204,6 +204,23 @@ function buildContinuousDynamicHtml(r) {
     ? `<img src="${sigRaw}" class="sig-img" alt="Digital Signature" style="max-height: 48px; max-width: 240px; object-fit: contain; display: block; margin: 0 auto;">`
     : `<div style="height: 38px; line-height: 38px; font-style: italic; color: #1e293b; font-family: 'Brush Script MT', cursive, sans-serif; font-size: 15pt; text-align: center;">${escapeHtml(signerName)}</div>`;
 
+  let execDate = "17-11-2026";
+  let execTime = "05:30:00 PM IST";
+  const subStr = String(r.submittedAt || r.timestamp || r.signDate || "");
+  if (subStr) {
+    if (subStr.includes("T")) {
+      const parts = subStr.split("T");
+      execDate = parts[0];
+      execTime = parts[1].replace(/Z|\.\d+Z?$/i, "") + " IST";
+    } else if (subStr.includes(" ")) {
+      const parts = subStr.split(" ");
+      execDate = parts[0];
+      execTime = parts.slice(1).join(" ");
+    } else {
+      execDate = subStr;
+    }
+  }
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -771,11 +788,11 @@ function buildContinuousDynamicHtml(r) {
               <div class="sig-col-right">
                 <div class="audit-row">
                   <span class="audit-label">Execution Date:</span>
-                  <span class="audit-val">${escapeHtml(r.timestamp ? String(r.timestamp).split(' ')[0] : '16-11-2026')}</span>
+                  <span class="audit-val">${escapeHtml(execDate)}</span>
                 </div>
                 <div class="audit-row">
                   <span class="audit-label">Submission Time:</span>
-                  <span class="audit-val">${escapeHtml(r.timestamp ? String(r.timestamp).split(' ').slice(1).join(' ') : '05:15:30 PM IST')}</span>
+                  <span class="audit-val">${escapeHtml(execTime)}</span>
                 </div>
                 <div class="audit-row">
                   <span class="audit-label">Terms &amp; Policy Ack:</span>
