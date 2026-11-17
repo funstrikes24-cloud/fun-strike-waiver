@@ -379,24 +379,51 @@
   let riderSeq = 0;
 
   function updateRiderCount() {
-    const extraCount = additionalRidersContainer.querySelectorAll(".rider-card").length;
+    const isParentMode = radioParent && radioParent.checked;
+    const cards = Array.from(additionalRidersContainer.querySelectorAll(".rider-card"));
+    const extraCount = cards.length;
     const total = (primaryIsRidingEl.checked ? 1 : 0) + extraCount;
-    riderCountBadge.textContent = `Total Participants: ${total}`;
+
+    const currentZone = getEffectiveZone();
+    const isGokart = currentZone === "gokart";
+    const labelSingular = isGokart ? "Driver" : (isParentMode ? "Child / Minor" : "Participant");
+    const labelPlural = isGokart ? "Drivers" : (isParentMode ? "Children / Minors" : "Participants");
+
+    riderCountBadge.textContent = `Total ${labelPlural}: ${total}`;
     btnAddRiderEl.disabled = extraCount >= MAX_EXTRA_PARTICIPANTS;
 
-    const toggleWrap = primaryIsRidingEl.closest(".toggle-control");
-    if (toggleWrap) {
-      if (primaryIsRidingEl.checked) {
-        toggleWrap.classList.remove("is-parent-only");
-      } else {
-        toggleWrap.classList.add("is-parent-only");
-      }
-    }
-
-    additionalRidersContainer.querySelectorAll(".rider-card").forEach((card, idx) => {
-      const num = primaryIsRidingEl.checked ? idx + 2 : idx + 1;
+    cards.forEach((card, idx) => {
       const titleEl = card.querySelector(".rider-card-title");
-      if (titleEl) titleEl.textContent = primaryIsRidingEl.checked ? `Additional Participant #${num}` : `Participant #${num}`;
+      const removeBtn = card.querySelector(".btn-remove-rider");
+      const nameLabel = card.querySelector(".rider-name-label");
+      const dobLabel = card.querySelector(".rider-dob-label");
+
+      if (isParentMode) {
+        card.classList.add("child-card");
+        const childNum = idx + 1;
+        if (titleEl) {
+          titleEl.innerHTML = childNum === 1
+            ? `👶 <strong>${isGokart ? 'DRIVER' : 'CHILD / MINOR'} #1</strong> <span class="rider-card-mandatory-badge">MANDATORY</span>`
+            : `👶 <strong>${isGokart ? 'DRIVER' : 'CHILD / MINOR'} #${childNum}</strong>`;
+        }
+        if (removeBtn) {
+          // Hide remove on child #1 since at least 1 child is required
+          removeBtn.style.display = childNum === 1 ? "none" : "inline-flex";
+        }
+        if (nameLabel) nameLabel.innerHTML = `${isGokart ? 'DRIVER' : 'CHILD'} FULL LEGAL NAME:<span class="req">*</span>`;
+        if (dobLabel) dobLabel.innerHTML = `${isGokart ? 'DRIVER' : 'CHILD'} DATE OF BIRTH:<span class="req">*</span>`;
+      } else {
+        card.classList.remove("child-card");
+        const partNum = idx + 2;
+        if (titleEl) {
+          titleEl.textContent = `Additional ${labelSingular} #${partNum}`;
+        }
+        if (removeBtn) {
+          removeBtn.style.display = "inline-flex";
+        }
+        if (nameLabel) nameLabel.innerHTML = `${labelSingular.toUpperCase()} FULL LEGAL NAME:<span class="req">*</span>`;
+        if (dobLabel) dobLabel.innerHTML = `DATE OF BIRTH:<span class="req">*</span>`;
+      }
     });
   }
 
@@ -406,35 +433,47 @@
     const nameId = `riderName_${seq}`;
     const dobId = `riderDob_${seq}`;
     const relId = `riderRel_${seq}`;
+    const isParentMode = radioParent && radioParent.checked;
+    const currentZone = getEffectiveZone();
+    const isGokart = currentZone === "gokart";
 
     const card = document.createElement("div");
-    card.className = "rider-card";
+    card.className = "rider-card" + (isParentMode ? " child-card" : "");
     card.dataset.riderId = String(seq);
+
+    const relOptions = isParentMode ? `
+      <option value="Child / Son / Daughter" selected>Child / Son / Daughter</option>
+      <option value="Ward (Legal Minor)">Ward (Legal Minor)</option>
+      <option value="Niece / Nephew">Niece / Nephew</option>
+      <option value="Other Minor">Other Minor</option>
+    ` : `
+      <option value="Family / Child" selected>Family / Child</option>
+      <option value="Spouse / Partner">Spouse / Partner</option>
+      <option value="Friend / Guest">Friend / Guest</option>
+      <option value="Other">Other</option>
+    `;
 
     card.innerHTML = `
       <div class="rider-card-head">
-        <span class="rider-card-title">Additional Rider</span>
+        <span class="rider-card-title">${isParentMode ? '👶 CHILD / MINOR' : 'Additional Participant'}</span>
         <button type="button" class="btn-remove-rider no-print">Remove</button>
       </div>
       <div class="rider-fields-grid">
         <div class="field-row">
-          <label for="${nameId}">RIDER FULL NAME:<span class="req">*</span></label>
-          <input type="text" id="${nameId}" name="${nameId}" class="rider-name-input" placeholder="Enter rider's full name" value="${escapeHtml(initialData.name || "")}" required />
+          <label for="${nameId}" class="rider-name-label">${isParentMode ? (isGokart ? 'DRIVER' : 'CHILD') : 'PARTICIPANT'} FULL LEGAL NAME:<span class="req">*</span></label>
+          <input type="text" id="${nameId}" name="${nameId}" class="rider-name-input" placeholder="${isParentMode ? 'e.g. Aarav Patel' : 'Enter full legal name'}" value="${escapeHtml(initialData.name || "")}" required />
         </div>
         <div class="field-row">
-          <label for="${dobId}">DATE OF BIRTH:<span class="req">*</span></label>
+          <label for="${dobId}" class="rider-dob-label">${isParentMode ? (isGokart ? 'DRIVER' : 'CHILD') : 'PARTICIPANT'} DATE OF BIRTH:<span class="req">*</span></label>
           <div class="dob-wrap">
             <input type="date" id="${dobId}" name="${dobId}" max="${todayISO()}" class="rider-dob-input" value="${escapeHtml(initialData.dob || "")}" required />
             <span class="age-tag rider-age-tag" hidden></span>
           </div>
         </div>
         <div class="field-row">
-          <label for="${relId}">RELATION / GROUP:</label>
+          <label for="${relId}">${isParentMode ? 'RELATIONSHIP TO GUARDIAN:' : 'RELATION / GROUP:'}</label>
           <select id="${relId}" name="${relId}" class="rider-rel-input">
-            <option value="Family / Child">Family / Child</option>
-            <option value="Spouse / Partner">Spouse / Partner</option>
-            <option value="Friend / Guest">Friend / Guest</option>
-            <option value="Other">Other</option>
+            ${relOptions}
           </select>
         </div>
       </div>
@@ -443,8 +482,6 @@
     const relSelect = card.querySelector(".rider-rel-input");
     if (initialData.relation) {
       relSelect.value = initialData.relation;
-    } else if (radioParent && radioParent.checked) {
-      relSelect.value = "Family / Child";
     }
 
     const dobInput = card.querySelector(".rider-dob-input");
@@ -488,26 +525,78 @@
 
     const currentZone = getEffectiveZone();
     const isGokart = currentZone === "gokart";
+    const additionalWrapper = document.getElementById("additionalRidersWrapper");
+    const parentBanner = document.getElementById("parentModeBanner");
 
     if (isParentMode) {
       if (lblFullName) lblFullName.innerHTML = 'PARENT / GUARDIAN FULL LEGAL NAME<span class="req">*</span>';
-      if (lblDob) lblDob.innerHTML = 'PARENT DATE OF BIRTH (18+ ONLY)<span class="req">*</span> <span id="primaryAgeTag" class="age-tag" hidden></span>';
-      if (lblMobile) lblMobile.innerHTML = 'PARENT MOBILE NUMBER (FOR VERIFICATION)<span class="req">*</span>';
-      if (additionalSectionTitle) additionalSectionTitle.textContent = isGokart ? 'Drivers Participating (At least 1 Required)' : 'Children / Minors Participating (At least 1 Required)';
-      if (additionalSectionDesc) additionalSectionDesc.textContent = isGokart ? 'Enter each driver participating under your legal parental consent.' : 'Enter each child or minor who will be playing under your supervision.';
-      if (btnAddRiderEl) btnAddRiderEl.textContent = isGokart ? '+ Add Another Driver' : '+ Add Another Child / Minor';
+      fullNameEl.placeholder = "e.g. Ramesh Patel (Parent / Guardian)";
+      if (lblDob) lblDob.innerHTML = 'PARENT DATE OF BIRTH (18+ MANDATORY)<span class="req">*</span> <span id="primaryAgeTag" class="age-tag" hidden></span>';
+      if (lblMobile) lblMobile.innerHTML = 'PARENT MOBILE NUMBER (10 DIGITS)<span class="req">*</span>';
 
-      // Automatically add child card #1 if none is present
+      if (additionalWrapper) additionalWrapper.classList.add("parent-mode-active");
+      if (parentBanner) parentBanner.hidden = false;
+
+      if (additionalSectionTitle) {
+        additionalSectionTitle.innerHTML = isGokart
+          ? '🏎️ Driver(s) Participating (At least 1 Required)'
+          : '👶 Children / Minors Participating (At least 1 Required)';
+      }
+      if (additionalSectionDesc) {
+        additionalSectionDesc.textContent = isGokart
+          ? 'Enter each driver participating under your legal parental consent.'
+          : 'Please enter each child or minor who will be playing under your legal supervision.';
+      }
+      if (btnAddRiderEl) {
+        btnAddRiderEl.textContent = isGokart ? '+ Add Another Driver' : '+ Add Another Child / Minor';
+      }
+
+      // Automatically open Child #1 if no child is present
       if (additionalRidersContainer.querySelectorAll(".rider-card").length === 0) {
         addRiderCard();
       }
+
+      // Smooth scroll to Child #1 box
+      const firstChildCard = additionalRidersContainer.querySelector(".rider-card");
+      if (firstChildCard) {
+        setTimeout(() => {
+          firstChildCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          const firstInput = firstChildCard.querySelector(".rider-name-input");
+          if (firstInput && !firstInput.value) firstInput.focus();
+        }, 100);
+      }
     } else {
       if (lblFullName) lblFullName.innerHTML = isGokart ? 'DRIVER FULL LEGAL NAME (18+)<span class="req">*</span>' : 'PLAYER FULL LEGAL NAME<span class="req">*</span>';
+      fullNameEl.placeholder = isGokart ? "e.g. Rahul Sharma" : "e.g. Priya Patel";
       if (lblDob) lblDob.innerHTML = 'DATE OF BIRTH<span class="req">*</span> <span id="primaryAgeTag" class="age-tag" hidden></span>';
       if (lblMobile) lblMobile.innerHTML = 'MOBILE NUMBER (10 DIGITS)<span class="req">*</span>';
-      if (additionalSectionTitle) additionalSectionTitle.textContent = isGokart ? 'Additional Drivers (Group / Family / Friends)' : 'Additional Jumpers / Children / Group';
-      if (additionalSectionDesc) additionalSectionDesc.textContent = isGokart ? 'Add up to 19 more drivers on this single waiver form.' : 'Add up to 19 more family members or kids on this single waiver form.';
-      if (btnAddRiderEl) btnAddRiderEl.textContent = isGokart ? '+ Add Another Driver' : '+ Add Another Jumper / Child';
+
+      if (additionalWrapper) additionalWrapper.classList.remove("parent-mode-active");
+      if (parentBanner) parentBanner.hidden = true;
+
+      if (additionalSectionTitle) {
+        additionalSectionTitle.textContent = isGokart
+          ? 'Additional Drivers (Group / Family / Friends)'
+          : 'Additional Jumpers / Children / Group (Optional)';
+      }
+      if (additionalSectionDesc) {
+        additionalSectionDesc.textContent = isGokart
+          ? 'Add up to 19 more drivers on this single waiver form.'
+          : 'Add up to 19 more friends or family members on this single waiver form.';
+      }
+      if (btnAddRiderEl) {
+        btnAddRiderEl.textContent = isGokart ? '+ Add Another Driver' : '+ Add Another Jumper';
+      }
+
+      // If there is only 1 rider card and it is completely empty, remove it so adult does not have a lingering empty required card
+      const cards = additionalRidersContainer.querySelectorAll(".rider-card");
+      if (cards.length === 1) {
+        const nameVal = cards[0].querySelector(".rider-name-input").value.trim();
+        const dobVal = cards[0].querySelector(".rider-dob-input").value.trim();
+        if (!nameVal && !dobVal) {
+          cards[0].remove();
+        }
+      }
     }
 
     updateRiderCount();
@@ -583,28 +672,44 @@
       if (!firstInvalid) firstInvalid = emailEl;
     }
 
+    const isParentMode = radioParent && radioParent.checked;
+    const currentActiveZone = getEffectiveZone();
+    const isGokart = currentActiveZone === "gokart";
+
+    if (isParentMode && dobEl.value) {
+      const parentAge = calculateAge(dobEl.value);
+      if (parentAge !== null && parentAge < 18) {
+        dobEl.classList.add("is-invalid");
+        errors.push("Parent / Legal Guardian must be at least 18 years of age");
+        if (!firstInvalid) firstInvalid = dobEl;
+      }
+    }
+
     const riderCards = Array.from(additionalRidersContainer.querySelectorAll(".rider-card"));
     riderCards.forEach((card, i) => {
       const nameIn = card.querySelector(".rider-name-input");
       const dobIn = card.querySelector(".rider-dob-input");
+      const labelPrefix = isParentMode ? `${isGokart ? 'Driver' : 'Child / Minor'} #${i + 1}` : `Additional Participant #${i + 1}`;
       if (!nameIn.value.trim()) {
         nameIn.classList.add("is-invalid");
-        errors.push(`Additional Rider #${i + 1} Name`);
+        errors.push(`${labelPrefix} Full Name`);
         if (!firstInvalid) firstInvalid = nameIn;
       }
       if (!dobIn.value || calculateAge(dobIn.value) === null) {
         dobIn.classList.add("is-invalid");
-        errors.push(`Additional Rider #${i + 1} Valid DOB`);
+        errors.push(`${labelPrefix} Valid Date of Birth`);
         if (!firstInvalid) firstInvalid = dobIn;
       }
     });
 
-    if (!primaryIsRidingEl.checked && riderCards.length === 0) {
-      errors.push("At least 1 Participant (check primary signer is participating or add a name)");
+    if (isParentMode && riderCards.length === 0) {
+      errors.push(`At least 1 ${isGokart ? 'Driver' : 'Child / Minor'} is required when signing as Parent / Guardian`);
+      if (!firstInvalid) firstInvalid = document.getElementById("btnAddRider");
+    } else if (!primaryIsRidingEl.checked && riderCards.length === 0) {
+      errors.push("At least 1 Participant required");
       if (!firstInvalid) firstInvalid = document.getElementById("btnAddRider");
     }
 
-    const currentActiveZone = getEffectiveZone();
     if (currentActiveZone === "gokart" && agreeGokart18El) {
       if (!agreeGokart18El.checked) {
         agreeGokart18El.closest(".checkbox-label")?.classList.add("is-invalid");
