@@ -34,17 +34,22 @@ function buildContinuousDynamicHtml(r) {
     const pName = parts[0] || cleanLine;
     const pDob = parts[1] || r.dob || "—";
     const pAge = parts[2] || r.ageRole || "—";
-    const pRel = parts[3] || (idx === 0 ? "Primary Signer" : "Participant");
+    const pRel = parts[3] || (idx === 0 && (!r.signedBy || !r.signedBy.includes("Parent/Guardian")) ? "Primary Signer" : "Participant");
 
-    const isMinor = /minor/i.test(pAge);
+    const isMinor = /minor/i.test(pAge) || /minor|child/i.test(pRel);
     const cleanAge = pAge.replace(/\s*\((minor|adult)\)/gi, "").trim();
     const ageBadge = isMinor
       ? '<span class="badge badge-minor">MINOR</span> ' + escapeHtml(cleanAge)
       : '<span class="badge badge-adult">ADULT</span> ' + escapeHtml(cleanAge);
 
-    const relBadge = (idx === 0)
-      ? '<span class="badge badge-primary">PRIMARY SIGNER</span>'
-      : escapeHtml(pRel);
+    let relBadge;
+    if (/child|minor/i.test(pRel)) {
+      relBadge = '<span class="badge badge-minor">CHILD / MINOR</span>';
+    } else if (/primary|self/i.test(pRel)) {
+      relBadge = '<span class="badge badge-primary">PRIMARY SIGNER</span>';
+    } else {
+      relBadge = '<span class="badge badge-adult">' + escapeHtml(pRel || "Participant") + '</span>';
+    }
 
     return `<tr>
       <td style="text-align: center; font-weight: bold; color: #475569; width: 24px; white-space: nowrap;">${idx + 1}</td>
@@ -186,9 +191,18 @@ function buildContinuousDynamicHtml(r) {
     `;
   }
 
-  const sigHtml = (r.signatureDataUrl && String(r.signatureDataUrl).startsWith("data:image"))
-    ? `<img src="${r.signatureDataUrl}" class="sig-img" alt="Digital Signature">`
-    : `<div style="height: 38px; line-height: 38px; font-style: italic; color: #1e293b; font-family: 'Brush Script MT', cursive, sans-serif; font-size: 15pt; text-align: center;">${escapeHtml(r.fullName || "Aarav Sharma")}</div>`;
+  const signerName = r.signerName || (r.signedBy ? r.signedBy.replace(/\s*\([^)]*\)/, "").trim() : "") || r.fullName || "Signer";
+  const isParentOnly = (r.signedBy && /Parent\/Guardian|Parent \/ Legal Guardian/i.test(r.signedBy)) || r.primaryIsRiding === false;
+  const hasMinors = riderLines.some(l => /minor|child/i.test(l));
+  const signerRoleLabel = isParentOnly
+    ? "Parent / Legal Guardian (Non-Participating)"
+    : (hasMinors ? "Parent / Legal Guardian & Participant" : "Self (Adult Participant)");
+
+  const sigRaw = (r && (r.signatureDataUrl || r.signatureUrl || r.signature || r.guestSignature)) || "";
+  const hasSig = sigRaw && (String(sigRaw).startsWith("data:image") || String(sigRaw).startsWith("http"));
+  const sigHtml = hasSig
+    ? `<img src="${sigRaw}" class="sig-img" alt="Digital Signature" style="max-height: 48px; max-width: 240px; object-fit: contain; display: block; margin: 0 auto;">`
+    : `<div style="height: 38px; line-height: 38px; font-style: italic; color: #1e293b; font-family: 'Brush Script MT', cursive, sans-serif; font-size: 15pt; text-align: center;">${escapeHtml(signerName)}</div>`;
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -672,30 +686,30 @@ function buildContinuousDynamicHtml(r) {
             </table>
           </div>
 
-          <!-- 2. SCHEDULE I: PRIMARY SIGNER -->
+          <!-- 2. SCHEDULE I: LEGAL SIGNER -->
           <div class="doc-unit">
             <div class="section-title">
-              <span>Schedule I: Primary Signer &amp; Legal Guardian Identification</span>
+              <span>Schedule I: Legal Signer &amp; Guardian Identification</span>
               <span>FORM FS-W9</span>
             </div>
             <table class="data-table">
               <tr>
-                <td class="label-cell">Primary Signer:</td>
-                <td class="value-cell" style="word-break: break-word;"><strong>${escapeHtml(r.fullName || "—")}</strong></td>
+                <td class="label-cell">Legal Signer / Parent:</td>
+                <td class="value-cell" style="word-break: break-word;"><strong>${escapeHtml(signerName)}</strong></td>
                 <td class="label-cell">Verified Mobile:</td>
-                <td class="value-cell"><strong>${escapeHtml(r.phone || "—")}</strong></td>
+                <td class="value-cell"><strong>${escapeHtml(r.phone || r.mobile || r.mobileNumber || "—")}</strong></td>
               </tr>
               <tr>
                 <td class="label-cell">Date of Birth &amp; Age:</td>
                 <td class="value-cell">${escapeHtml(r.dob || "—")} (${escapeHtml(r.ageRole || "Adult")})</td>
                 <td class="label-cell">Official Email:</td>
-                <td class="value-cell" style="word-break: break-all;">${escapeHtml(r.email || "—")}</td>
+                <td class="value-cell" style="word-break: break-all;">${escapeHtml(r.email || r.emailId || "—")}</td>
               </tr>
               <tr>
-                <td class="label-cell">${isGokart ? 'Height Verification:' : 'Participant Type:'}</td>
-                <td class="value-cell"><strong>${isGokart ? escapeHtml(r.heightInches ? r.heightInches + ' in (Verified ≥ 5ft 5in)' : 'Verified On-Site') : 'Arena Jumper / Guardian'}</strong></td>
-                <td class="label-cell">Signed By / Role:</td>
-                <td class="value-cell">${escapeHtml(r.fullName ? r.fullName.split(' ')[0] : 'Signer')} (Self &amp; Legal Guardian)</td>
+                <td class="label-cell">Legal Authority &amp; Role:</td>
+                <td class="value-cell"><strong>${escapeHtml(signerRoleLabel)}</strong></td>
+                <td class="label-cell">${isGokart ? 'Height Verification:' : 'Participant Status:'}</td>
+                <td class="value-cell"><strong>${isGokart ? (r.heightInches ? r.heightInches + ' in (Verified ≥ 5ft 5in)' : 'Verified On-Site (≥ 5ft 5in)') : (isParentOnly ? 'Accompanying Guardian (Spectator)' : 'Cleared for Arena')}</strong></td>
               </tr>
               <tr>
                 <td class="label-cell">Residential Address:</td>
@@ -751,7 +765,7 @@ function buildContinuousDynamicHtml(r) {
                   ${sigHtml}
                 </div>
                 <div style="border-top: 1px solid #0f172a; padding-top: 2px;">
-                  <strong style="font-size: 8.2pt; word-break: break-word;">${escapeHtml(r.fullName || "Signer")}</strong> <span style="font-size: 7.2pt; color: #64748b;">(Primary Signer &amp; Guardian)</span>
+                  <strong style="font-size: 8.2pt; word-break: break-word;">${escapeHtml(signerName)}</strong> <span style="font-size: 7.2pt; color: #64748b;">(${escapeHtml(signerRoleLabel)})</span>
                 </div>
               </div>
               <div class="sig-col-right">

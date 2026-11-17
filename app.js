@@ -376,10 +376,19 @@
     riderCountBadge.textContent = `Total Participants: ${total}`;
     btnAddRiderEl.disabled = extraCount >= MAX_EXTRA_PARTICIPANTS;
 
+    const toggleWrap = primaryIsRidingEl.closest(".toggle-control");
+    if (toggleWrap) {
+      if (primaryIsRidingEl.checked) {
+        toggleWrap.classList.remove("is-parent-only");
+      } else {
+        toggleWrap.classList.add("is-parent-only");
+      }
+    }
+
     additionalRidersContainer.querySelectorAll(".rider-card").forEach((card, idx) => {
       const num = primaryIsRidingEl.checked ? idx + 2 : idx + 1;
       const titleEl = card.querySelector(".rider-card-title");
-      if (titleEl) titleEl.textContent = `Additional Participant #${num}`;
+      if (titleEl) titleEl.textContent = primaryIsRidingEl.checked ? `Additional Participant #${num}` : `Participant #${num}`;
     });
   }
 

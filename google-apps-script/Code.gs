@@ -33,6 +33,7 @@ const SIGNATURES_FOLDER_NAME = "02 - Customer Signatures";
 const MONTHLY_FOLDER_NAME = "03 - Monthly Archives";
 const ARCHIVE_FOLDER_NAME = "04 - Yearly Archives";
 const MANAGER_SHARE_EMAIL = "pandyaaryanp348@gmail.com";
+var logoBase64 = "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";
 
 const STREAMS = {
   pal_gokart: {
@@ -69,9 +70,7 @@ const ZONE_CONFIG = STREAMS;
 const HEADERS = [
   "Submitted At",
   "Ref Code",
-  "Activity / Zone",
-  "Branch",
-  "Primary Participant",
+  "Participant Name",
   "Participant DOB",
   "Age / Role",
   "Signed By (Parent / Guardian)",
@@ -86,7 +85,9 @@ const HEADERS = [
   "Sign Date",
   "Sign Time",
   "Signature Image",
-  "Print / View Waiver"
+  "Print / View Waiver",
+  "Activity / Zone",
+  "Branch"
 ];
 
 /**
@@ -98,6 +99,7 @@ function onOpen() {
       .createMenu("Fun Strike! Waiver")
       .addItem("Print Selected Row (Waiver Form)", "printSelectedWaiver")
       .addSeparator()
+      .addItem("Update Sheet Headers to New Clean Layout", "updateSheetHeadersToNewLayout")
       .addItem("Setup Folders, Activity Sheets & Auto-Triggers", "setupAllZoneSheets")
       .addItem("Create New Month Tab & Archive Last Month", "onMonthlyRotation")
       .addItem("Transfer Full Year Into Yearly Archives...", "promptTransferYearArchive")
@@ -110,6 +112,43 @@ function onOpen() {
 
 function setupAllZoneSheets() {
   return setupAllThreeZoneSheets();
+}
+
+/**
+ * Updates row 1 headers of all active month tabs to the new clean layout
+ * (Activity and Branch moved to the end of the sheet, columns 19 and 20).
+ */
+function updateSheetHeadersToNewLayout() {
+  const props = PropertiesService.getScriptProperties();
+  const rootFolder = getRootDatabaseFolder_(props);
+  const monthTab = getMonthTabName_(new Date());
+  let count = 0;
+
+  Object.keys(STREAMS).forEach(function(key) {
+    const cfg = STREAMS[key];
+    const ss = getSpreadsheetByPropOrTitle_(props, rootFolder, cfg.propKey, cfg.title);
+    if (!ss) return;
+    const sheet = ss.getSheetByName(monthTab);
+    if (!sheet) return;
+    
+    sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
+    sheet.getRange(1, 1, 1, HEADERS.length)
+      .setFontWeight("bold")
+      .setBackground(cfg.themeColor || "#0f172a")
+      .setFontColor("#ffffff")
+      .setHorizontalAlignment("center")
+      .setVerticalAlignment("middle")
+      .setFontSize(10);
+    sheet.setRowHeight(1, 32);
+    try {
+      sheet.autoResizeColumns(1, HEADERS.length);
+    } catch(e) {}
+    count++;
+  });
+
+  try {
+    SpreadsheetApp.getUi().alert("Updated " + count + " sheet(s) to new clean column layout!");
+  } catch(e) {}
 }
 
 /**
@@ -443,7 +482,7 @@ function doPost(e) {
     lock.waitLock(10000);
 
     const rawPayload = e && e.postData && e.postData.contents ? String(e.postData.contents) : "{}";
-    if (rawPayload.length > 100000) {
+    if (rawPayload.length > 250000) {
       return jsonError_("Payload too large.");
     }
     const data = JSON.parse(rawPayload);
@@ -505,11 +544,6 @@ function doPost(e) {
       })
       .join("\n");
 
-    const signedByLabel =
-      data.primaryIsRiding === false
-        ? cleanFullName + " (Parent/Guardian)"
-        : cleanFullName;
-
     const minIn = clampText_(data.minHeightIn, 12);
     const minCm = clampText_(data.minHeightCm, 12);
     const heightStr =
@@ -535,33 +569,38 @@ function doPost(e) {
 
     const is18Ack = (/kart/i.test(streamCfg.activityLabel) || data.agreeGokart18) ? "YES" : "N/A";
 
-    const rowsToAppend = effectiveRiders.map(function (r) {
+    const rowsToAppend = effectiveRiders.map(function (r, idx) {
       const hasAge = r.age !== null && r.age !== undefined && !isNaN(r.age);
+      const isMinor = hasAge && r.age < 18;
       const ageRole =
-        (hasAge ? r.age + " yrs (" + (r.age < 18 ? "MINOR" : "Adult") + ") — " : "") +
-        (r.relation || "Participant");
+        (hasAge ? r.age + " yrs (" + (isMinor ? "MINOR" : "Adult") + ") — " : "") +
+        (r.relation || (idx === 0 && data.primaryIsRiding !== false ? "Primary Signer" : "Participant"));
+
+      const participantSignedBy = (isMinor || r.name !== cleanFullName || data.primaryIsRiding === false)
+        ? cleanFullName + " (Parent / Legal Guardian)"
+        : cleanFullName + " (Self)";
 
       return [
-        "'" + submittedIso,
-        safeCell_(refCodeStr),
-        safeCell_(cleanActivity),
-        safeCell_(cleanBranch),
-        safeCell_(r.name || cleanFullName),
-        safeCell_(r.dob || cleanDob),
-        safeCell_(ageRole),
-        safeCell_(signedByLabel),
-        "'" + cleanMobile,
-        safeCell_(cleanEmail),
-        safeCell_(cleanAddress),
-        totalCount,
-        safeCell_(allNamesList),
-        safeCell_(heightStr),
-        is18Ack,
-        data.agreed ? "YES" : "NO",
-        safeCell_(cleanSignDate),
-        safeCell_(cleanSignTime),
-        sigCellValue,
-        printFormula
+        "'" + submittedIso,                               // 0: Submitted At
+        safeCell_(refCodeStr),                            // 1: Ref Code
+        safeCell_(r.name || cleanFullName),               // 2: Participant Name
+        safeCell_(r.dob || cleanDob),                     // 3: Participant DOB
+        safeCell_(ageRole),                               // 4: Age / Role
+        safeCell_(participantSignedBy),                   // 5: Signed By (Parent / Guardian)
+        "'" + cleanMobile,                                // 6: Mobile Number
+        safeCell_(cleanEmail),                            // 7: Email ID
+        safeCell_(cleanAddress),                          // 8: Address
+        totalCount,                                       // 9: Total in Group
+        safeCell_(allNamesList),                          // 10: All Participants in Waiver
+        safeCell_(heightStr),                             // 11: Min Height
+        is18Ack,                                          // 12: 18+ Policy Acknowledged
+        data.agreed ? "YES" : "NO",                       // 13: Agreed to T&C
+        safeCell_(cleanSignDate),                         // 14: Sign Date
+        safeCell_(cleanSignTime),                         // 15: Sign Time
+        sigCellValue,                                     // 16: Signature Image
+        printFormula,                                     // 17: Print / View Waiver
+        safeCell_(cleanActivity),                         // 18: Activity / Zone (at the end)
+        safeCell_(cleanBranch)                            // 19: Branch (at the end)
       ];
     });
 
@@ -620,35 +659,77 @@ function doGet(e) {
   }
 
   const m = found.match;
-  const sigColIndex = m.length >= 20 ? 19 : 18;
+  const isNewLayout = /kart|softplay|trampoline/i.test(String(m[18] || "")) || /^\d{4}-\d{2}-\d{2}$/.test(String(m[3] || ""));
+  const sigColIndex = isNewLayout ? 17 : (m.length >= 20 ? 19 : 18);
   const sigFormula = found.sheet.getRange(found.rowNum, found.colOffset + sigColIndex).getFormula();
-  const rawSigVal = m.length >= 20 ? m[18] : m[17];
-  const resolvedSigUrl = resolveSignatureDataUrl_(rawSigVal, sigFormula);
-
-  const record = {
-    submittedAt: m[0],
-    refCode: m[1],
-    activity: m[2],
-    branch: m[3],
-    fullName: m[4],
-    dob: m[5],
-    ageRole: m[6],
-    signedBy: m[7],
-    mobileNumber: m[8],
-    emailId: m[9],
-    address: m[10],
-    totalRiders: m[11],
-    allRiders: m[12],
-    heightStr: m[13],
-    is18Ack: m.length >= 20 ? m[14] : (m[13] || "N/A"),
-    agreed: m.length >= 20 ? m[15] : m[14],
-    signDate: m.length >= 20 ? m[16] : m[15],
-    signTime: m.length >= 20 ? m[17] : m[16],
-    signatureUrl: resolvedSigUrl
-  };
+  const record = parseRecordFromRowValues_(m, sigFormula, cfg);
 
   return HtmlService.createHtmlOutput(buildPrintableHtml_(record))
     .setTitle("Print Waiver — " + record.refCode);
+}
+
+function parseRecordFromRowValues_(rowVals, sigFormula, cfg) {
+  const isNewLayout = /kart|softplay|trampoline/i.test(String(rowVals[18] || "")) || /^\d{4}-\d{2}-\d{2}$/.test(String(rowVals[3] || ""));
+  
+  if (isNewLayout) {
+    const rawSigVal = rowVals[16];
+    const resolvedSigUrl = resolveSignatureDataUrl_(rawSigVal, sigFormula);
+    return {
+      submittedAt: rowVals[0],
+      refCode: rowVals[1],
+      fullName: rowVals[2],
+      dob: rowVals[3],
+      ageRole: rowVals[4],
+      signedBy: rowVals[5],
+      mobile: rowVals[6],
+      phone: rowVals[6],
+      mobileNumber: rowVals[6],
+      email: rowVals[7],
+      emailId: rowVals[7],
+      address: rowVals[8],
+      totalRiders: rowVals[9],
+      allRiders: rowVals[10],
+      heightStr: rowVals[11],
+      is18Ack: rowVals[12],
+      agreed: rowVals[13],
+      signDate: rowVals[14],
+      signTime: rowVals[15],
+      signatureUrl: resolvedSigUrl,
+      signatureDataUrl: resolvedSigUrl,
+      activity: rowVals[18] || (cfg && cfg.activityLabel) || "Go-Karting",
+      branch: rowVals[19] || (cfg && cfg.branchLabel) || "Surat"
+    };
+  } else {
+    const rawSigVal = rowVals.length >= 20 ? rowVals[18] : rowVals[17];
+    const resolvedSigUrl = resolveSignatureDataUrl_(rawSigVal, sigFormula);
+    return {
+      submittedAt: rowVals[0],
+      refCode: rowVals[1],
+      activity: rowVals[2],
+      branch: rowVals[3],
+      fullName: rowVals[4],
+      dob: rowVals[5],
+      ageRole: rowVals[6],
+      signedBy: rowVals[7],
+      mobile: rowVals[8],
+      phone: rowVals[8],
+      mobileNumber: rowVals[8],
+      email: rowVals[9],
+      emailId: rowVals[9],
+      address: rowVals[10],
+      totalRiders: rowVals[11],
+      allRiders: rowVals[12],
+      heightStr: rowVals[13],
+      is18Ack: rowVals.length >= 20 ? rowVals[14] : (rowVals[13] || "N/A"),
+      agreed: rowVals.length >= 20 ? rowVals[15] : rowVals[14],
+      signDate: rowVals.length >= 20 ? rowVals[16] : rowVals[15],
+      signTime: rowVals.length >= 20 ? rowVals[17] : rowVals[16],
+      signatureUrl: resolvedSigUrl,
+      signatureDataUrl: resolvedSigUrl,
+      activityTitle: rowVals[2],
+      branchLocation: rowVals[3]
+    };
+  }
 }
 
 function findPrintRow_(sheet, refCode, token, props, colOffset) {
@@ -694,32 +775,10 @@ function printSelectedWaiver() {
 
   const numCols = Math.max(sheet.getLastColumn(), HEADERS.length);
   const vals = sheet.getRange(rowIndex, 1, 1, numCols).getDisplayValues()[0];
-  const sigColIndex = vals.length >= 20 ? 19 : 18;
+  const isNewLayout = /kart|softplay|trampoline/i.test(String(vals[18] || "")) || /^\d{4}-\d{2}-\d{2}$/.test(String(vals[3] || ""));
+  const sigColIndex = isNewLayout ? 17 : (vals.length >= 20 ? 19 : 18);
   const sigFormula = sheet.getRange(rowIndex, sigColIndex).getFormula();
-  const rawSigVal = vals.length >= 20 ? vals[18] : vals[17];
-  const resolvedSigUrl = resolveSignatureDataUrl_(rawSigVal, sigFormula);
-
-  const record = {
-    submittedAt: vals[0],
-    refCode: vals[1],
-    activity: vals[2],
-    branch: vals[3],
-    fullName: vals[4],
-    dob: vals[5],
-    ageRole: vals[6],
-    signedBy: vals[7],
-    mobileNumber: vals[8],
-    emailId: vals[9],
-    address: vals[10],
-    totalRiders: vals[11],
-    allRiders: vals[12],
-    heightStr: vals[13],
-    is18Ack: vals.length >= 20 ? vals[14] : (vals[13] || "N/A"),
-    agreed: vals.length >= 20 ? vals[15] : vals[14],
-    signDate: vals.length >= 20 ? vals[16] : vals[15],
-    signTime: vals.length >= 20 ? vals[17] : vals[16],
-    signatureUrl: resolvedSigUrl
-  };
+  const record = parseRecordFromRowValues_(vals, sigFormula, null);
 
   if (!record.fullName && !record.refCode) {
     ui.alert("The selected row appears to be empty.");
@@ -732,6 +791,7 @@ function printSelectedWaiver() {
     .setHeight(720);
 
   ui.showModalDialog(output, "Print Waiver — " + (record.refCode || record.fullName));
+}
 }
 
 // ---------- Helpers ----------
@@ -890,7 +950,7 @@ function installAutoTriggers_() {
 
 function saveSignatureFileFormula_(rootFolder, refCode, dataUrl, streamCfg) {
   const match = String(dataUrl || "").match(/^data:(image\/(webp|jpeg|png));base64,([A-Za-z0-9+/=]+)$/);
-  if (!match || String(dataUrl).length > 49000) return "";
+  if (!match || String(dataUrl).length > 300000) return "";
   try {
     const sigParentFolder = getOrCreateFolder_(rootFolder, SIGNATURES_FOLDER_NAME);
     const subfolderName = (streamCfg && streamCfg.sigFolder) || "General";
@@ -1116,17 +1176,22 @@ function buildPrintableHtml_(r) {
     const pName = parts[0] || cleanLine;
     const pDob = parts[1] || r.dob || "—";
     const pAge = parts[2] || r.ageRole || "—";
-    const pRel = parts[3] || (idx === 0 ? "Primary Signer" : "Participant");
+    const pRel = parts[3] || (idx === 0 && (!r.signedBy || !r.signedBy.includes("Parent/Guardian")) ? "Primary Signer" : "Participant");
 
-    const isMinor = /minor/i.test(pAge);
+    const isMinor = /minor/i.test(pAge) || /minor|child/i.test(pRel);
     const cleanAge = pAge.replace(/\s*\((minor|adult)\)/gi, "").trim();
     const ageBadge = isMinor
       ? '<span class="badge badge-minor">MINOR</span> ' + escapeHtml_(cleanAge)
       : '<span class="badge badge-adult">ADULT</span> ' + escapeHtml_(cleanAge);
 
-    const relBadge = (idx === 0)
-      ? '<span class="badge badge-primary">PRIMARY SIGNER</span>'
-      : escapeHtml_(pRel);
+    let relBadge;
+    if (/child|minor/i.test(pRel)) {
+      relBadge = '<span class="badge badge-minor">CHILD / MINOR</span>';
+    } else if (/primary|self/i.test(pRel)) {
+      relBadge = '<span class="badge badge-primary">PRIMARY SIGNER</span>';
+    } else {
+      relBadge = '<span class="badge badge-adult">' + escapeHtml_(pRel || "Participant") + '</span>';
+    }
 
     return `<tr>
       <td style="text-align: center; font-weight: bold; color: #475569; width: 24px; white-space: nowrap;">${idx + 1}</td>
@@ -1268,9 +1333,18 @@ function buildPrintableHtml_(r) {
     `;
   }
 
-  const sigHtml = (r.signatureDataUrl && String(r.signatureDataUrl).startsWith("data:image"))
-    ? `<img src="${r.signatureDataUrl}" class="sig-img" alt="Digital Signature">`
-    : `<div style="height: 38px; line-height: 38px; font-style: italic; color: #1e293b; font-family: 'Brush Script MT', cursive, sans-serif; font-size: 15pt; text-align: center;">${escapeHtml_(r.fullName || "Aarav Sharma")}</div>`;
+  const signerName = r.signerName || (r.signedBy ? r.signedBy.replace(/\s*\([^)]*\)/, "").trim() : "") || r.fullName || "Signer";
+  const isParentOnly = (r.signedBy && /Parent\/Guardian|Parent \/ Legal Guardian/i.test(r.signedBy)) || r.primaryIsRiding === false;
+  const hasMinors = riderLines.some(l => /minor|child/i.test(l));
+  const signerRoleLabel = isParentOnly
+    ? "Parent / Legal Guardian (Non-Participating)"
+    : (hasMinors ? "Parent / Legal Guardian & Participant" : "Self (Adult Participant)");
+
+  const sigRaw = (r && (r.signatureDataUrl || r.signatureUrl || r.signature || r.guestSignature)) || "";
+  const hasSig = sigRaw && (String(sigRaw).startsWith("data:image") || String(sigRaw).startsWith("http"));
+  const sigHtml = hasSig
+    ? `<img src="${sigRaw}" class="sig-img" alt="Digital Signature" style="max-height: 48px; max-width: 240px; object-fit: contain; display: block; margin: 0 auto;">`
+    : `<div style="height: 38px; line-height: 38px; font-style: italic; color: #1e293b; font-family: 'Brush Script MT', cursive, sans-serif; font-size: 15pt; text-align: center;">${escapeHtml_(signerName)}</div>`;
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -1754,30 +1828,30 @@ function buildPrintableHtml_(r) {
             </table>
           </div>
 
-          <!-- 2. SCHEDULE I: PRIMARY SIGNER -->
+          <!-- 2. SCHEDULE I: LEGAL SIGNER -->
           <div class="doc-unit">
             <div class="section-title">
-              <span>Schedule I: Primary Signer &amp; Legal Guardian Identification</span>
+              <span>Schedule I: Legal Signer &amp; Guardian Identification</span>
               <span>FORM FS-W9</span>
             </div>
             <table class="data-table">
               <tr>
-                <td class="label-cell">Primary Signer:</td>
-                <td class="value-cell" style="word-break: break-word;"><strong>${escapeHtml_(r.fullName || "—")}</strong></td>
+                <td class="label-cell">Legal Signer / Parent:</td>
+                <td class="value-cell" style="word-break: break-word;"><strong>${escapeHtml_(signerName)}</strong></td>
                 <td class="label-cell">Verified Mobile:</td>
-                <td class="value-cell"><strong>${escapeHtml_(r.phone || "—")}</strong></td>
+                <td class="value-cell"><strong>${escapeHtml_(r.phone || r.mobile || r.mobileNumber || "—")}</strong></td>
               </tr>
               <tr>
                 <td class="label-cell">Date of Birth &amp; Age:</td>
                 <td class="value-cell">${escapeHtml_(r.dob || "—")} (${escapeHtml_(r.ageRole || "Adult")})</td>
                 <td class="label-cell">Official Email:</td>
-                <td class="value-cell" style="word-break: break-all;">${escapeHtml_(r.email || "—")}</td>
+                <td class="value-cell" style="word-break: break-all;">${escapeHtml_(r.email || r.emailId || "—")}</td>
               </tr>
               <tr>
-                <td class="label-cell">${isGokart ? 'Height Verification:' : 'Participant Type:'}</td>
-                <td class="value-cell"><strong>${isGokart ? escapeHtml_(r.heightInches ? r.heightInches + ' in (Verified ≥ 5ft 5in)' : 'Verified On-Site') : 'Arena Jumper / Guardian'}</strong></td>
-                <td class="label-cell">Signed By / Role:</td>
-                <td class="value-cell">${escapeHtml_(r.fullName ? r.fullName.split(' ')[0] : 'Signer')} (Self &amp; Legal Guardian)</td>
+                <td class="label-cell">Legal Authority &amp; Role:</td>
+                <td class="value-cell"><strong>${escapeHtml_(signerRoleLabel)}</strong></td>
+                <td class="label-cell">${isGokart ? 'Height Verification:' : 'Participant Status:'}</td>
+                <td class="value-cell"><strong>${isGokart ? (r.heightInches ? r.heightInches + ' in (Verified ≥ 5ft 5in)' : 'Verified On-Site (≥ 5ft 5in)') : (isParentOnly ? 'Accompanying Guardian (Spectator)' : 'Cleared for Arena')}</strong></td>
               </tr>
               <tr>
                 <td class="label-cell">Residential Address:</td>
@@ -1833,7 +1907,7 @@ function buildPrintableHtml_(r) {
                   ${sigHtml}
                 </div>
                 <div style="border-top: 1px solid #0f172a; padding-top: 2px;">
-                  <strong style="font-size: 8.2pt; word-break: break-word;">${escapeHtml_(r.fullName || "Signer")}</strong> <span style="font-size: 7.2pt; color: #64748b;">(Primary Signer &amp; Guardian)</span>
+                  <strong style="font-size: 8.2pt; word-break: break-word;">${escapeHtml_(signerName)}</strong> <span style="font-size: 7.2pt; color: #64748b;">(${escapeHtml_(signerRoleLabel)})</span>
                 </div>
               </div>
               <div class="sig-col-right">
